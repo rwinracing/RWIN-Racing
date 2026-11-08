@@ -871,7 +871,7 @@
         <div class="entry-stat"><div class="eyebrow">02 / IMIĘ I NAZWISKO</div><strong id="entryUser" class="entry-name">NIE USTAWIONO</strong><small class="entry-note">Dane zatwierdzi manager RWIN Racing</small></div>
         <div class="entry-stat"><div class="eyebrow">03 / PRZYPISANY LINEUP</div><strong id="entryLineup" class="entry-name lineup-assignment">BRAK PRZYPISANIA</strong><small class="entry-note">Lineup przypisuje manager RWIN Racing</small></div>
       </div>
-      <div class="identity-actions"><p id="entriesIdentityNote" aria-live="polite">Dane zespołowe i zgłoszenia zostaną udostępnione po uruchomieniu systemu zapisów RWIN.</p></div>
+      <div class="identity-actions"><p id="entriesIdentityNote" aria-live="polite">Dane zespołowe i zgłoszenia zostaną udostępnione po uruchomieniu systemu zapisów RWIN.</p><button type="button" id="retryRwinProfile" class="btn btn-outline" hidden>PONÓW POBIERANIE ↻</button></div>
       <div class="section-heading"><div><div class="eyebrow">RWIN RACING / ENDURANCE CREWS</div><h2 class="section-title">LINE<span class="text-purple">UP.</span></h2></div><span class="tag special">SKŁADY DO UZUPEŁNIENIA</span></div>
       <div id="lineupGrid" class="lineup-grid" aria-label="Lineupy RWIN Racing"></div>
       <div class="section-heading"><div><div class="eyebrow">RACE ENTRIES / YOUR GRID</div><h2 class="section-title">MOJE <span class="text-purple">ZGŁOSZENIA.</span></h2></div><button type="button" class="btn btn-primary" data-view="calendar">DODAJ ZAPIS ↗</button></div>
@@ -1177,6 +1177,13 @@
       'OCZEKIWANIE NA BOTA':'WAITING FOR BOT',
       'SPRAWDZANIE…':'CHECKING…',
       'BŁĄD POBIERANIA':'FETCH ERROR',
+      'PONÓW POBIERANIE ↻':'RETRY FETCH ↻',
+      'WYMAGANA AKTUALIZACJA BAZY':'DATABASE UPDATE REQUIRED',
+      'BRAK UPRAWNIEŃ':'ACCESS DENIED',
+      'SESJA WYGASŁA':'SESSION EXPIRED',
+      'PONAWIANIE POBIERANIA…':'RETRYING…',
+      'BŁĄD WERYFIKACJI':'VERIFICATION ERROR',
+      'BŁĄD POŁĄCZENIA':'CONNECTION ERROR',
       'NIE POTWIERDZONO':'NOT VERIFIED',
       'BRAK PROFILU RWIN':'NO RWIN PROFILE',
       'Bot RWIN weryfikuje konto i profil. Sprawdzamy postęp przez maksymalnie 84 sekundy (bot odczytuje kolejkę co około 15 sekund).':'The RWIN bot is verifying your account. We will check for up to 84 seconds (the bot polls about every 15 seconds).',
@@ -1336,6 +1343,7 @@
     // Stan prywatnego profilu: tylko RPC z auth.uid() + auth.identities.
     let ownRwinProfile = null;
     let ownProfileStatus = 'signed_out';
+    let ownProfileIssue = null; // setup / forbidden / expired / network / queue; bez prywatnych danych
     let authGeneration = 0;
     let profilePollTimer = null;
     const PROFILE_POLL_MS = 6000;
@@ -1849,6 +1857,18 @@
       return generation === authGeneration && Boolean(userId) && authUser?.id === userId;
     }
 
+    // Odczyt z Supabase może zawieść na kilka różnych sposobów. NIE ukrywamy
+    // błędu braku migracji jako "brak profilu" i nie zgadujemy nazwiska z Discorda.
+    function classifyRwinRpcError(error) {
+      const code = String(error?.code || '');
+      const status = Number(error?.status || 0);
+      const message = String(error?.message || '');
+      if (code === 'PGRST202' || code === '42883' || /could not find.*function|function.*does not exist/i.test(message)) return 'setup';
+      if (code === '42501' || status === 403 || /permission denied/i.test(message)) return 'forbidden';
+      if (status === 401 || /jwt.*expired|invalid.*jwt|auth session missing/i.test(message)) return 'expired';
+      return 'network';
+    }
+
     // Odczyt WYŁĄCZNIE własnego profilu. RPC na serwerze porównuje
     // auth.uid() z auth.identities (provider = 'discord'); nie przyjmuje ID
     // ani nazwiska od przeglądarki. Funkcja SQL dołączona w migracji.
@@ -1866,6 +1886,7 @@
             avatar: safeDiscordAvatarUrl(row.avatar_url)
           };
           ownProfileStatus = 'linked';
+          ownProfileIssue = null;
           renderEntries();
           return 'linked';
         }
@@ -1874,10 +1895,13 @@
         return 'missing';
       } catch (error) {
         if (!isCurrentProfileSession(generation,userId)) return 'stale';
-        console.warn('RWIN: Błąd pobierania własnego profilu (sprawdź migrację SQL).', error);
-        ownProfileStatus = 'error';
+        ownProfileIssue = classifyRwinRpcError(error);
+        console.warn('RWIN: Błąd odczytu profilu. Kod:', error?.code || 'brak', 'rodzaj:', ownProfileIssue, error);
+        ownProfileStatus = ownProfileIssue === 'network' ? 'retrying'
+          : ownProfileIssue === 'setup' ? 'setup'
+          : ownProfileIssue === 'forbidden' ? 'forbidden' : 'expired';
         renderEntries();
-        return 'error';
+        return ownProfileIssue === 'network' ? 'transient' : 'fatal';
       }
     }
 
@@ -1893,13 +1917,16 @@
           await loadLiveDriverAvatars();
           return;
         }
-        if (outcome === 'missing' && attempt < PROFILE_POLL_MAX_ATTEMPTS) {
+        if ((outcome === 'missing' || outcome === 'transient') && attempt < PROFILE_POLL_MAX_ATTEMPTS) {
           scheduleProfileCheck(generation, userId, attempt + 1);
         } else if (outcome === 'missing') {
           ownProfileStatus = 'timeout';
           renderEntries();
+        } else if (outcome === 'transient') {
+          ownProfileStatus = 'error';
+          renderEntries();
         }
-        // Błąd API kończy odliczanie, bez udawania udanego przypisania.
+        // Trwały błąd SQL/uprawnień kończy odliczanie z konkretną wskazówką.
       }, PROFILE_POLL_MS);
     }
 
@@ -1922,7 +1949,7 @@
             await loadLiveDriverAvatars();
             return;
           }
-          if (outcome === 'missing' && data === 'queued') {
+          if ((outcome === 'missing' && data === 'queued') || outcome === 'transient') {
             scheduleProfileCheck(generation, userId);
           } else if (outcome === 'missing') {
             ownProfileStatus = 'not_linked';
@@ -1941,11 +1968,40 @@
         }
       } catch (error) {
         if (!isCurrentProfileSession(generation, userId)) return;
-        ownProfileStatus = 'error';
+        console.warn('RWIN: Błąd kolejki weryfikacji (sprawdzę też istniejący profil).', error?.code || 'brak', error);
+        const queueIssue = classifyRwinRpcError(error);
         lastSyncedAvatarUser = null;
-        renderEntries();
-        console.warn('RWIN: Błąd kolejki synchronizacji / RPC.', error);
+        // Nawet jeśli wrzucenie do kolejki zawiedzie, bot mógł już wcześniej
+        // utworzyć profil. Nie zastępujemy poprawnego nazwiska komunikatem błędu.
+        const existing = await readOwnRwinProfile(generation, userId);
+        if (!isCurrentProfileSession(generation, userId)) return;
+        if (existing === 'linked') { await loadLiveDriverAvatars(); return; }
+        if (existing === 'missing') {
+          ownProfileIssue = queueIssue === 'network' ? 'queue' : queueIssue;
+          ownProfileStatus = queueIssue === 'setup' ? 'queue_setup' : queueIssue === 'forbidden' ? 'forbidden' : 'queue_error';
+          renderEntries();
+        } else if (existing === 'transient') {
+          scheduleProfileCheck(generation, userId);
+        }
       }
+    }
+
+    async function retryOwnRwinProfile() {
+      const user = authUser;
+      if (!user || !authClient) return;
+      const generation = authGeneration;
+      cancelProfilePolling();
+      ownProfileIssue = null;
+      ownProfileStatus = 'checking';
+      lastSyncedAvatarUser = null;
+      renderEntries();
+      // Najpierw czytamy już zweryfikowany profil; jeśli go nie ma,
+      // ponawiamy zgłoszenie do istniejącej kolejki bota.
+      const existing = await readOwnRwinProfile(generation, user.id);
+      if (!isCurrentProfileSession(generation, user.id)) return;
+      if (existing === 'linked') { await loadLiveDriverAvatars(); return; }
+      if (existing === 'missing') await syncMyDriverAvatar(user, generation);
+      if (existing === 'transient') scheduleProfileCheck(generation, user.id);
     }
 
     // Karty kierowców: lista oficjalna + osobne karty dla zweryfikowanych
@@ -2031,6 +2087,7 @@
         cancelProfilePolling();
         lastSyncedAvatarUser = null;
         ownRwinProfile = null;
+        ownProfileIssue = null;
         ownProfileStatus = nextUserId ? 'checking' : 'signed_out';
       }
       authUser = user || null;
@@ -2180,7 +2237,12 @@
       $('entryUser').textContent = ownRwinProfile?.name || (id
         ? (ownProfileStatus === 'queued' ? 'OCZEKIWANIE NA BOTA'
           : ownProfileStatus === 'checking' ? 'SPRAWDZANIE…'
-          : ownProfileStatus === 'error' ? 'BŁĄD POBIERANIA'
+          : ownProfileStatus === 'setup' || ownProfileStatus === 'queue_setup' ? 'WYMAGANA AKTUALIZACJA BAZY'
+          : ownProfileStatus === 'forbidden' ? 'BRAK UPRAWNIEŃ'
+          : ownProfileStatus === 'expired' ? 'SESJA WYGASŁA'
+          : ownProfileStatus === 'retrying' ? 'PONAWIANIE POBIERANIA…'
+          : ownProfileStatus === 'queue_error' ? 'BŁĄD WERYFIKACJI'
+          : ownProfileStatus === 'error' ? 'BŁĄD POŁĄCZENIA'
           : ownProfileStatus === 'timeout' ? 'NIE POTWIERDZONO'
           : 'BRAK PROFILU RWIN')
         : 'ZALOGUJ SIĘ');
@@ -2192,11 +2254,18 @@
         linked: 'Profil kierowcy połączony z kontem Discord i potwierdzony przez system RWIN. Lineup nie jest jeszcze podłączony.',
         not_linked: 'Konto Discord działa, ale profil RWIN nie został jeszcze powiązany przez bota. Sprawdź nick serwerowy i członkostwo.',
         timeout: 'Nie otrzymaliśmy jeszcze potwierdzenia od bota. Odśwież stronę za chwilę lub skontaktuj się z managerem RWIN.',
-        error: 'Nie można odczytać profilu RWIN. Sprawdź połączenie i migrację SQL, następnie odśwież stronę.'
+        setup: 'Nie znaleziono funkcji profilu w Supabase. Administrator: uruchom migrację RWIN_v191_NAPRAWA_RPC.sql w SQL Editor, potem kliknij Ponów pobieranie.',
+        queue_setup: 'Brakuje funkcji kolejki bota. Sprawdź poprzedni schemat integracji bota w Supabase (nie uruchamiaj starszej migracji, która usuwa kolejkę).',
+        forbidden: 'Supabase odmówił dostępu do profilu. Administrator: sprawdź uprawnienia EXECUTE do funkcji RPC dla authenticated.',
+        expired: 'Sesja straciła ważność. Wyloguj się i zaloguj ponownie przez Discord.',
+        retrying: 'Chwilowy problem z połączeniem. Ponawiam sprawdzanie profilu automatycznie…',
+        queue_error: 'Nie można wysłać prośby do bota RWIN. Spróbuj ponownie; jeśli problem wraca, sprawdź logi Supabase.',
+        error: 'Nie można połączyć się z bazą RWIN. Sprawdź internet i spróbuj ponownie.'
       };
       $('entriesIdentityNote').textContent = id
         ? (profileHints[ownProfileStatus] || profileHints.checking)
         : 'Zaloguj się przez Discord. Dane kierowcy pojawią się dopiero po zatwierdzeniu przez bota RWIN.';
+      $('retryRwinProfile').hidden = !id || !['setup','queue_setup','forbidden','expired','timeout','not_linked','error','queue_error'].includes(ownProfileStatus);
       $('lineupGrid').innerHTML = LINEUPS.map(name => `
         <article class="lineup-card">
           <div class="lineup-head"><h3>${esc(name)}</h3><span class="tag special">LINEUP</span></div>
@@ -2292,6 +2361,7 @@
     $('loginBrandLogo').src = document.querySelector('.brand img').src;
     $('accountButton').addEventListener('click', () => authUser ? toggleAccountMenu() : openLoginModal());
     $('accountSignOut').addEventListener('click', () => { closeAccountMenu(); signOutDiscord(); });
+    $('retryRwinProfile').addEventListener('click', retryOwnRwinProfile);
     document.addEventListener('click', (event) => {
       if (!$('headerAccount').contains(event.target)) closeAccountMenu();
     });
