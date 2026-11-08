@@ -549,7 +549,7 @@
     #languageFlag{line-height:1;display:inline-flex;align-items:center;justify-content:center}
     .language-chevron{font-size:15px;color:var(--purple)}
     .language-options{position:absolute;top:calc(100% + 8px);left:0;min-width:154px;display:none;background:#17121d;border:1px solid #544059;box-shadow:0 18px 45px #000a;padding:5px;border-radius:8px}
-    .language-switcher:hover .language-options,.language-switcher.open .language-options,.language-switcher:focus-within .language-options{display:grid;gap:3px}
+    .language-switcher.open .language-options{display:grid;gap:3px}
     .language-options button{border:0;background:transparent;color:#ece3ef;padding:11px 9px;display:flex;align-items:center;gap:9px;text-align:left;font-size:12px;border-radius:4px}
     .language-switcher .flag-icon{width:27px;height:18px;display:block;flex:none;object-fit:cover;border:1px solid rgba(255,255,255,.42);border-radius:3px;box-shadow:0 2px 5px #0009,0 0 0 1px #302335;background:#120e16}
     .language-toggle{border-radius:8px;background:linear-gradient(135deg,#211628,#120f16);box-shadow:inset 0 1px rgba(255,255,255,.04)}
@@ -654,6 +654,27 @@
     #authSignedInSummary strong {color:#c980d8;}
     #discordSignOut {margin-top:12px; width:100%;}
     @media(max-width:480px){.account-button.signed-in .account-label{max-width:80px;}}
+  
+    /* v1.8 — nawigacja i ustawienia profilu w stylu RWIN */
+    .language-switcher .flag-icon { width:30px;height:20px;object-fit:cover;border-radius:4px;border:1px solid rgba(242,217,247,.48);box-shadow:0 3px 8px #000b,inset 0 0 0 1px #ffffff42;background:#17101b; }
+    .language-toggle { padding:7px 11px;min-width:89px;min-height:43px;gap:9px;background:linear-gradient(135deg,#231827,#110f15);border:1px solid #634969;border-radius:9px;transition:background .18s,border-color .18s;cursor:pointer; }
+    .language-toggle:hover,.language-switcher.open .language-toggle { border-color:#c980d8;background:#2b1d32; }
+    .language-options {top:calc(100% + 9px);min-width:183px;border-color:#72527a;border-radius:11px;padding:6px;background:#1c1522;box-shadow:0 18px 50px #000d,0 0 0 1px #ffffff0a;}
+    .language-options button {min-height:43px;border-radius:7px;padding:9px 11px;cursor:pointer;}
+    .language-options button:hover,.language-options button.active {background:#39253f;}
+    .language-toggle:focus-visible,.language-options button:focus-visible {outline:2px solid #c980d8;outline-offset:3px}
+    .header-account {position:relative;flex-shrink:0;}
+    .header-account .account-button.signed-in {padding:0!important;background:transparent!important;border:0!important;box-shadow:none!important;min-width:44px;max-width:44px;width:44px;height:44px;min-height:44px;border-radius:50%;display:grid;place-items:center;transform:none;}
+    .header-account .account-button.signed-in:hover {background:transparent!important;transform:none;}
+    .header-account .account-button.signed-in .account-label,.header-account .account-button.signed-in .discord-mark {display:none!important;}
+    .header-account .account-button.signed-in .account-avatar {width:42px;height:42px;max-width:none;border:2px solid #c980d8;border-radius:50%;box-shadow:0 0 0 3px #2d1d35;object-fit:cover;}
+    .header-account .account-button.signed-in .account-avatar-fallback {display:grid;place-items:center;width:42px;height:42px;border-radius:50%;background:#382144;color:#f9eaff;border:2px solid #c980d8;font:900 22px var(--font-display);}
+    .header-account .account-button.signed-in:focus-visible {outline:2px solid #eed0f3;outline-offset:5px;}
+    .account-menu {position:absolute;top:calc(100% + 12px);right:0;z-index:120;width:178px;background:#1a141f;border:1px solid #6b4671;box-shadow:0 18px 44px #000d;padding:7px;border-radius:10px;}
+    .account-menu[hidden]{display:none!important;}
+    .account-menu-logout {width:100%;background:transparent;border:0;color:#ff6578;text-align:left;font-size:12px;font-weight:800;letter-spacing:.08em;padding:12px 13px;border-radius:6px;cursor:pointer;}
+    .account-menu-logout:hover,.account-menu-logout:focus-visible{color:#fff;background:#842e42;outline:none;}
+    @media(max-width:600px){.site-header .header-account .account-button.signed-in{min-width:38px;max-width:38px;width:38px;height:38px;min-height:38px;padding:0!important}.header-account .account-button.signed-in .account-avatar,.header-account .account-button.signed-in .account-avatar-fallback{width:36px;height:36px}.language-switcher .flag-icon{width:24px;height:16px}.language-toggle{min-width:73px;min-height:38px;gap:5px;padding:5px 7px}.language-options{min-width:164px}.account-menu{right:-4px}}
   </style>
 </head>
 
@@ -663,10 +684,10 @@
   <header class="site-header">
     <div class="container header-inner">
       <div class="language-switcher" id="languageSwitcher">
-        <button type="button" id="languageToggle" class="language-toggle" aria-haspopup="true" aria-expanded="false" aria-controls="languageOptions" aria-label="Wybierz język / Choose language"><span id="languageFlag" class="flag-wrap" aria-hidden="true"><img class="flag-icon" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA2MCAzNiI+CjxyZWN0IHdpZHRoPSI2MCIgaGVpZ2h0PSIzNiIgZmlsbD0iI2ZmZiIvPjxwYXRoIGZpbGw9IiNkYzE0M2MiIGQ9Ik0wIDE4aDYwdjE4SDB6Ii8+Cjwvc3ZnPg==" alt="" draggable="false" /></span><strong id="languageCode">PL</strong><span class="language-chevron" aria-hidden="true">⌄</span></button>
+        <button type="button" id="languageToggle" class="language-toggle" aria-haspopup="true" aria-expanded="false" aria-controls="languageOptions" aria-label="Wybierz język / Choose language"><span id="languageFlag" class="flag-wrap" aria-hidden="true"><img class="flag-icon" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA2MCA0MCI+PHJlY3Qgd2lkdGg9IjYwIiBoZWlnaHQ9IjQwIiBmaWxsPSIjZmZmIi8+PHJlY3QgeT0iMjAiIHdpZHRoPSI2MCIgaGVpZ2h0PSIyMCIgZmlsbD0iI2UxMWQ0OCIvPjwvc3ZnPg==" alt="" draggable="false" /></span><strong id="languageCode">PL</strong><span class="language-chevron" aria-hidden="true">⌄</span></button>
         <div class="language-options" id="languageOptions" role="group" aria-label="Język / Language">
-          <button type="button" data-language="pl"><img class="flag-icon" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA2MCAzNiI+CjxyZWN0IHdpZHRoPSI2MCIgaGVpZ2h0PSIzNiIgZmlsbD0iI2ZmZiIvPjxwYXRoIGZpbGw9IiNkYzE0M2MiIGQ9Ik0wIDE4aDYwdjE4SDB6Ii8+Cjwvc3ZnPg==" alt="" draggable="false" /> Polski <strong>PL</strong></button>
-          <button type="button" data-language="en"><img class="flag-icon" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA2MCAzNiI+CjxyZWN0IHdpZHRoPSI2MCIgaGVpZ2h0PSIzNiIgZmlsbD0iIzAxMjE2OSIvPgo8cGF0aCBzdHJva2U9IiNmZmYiIHN0cm9rZS13aWR0aD0iMTAiIGQ9Ik0wIDAgNjAgMzZNNjAgMCAwIDM2Ii8+CjxwYXRoIHN0cm9rZT0iI2M4MTAyZSIgc3Ryb2tlLXdpZHRoPSI0IiBkPSJNMCAwIDYwIDM2TTYwIDAgMCAzNiIvPgo8cGF0aCBzdHJva2U9IiNmZmYiIHN0cm9rZS13aWR0aD0iMTIiIGQ9Ik0zMCAwdjM2TTAgMThoNjAiLz4KPHBhdGggc3Ryb2tlPSIjYzgxMDJlIiBzdHJva2Utd2lkdGg9IjYiIGQ9Ik0zMCAwdjM2TTAgMThoNjAiLz4KPC9zdmc+" alt="" draggable="false" /> English <strong>UK</strong></button>
+          <button type="button" data-language="pl"><img class="flag-icon" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA2MCA0MCI+PHJlY3Qgd2lkdGg9IjYwIiBoZWlnaHQ9IjQwIiBmaWxsPSIjZmZmIi8+PHJlY3QgeT0iMjAiIHdpZHRoPSI2MCIgaGVpZ2h0PSIyMCIgZmlsbD0iI2UxMWQ0OCIvPjwvc3ZnPg==" alt="" draggable="false" /> Polski <strong>PL</strong></button>
+          <button type="button" data-language="en"><img class="flag-icon" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA2MCA0MCI+PHJlY3Qgd2lkdGg9IjYwIiBoZWlnaHQ9IjQwIiBmaWxsPSIjMDEyMTY5Ii8+PHBhdGggZD0iTTAgMCA2MCA0ME02MCAwIDAgNDAiIHN0cm9rZT0iI2ZmZiIgc3Ryb2tlLXdpZHRoPSIxMCIvPjxwYXRoIGQ9Ik0wIDAgNjAgNDBNNjAgMCAwIDQwIiBzdHJva2U9IiNjODEwMmUiIHN0cm9rZS13aWR0aD0iNCIvPjxwYXRoIGQ9Ik0zMCAwdjQwTTAgMjBoNjAiIHN0cm9rZT0iI2ZmZiIgc3Ryb2tlLXdpZHRoPSIxNCIvPjxwYXRoIGQ9Ik0zMCAwdjQwTTAgMjBoNjAiIHN0cm9rZT0iI2M4MTAyZSIgc3Ryb2tlLXdpZHRoPSI3Ii8+PC9zdmc+" alt="" draggable="false" /> English <strong>UK</strong></button>
         </div>
       </div>
       <button class="brand" type="button" data-view="dashboard" aria-label="Strona główna RWIN Racing" style="background:none;border:0;color:inherit;padding:0">
@@ -692,7 +713,12 @@
       </nav>
 
       <div class="header-right">
-        <button id="accountButton" type="button" class="btn btn-discord account-button" aria-label="Otwórz ekran logowania Discord"><img id="headerDiscordAvatar" class="account-avatar" alt="" referrerpolicy="no-referrer" /><svg class="discord-mark" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" focusable="false"><path d="M19.73 5.58a18.1 18.1 0 0 0-4.49-1.39l-.55 1.11a16.8 16.8 0 0 0-5.38 0l-.55-1.11a18.1 18.1 0 0 0-4.49 1.39C1.41 9.8.64 13.9 1.03 17.93a18.3 18.3 0 0 0 5.52 2.78l1.18-1.93c-.64-.23-1.25-.51-1.83-.84l.44-.34a12.8 12.8 0 0 0 11.32 0l.44.34c-.58.33-1.19.61-1.83.84l1.18 1.93a18.3 18.3 0 0 0 5.52-2.78c.46-4.67-.78-8.73-3.24-12.35ZM8.5 15.46c-1.06 0-1.92-.96-1.92-2.13 0-1.18.85-2.14 1.92-2.14 1.07 0 1.94.97 1.92 2.14 0 1.17-.85 2.13-1.92 2.13Zm7 0c-1.06 0-1.92-.96-1.92-2.13 0-1.18.85-2.14 1.92-2.14s1.94.97 1.92 2.14c0 1.17-.85 2.13-1.92 2.13Z"/></svg><span class="account-label">LOGOWANIE DISCORD</span></button>
+        <div class="header-account" id="headerAccount">
+          <button id="accountButton" type="button" class="btn btn-discord account-button" aria-label="Otwórz ekran logowania Discord" aria-expanded="false" aria-controls="accountMenu" aria-haspopup="true"><img id="headerDiscordAvatar" class="account-avatar" alt="" referrerpolicy="no-referrer" /><span id="headerAvatarFallback" class="account-avatar-fallback" aria-hidden="true" style="display:none">R</span><svg class="discord-mark" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" focusable="false"><path d="M19.73 5.58a18.1 18.1 0 0 0-4.49-1.39l-.55 1.11a16.8 16.8 0 0 0-5.38 0l-.55-1.11a18.1 18.1 0 0 0-4.49 1.39C1.41 9.8.64 13.9 1.03 17.93a18.3 18.3 0 0 0 5.52 2.78l1.18-1.93c-.64-.23-1.25-.51-1.83-.84l.44-.34a12.8 12.8 0 0 0 11.32 0l.44.34c-.58.33-1.19.61-1.83.84l1.18 1.93a18.3 18.3 0 0 0 5.52-2.78c.46-4.67-.78-8.73-3.24-12.35ZM8.5 15.46c-1.06 0-1.92-.96-1.92-2.13 0-1.18.85-2.14 1.92-2.14 1.07 0 1.94.97 1.92 2.14 0 1.17-.85 2.13-1.92 2.13Zm7 0c-1.06 0-1.92-.96-1.92-2.13 0-1.18.85-2.14 1.92-2.14s1.94.97 1.92 2.14c0 1.17-.85 2.13-1.92 2.13Z"/></svg><span class="account-label">LOGOWANIE DISCORD</span></button>
+          <div class="account-menu" id="accountMenu" role="menu" aria-label="Konto Discord" hidden>
+            <button type="button" id="accountSignOut" class="account-menu-logout" role="menuitem">WYLOGUJ</button>
+          </div>
+        </div>
         <button id="menuButton" type="button" class="icon-button menu-button" aria-label="Otwórz menu" aria-expanded="false">☰</button>
       </div>
     </div>
@@ -815,7 +841,7 @@
     <section id="view-entries" class="view" aria-label="Moje zapisy">
       <div class="eyebrow">RWIN RACING / TEAM OPERATIONS</div>
       <h1 class="display" style="font-size:clamp(70px,9vw,115px);margin:22px 0 15px">MOJE <span class="text-purple">ZAPISY.</span></h1>
-      <p class="text-muted" style="line-height:1.9;max-width:790px">Dane konta Discord, kierowcy i przypisania do lineupu w jednym miejscu. To na razie prototyp — prawdziwe konto zostanie rozpoznane po uruchomieniu logowania Discord, a lineup zatwierdzi manager RWIN.</p>
+      <p class="text-muted" style="line-height:1.9;max-width:790px">Konto Discord jest połączone z RWIN Racing. Przypisanie imienia i nazwiska oraz lineupu będzie dostępne po wdrożeniu bazy kierowców i panelu managera.</p>
       <div class="entry-summary" aria-label="Dane konta i przypisanie kierowcy">
         <div class="entry-stat">
           <div class="eyebrow">01 / ZALOGOWANE KONTO DISCORD</div>
@@ -825,10 +851,10 @@
           </div>
           <small class="entry-note" id="discordIdentityHint">Po połączeniu nick i avatar zostaną pobrane bezpośrednio z Discorda.</small>
         </div>
-        <div class="entry-stat"><div class="eyebrow">02 / IMIĘ I NAZWISKO</div><strong id="entryUser" class="entry-name">NIE USTAWIONO</strong><small class="entry-note">Dane kierowcy RWIN Racing</small></div>
-        <div class="entry-stat"><div class="eyebrow">03 / PRZYPISANY LINEUP</div><strong id="entryLineup" class="entry-name lineup-assignment">BRAK PRZYPISANIA</strong><small class="entry-note">Docelowo przypisuje manager; w demie wybór testowy</small></div>
+        <div class="entry-stat"><div class="eyebrow">02 / IMIĘ I NAZWISKO</div><strong id="entryUser" class="entry-name">NIE USTAWIONO</strong><small class="entry-note">Dane zatwierdzi manager RWIN Racing</small></div>
+        <div class="entry-stat"><div class="eyebrow">03 / PRZYPISANY LINEUP</div><strong id="entryLineup" class="entry-name lineup-assignment">BRAK PRZYPISANIA</strong><small class="entry-note">Lineup przypisuje manager RWIN Racing</small></div>
       </div>
-      <div class="identity-actions"><p id="entriesIdentityNote">Konto Discord: oczekiwanie na konfigurację. Imię i nazwisko, lineup oraz zapisy to nadal lokalny prototyp.</p><button type="button" class="btn btn-outline" id="editDriverProfile">EDYTUJ DANE TESTOWE ↗</button></div>
+      <div class="identity-actions"><p id="entriesIdentityNote">Dane zespołowe i zgłoszenia zostaną udostępnione po uruchomieniu systemu zapisów RWIN.</p></div>
       <div class="section-heading"><div><div class="eyebrow">RWIN RACING / ENDURANCE CREWS</div><h2 class="section-title">LINE<span class="text-purple">UP.</span></h2></div><span class="tag special">SKŁADY DO UZUPEŁNIENIA</span></div>
       <div id="lineupGrid" class="lineup-grid" aria-label="Lineupy RWIN Racing"></div>
       <div class="section-heading"><div><div class="eyebrow">RACE ENTRIES / YOUR GRID</div><h2 class="section-title">MOJE <span class="text-purple">ZGŁOSZENIA.</span></h2></div><button type="button" class="btn btn-primary" data-view="calendar">DODAJ ZAPIS ↗</button></div>
@@ -895,7 +921,7 @@
   <!-- ===================== MODAL SZCZEGÓŁÓW ===================== -->
   <dialog id="eventDialog" class="race-dialog" aria-labelledby="eventDialogTitle" aria-modal="true">
     <div class="dialog-top"><div><div class="eyebrow">RWIN RACING / EVENT DETAILS</div><h2 id="eventDialogTitle">WYDARZENIE</h2></div><button type="button" class="icon-button" data-close="eventDialog" aria-label="Zamknij">✕</button></div>
-    <div class="dialog-content race-dialog-content"><div id="eventDialogBody"></div><div class="dialog-actions race-dialog-footer"><span class="race-demo-disclaimer">Zapis na razie testowy — nie zgłasza do LMU.</span><button type="button" class="btn btn-primary" id="eventSignup">ZAPISZ SIĘ ↗</button></div></div>
+    <div class="dialog-content race-dialog-content"><div id="eventDialogBody"></div><div class="dialog-actions race-dialog-footer"><span class="race-demo-disclaimer">Zapisy zostaną włączone po uruchomieniu bazy RWIN.</span><button type="button" class="btn btn-primary" id="eventSignup">ZAPISZ SIĘ ↗</button></div></div>
   </dialog>
 
   <!-- ===================== EKRAN LOGOWANIA DISCORD ===================== -->
@@ -921,28 +947,6 @@
     </div></div>
   </dialog>
 
-  <!-- ===================== MODAL KONTA ===================== -->
-  <dialog id="accountDialog" aria-labelledby="accountDialogTitle">
-    <div class="dialog-top"><div><div class="eyebrow">RWIN RACING / DRIVER ACCOUNT</div><h2 id="accountDialogTitle">KONTO KIEROWCY</h2></div><button type="button" class="icon-button" data-close="accountDialog" aria-label="Zamknij">✕</button></div>
-    <form id="accountForm" class="dialog-content">
-      <p id="accountDemoNotice"><strong>Dane lokalne (DEMO).</strong> Konto Discord pochodzi z logowania OAuth, jeśli jesteś zalogowany. Imię i nazwisko, lineup oraz zapisy nadal zapisują się tylko w tej przeglądarce. Wspólną bazę dodamy w następnym etapie.</p>
-      <label class="field" for="discordName">NAZWA KONTA DISCORD</label>
-      <input class="form-control" id="discordName" name="discordName" maxlength="40" autocomplete="off" placeholder="np. rwin.driver" />
-      <div class="demo-field-hint" id="discordFieldHint">Po zalogowaniu to pole będzie pochodzić z Discorda i nie będzie edytowalne.</div>
-      <label class="field" for="fullName">IMIĘ I NAZWISKO KIEROWCY</label>
-      <input class="form-control" id="fullName" name="fullName" required minlength="2" maxlength="70" autocomplete="name" placeholder="np. Jan Kowalski" />
-      <label class="field" for="driverLineup">PRZYPISANIE DO LINEUPU (DEMO)</label>
-      <select class="form-control" id="driverLineup" name="driverLineup">
-        <option value="">Brak przypisania</option>
-        <option value="RWIN 01">RWIN 01</option>
-        <option value="RWIN 02">RWIN 02</option>
-        <option value="RWIN 03">RWIN 03</option>
-        <option value="RWIN 04">RWIN 04</option>
-      </select>
-      <div class="demo-field-hint">W finalnej wersji lineup przypisuje manager, a nie sam kierowca.</div>
-      <div class="dialog-actions"><button type="button" class="btn btn-outline" id="clearAccount">WYCZYŚĆ DEMO</button><button type="submit" class="btn btn-primary">ZAPISZ DANE DEMO ↗</button></div>
-    </form>
-  </dialog>
 
   <!-- Profil kierowcy (opisy i inne dane będą dodawane w kolejnych wersjach) -->
   <dialog id="driverDialog" aria-labelledby="driverDialogTitle" aria-modal="true">
@@ -971,8 +975,8 @@
     // ani żadnego tokenu bota — trafiałyby do publicznego GitHuba!
     // =============================================================
     const RWIN_AUTH_CONFIG = Object.freeze({
-      supabaseUrl: 'https://rnpzclkdgragidotsiom.supabase.co',
-      supabasePublishableKey: 'sb_publishable_UWUo967xM728MyMkNgzL9g_0LAzDElo',
+      supabaseUrl: 'WKLEJ_SUPABASE_PROJECT_URL',
+      supabasePublishableKey: 'WKLEJ_SUPABASE_PUBLISHABLE_KEY',
       redirectUrl: 'https://rwinracing.github.io/RWIN-Racing/'
     });
 
@@ -1136,6 +1140,24 @@
 
 
     };
+
+    Object.assign(I18N, {
+      'WYLOGUJ':'SIGN OUT',
+      'Konto Discord jest połączone z RWIN Racing. Przypisanie imienia i nazwiska oraz lineupu będzie dostępne po wdrożeniu bazy kierowców i panelu managera.':'Your Discord account is connected to RWIN Racing. Driver names and lineup assignments will be available after the driver database and manager panel are launched.',
+      'Dane zatwierdzi manager RWIN Racing':'Details will be approved by the RWIN manager',
+      'Lineup przypisuje manager RWIN Racing':'Lineup assigned by RWIN manager',
+      'Dane zespołowe i zgłoszenia zostaną udostępnione po uruchomieniu systemu zapisów RWIN.':'Team information and entries will be available once the RWIN registration system is launched.',
+      'Zapisy zostaną włączone po uruchomieniu bazy RWIN.':'Registration will be enabled once the RWIN database launches.',
+      'ZAPISY WKRÓTCE.':'REGISTRATION COMING SOON.',
+      'System oficjalnych zapisów udostępnimy po podłączeniu bazy danych. Obecnie żadne zgłoszenie nie jest zapisywane na tym urządzeniu.':'Official race registration will be available once the database is connected. No registration is currently stored on this device.',
+      'Przypisania wykona manager.':'Assignments will be handled by the manager.',
+      'Skład zostanie dodany po uruchomieniu systemu RWIN. Przypisania wykona manager.':'The lineup will appear once the RWIN system launches. Assignments will be handled by the manager.',
+      'Discord połączony. Dane kierowcy, skład i zgłoszenia pojawią się po uruchomieniu bazy RWIN.':'Discord connected. Driver information, lineups and entries will appear after the RWIN database launches.',
+      'Zaloguj się przez Discord. Przypisanie do zespołu i zapisy zostaną udostępnione później.':'Sign in with Discord. Team assignments and registration will be available later.',
+      'ZALOGUJ SIĘ':'SIGN IN',
+      'DO UZUPEŁNIENIA':'TO BE COMPLETED',
+      'ZAPISZ SIĘ ↗':'REGISTER ↗'
+    });
     let currentLanguage = 'pl';
     try { currentLanguage = localStorage.getItem('rwin_language') === 'en' ? 'en' : 'pl'; } catch (_) {}
     const translationCache = new WeakMap();
@@ -1189,7 +1211,7 @@
     }
     function updateLanguageUI() {
       document.documentElement.lang = currentLanguage === 'en' ? 'en' : 'pl';
-      document.querySelector('#languageFlag .flag-icon').src = currentLanguage === 'en' ? 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA2MCAzNiI+CjxyZWN0IHdpZHRoPSI2MCIgaGVpZ2h0PSIzNiIgZmlsbD0iIzAxMjE2OSIvPgo8cGF0aCBzdHJva2U9IiNmZmYiIHN0cm9rZS13aWR0aD0iMTAiIGQ9Ik0wIDAgNjAgMzZNNjAgMCAwIDM2Ii8+CjxwYXRoIHN0cm9rZT0iI2M4MTAyZSIgc3Ryb2tlLXdpZHRoPSI0IiBkPSJNMCAwIDYwIDM2TTYwIDAgMCAzNiIvPgo8cGF0aCBzdHJva2U9IiNmZmYiIHN0cm9rZS13aWR0aD0iMTIiIGQ9Ik0zMCAwdjM2TTAgMThoNjAiLz4KPHBhdGggc3Ryb2tlPSIjYzgxMDJlIiBzdHJva2Utd2lkdGg9IjYiIGQ9Ik0zMCAwdjM2TTAgMThoNjAiLz4KPC9zdmc+' : 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA2MCAzNiI+CjxyZWN0IHdpZHRoPSI2MCIgaGVpZ2h0PSIzNiIgZmlsbD0iI2ZmZiIvPjxwYXRoIGZpbGw9IiNkYzE0M2MiIGQ9Ik0wIDE4aDYwdjE4SDB6Ii8+Cjwvc3ZnPg==';
+      document.querySelector('#languageFlag .flag-icon').src = currentLanguage === 'en' ? 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA2MCA0MCI+PHJlY3Qgd2lkdGg9IjYwIiBoZWlnaHQ9IjQwIiBmaWxsPSIjMDEyMTY5Ii8+PHBhdGggZD0iTTAgMCA2MCA0ME02MCAwIDAgNDAiIHN0cm9rZT0iI2ZmZiIgc3Ryb2tlLXdpZHRoPSIxMCIvPjxwYXRoIGQ9Ik0wIDAgNjAgNDBNNjAgMCAwIDQwIiBzdHJva2U9IiNjODEwMmUiIHN0cm9rZS13aWR0aD0iNCIvPjxwYXRoIGQ9Ik0zMCAwdjQwTTAgMjBoNjAiIHN0cm9rZT0iI2ZmZiIgc3Ryb2tlLXdpZHRoPSIxNCIvPjxwYXRoIGQ9Ik0zMCAwdjQwTTAgMjBoNjAiIHN0cm9rZT0iI2M4MTAyZSIgc3Ryb2tlLXdpZHRoPSI3Ii8+PC9zdmc+' : 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA2MCA0MCI+PHJlY3Qgd2lkdGg9IjYwIiBoZWlnaHQ9IjQwIiBmaWxsPSIjZmZmIi8+PHJlY3QgeT0iMjAiIHdpZHRoPSI2MCIgaGVpZ2h0PSIyMCIgZmlsbD0iI2UxMWQ0OCIvPjwvc3ZnPg==';
       document.getElementById('languageCode').textContent = currentLanguage === 'en' ? 'UK' : 'PL';
       document.querySelectorAll('[data-language]').forEach(b=>b.classList.toggle('active',b.dataset.language===currentLanguage));
       document.getElementById('languageSwitcher').classList.remove('open');
@@ -1417,23 +1439,9 @@
     const STORAGE_KEY = 'rwin_racing_hub_special_v04';
     const $ = (id) => document.getElementById(id);
 
-    // 2. Prototypowe dane zapisów — tylko localStorage (nie jest to baza online).
-    function loadDemo() {
-      try {
-        const stored = JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}');
-        return {
-          // Zgodność z v0.8: wcześniejszy nickname staje się testowym imieniem i nazwiskiem.
-          discordName: typeof stored.discordName === 'string' ? stored.discordName.slice(0,40) : '',
-          fullName: typeof stored.fullName === 'string' ? stored.fullName.slice(0,70) : (typeof stored.nickname === 'string' ? stored.nickname.slice(0,70) : ''),
-          lineup: typeof stored.lineup === 'string' && LINEUPS.includes(stored.lineup) ? stored.lineup : '',
-          entries: Array.isArray(stored.entries) ? stored.entries.filter(x => typeof x === 'string') : []
-        };
-      } catch (_) {
-        return { discordName: '', fullName: '', lineup: '', entries: [] };
-      }
-    }
-
-    const demo = loadDemo();
+    // Dane testowe nie są już wczytywane ani przechowywane.
+    // Wspólne zgłoszenia i lineupy będą pobierane z chronionej bazy RWIN.
+    const demo = { discordName: '', fullName: '', lineup: '', entries: [] };
     // Dzień w Polsce, niezależnie od strefy czasowej urządzenia kierowcy.
     function todayInWarsaw() {
       const parts = new Intl.DateTimeFormat('en-GB', {
@@ -1457,11 +1465,6 @@
       selectedDate: initialDate,
       selectedEventId: null
     };
-
-    function saveDemo() {
-      try { localStorage.setItem(STORAGE_KEY, JSON.stringify(demo)); }
-      catch (_) { showToast('Ta przeglądarka nie pozwala zapisać danych lokalnie.'); }
-    }
 
     // Wszystkie teksty wpisane przez użytkownika są bezpiecznie kodowane do HTML.
     function esc(value) {
@@ -1626,8 +1629,8 @@
     }
 
     function getEntryCount(eventId) {
-      // Prototyp liczy tylko jeden zapis testowy na tym komputerze.
-      return demo.entries.includes(eventId) ? 1 : 0;
+      // Rejestracja online jeszcze nie została uruchomiona.
+      return 0; // Brak zgłoszeń do czasu uruchomienia wspólnej bazy.
     }
 
     function updateCounters() {
@@ -1660,7 +1663,7 @@
       if (!event) return;
       state.selectedEventId = eventId;
       $('eventDialogTitle').textContent = event.title;
-      const registered = demo.entries.includes(event.id);
+      const registered = false;
       const info = eventInfo(event);
       const sessions = info.sessions || [];
       const startLabel = info.startAt ? formatEventStart(info.startAt) : 'Godzina do uzupełnienia';
@@ -1669,7 +1672,7 @@
         : `<div class="race-data-item" style="grid-column:1/-1"><span>GODZINY SESJI</span><strong>Brak opublikowanych godzin w RWIN Hub</strong></div>`;
       const trackNote = event.trackTBA ? 'Układ toru poznamy po premierze DLC.' : 'Rzeczywista mapa toru w wariancie GP. Dokładny wariant, sektory i numeracja zakrętów dla konkretnego wydarzenia LMU wymagają potwierdzenia w grze.';
       $('eventDialogBody').innerHTML = `
-        <div class="race-dialog-banner"><span class="race-dialog-badge">${esc(typeName(event.type))}</span><span class="tag demo">${registered?'ZAPIS TESTOWY AKTYWNY':'RWIN RACING • EVENT INFO'}</span></div>
+        <div class="race-dialog-banner"><span class="race-dialog-badge">${esc(typeName(event.type))}</span><span class="tag demo">RWIN RACING • EVENT INFO</span></div>
         <div class="race-dialog-layout">
           <div class="track-map-card">
             <div class="race-section-head"><span>01 / MAPA TORU</span><span class="text-purple">${event.trackTBA?'TBA':'3 SEKTORY'}</span></div>
@@ -1695,37 +1698,19 @@
           </div>
         </div>
         <p class="race-info-note">Szczegóły i ustawienia sesji możesz także sprawdzić w <a href="https://racecontrol.gg/" target="_blank" rel="noopener noreferrer">RaceControl ↗</a>. Część danych będzie automatyczna dopiero po integracji LMU.</p>`;
-      $('eventSignup').textContent = registered ? 'ANULUJ ZAPIS ↗' : 'ZAPISZ SIĘ ↗';
+      $('eventSignup').textContent = 'ZAPISZ SIĘ ↗';
       if (!refreshOnly && !$('eventDialog').open) $('eventDialog').showModal();
       translateAll();
     }
 
     function changeSignup() {
-      if (AUTH_CONFIGURED && !authUser) {
+      if (!authUser) {
         $('eventDialog').close();
         openLoginModal();
-        showToast('Najpierw zaloguj się przez Discord. Zapisy wciąż są demonstracyjne.');
+        showToast('Najpierw zaloguj się przez Discord.');
         return;
       }
-      if (!demo.fullName.trim()) {
-        $('eventDialog').close();
-        $('accountDialog').showModal();
-        showToast('Najpierw wpisz imię i nazwisko kierowcy w profilu demo.');
-        return;
-      }
-      const id = state.selectedEventId;
-      if (!id) return;
-      if (demo.entries.includes(id)) {
-        demo.entries = demo.entries.filter(value=>value!==id);
-        showToast('Anulowano lokalny zapis demonstracyjny.');
-      } else {
-        demo.entries.push(id);
-        showToast(`Zapisano ${demo.fullName} w trybie DEMO — tylko w tej przeglądarce.`);
-      }
-      saveDemo();
-      $('eventDialog').close();
-      renderCalendar();
-      renderEntries();
+      showToast('Zapisy uruchomimy po podłączeniu wspólnej bazy i uprawnień RWIN.');
     }
 
     // URL z Supabase musi prowadzić na faktyczny serwer obrazów Discorda.
@@ -1856,19 +1841,7 @@
     }
 
     function resetLocalDemoOnIdentityChange(nextId) {
-      // Dane formularza demo nie mogą przenikać między kontami Discord.
-      if (lastAuthUserId !== nextId && (lastAuthUserId || nextId)) {
-        demo.discordName = '';
-        demo.fullName = '';
-        demo.lineup = '';
-        demo.entries = [];
-        saveDemo();
-      }
       lastAuthUserId = nextId;
-      try {
-        if (nextId) localStorage.setItem('rwin-last-auth-user', nextId);
-        else localStorage.removeItem('rwin-last-auth-user');
-      } catch (_) { /* Działanie bez zapisu lokalnego też jest możliwe. */ }
     }
 
     function setAuthenticatedUser(user) {
@@ -1898,7 +1871,7 @@
         const note = document.createElement('small');
         note.textContent = 'Weryfikację członkostwa na serwerze RWIN dodamy później.';
         $('authSignedInSummary').append(heading, detail, note);
-        $('loginAvailability').textContent = 'Sesja Discord jest aktywna. Możesz się wylogować.';
+        $('loginAvailability').textContent = 'Sesja Discord jest aktywna.';
       } else {
         $('loginAvailability').textContent = AUTH_CONFIGURED
           ? 'Zostaniesz przekierowany do oficjalnej autoryzacji Discord.'
@@ -1992,49 +1965,55 @@
       $('entryDiscord').textContent = id ? id.name : 'NIEPOŁĄCZONE';
       $('discordStatus').textContent = id ? `@${id.username} · DISCORD POŁĄCZONY` : 'BRAK LOGOWANIA';
       $('discordIdentityHint').textContent = id ? 'Tożsamość pobrana z oficjalnego logowania Discord.' : 'Zaloguj się, aby wyświetlić prawdziwe konto Discord.';
-      $('entriesIdentityNote').textContent = id ? 'Discord połączony. Imię i nazwisko, lineup oraz zapisy są nadal lokalnym prototypem — nie są wysyłane innym kierowcom.' : 'Zaloguj się przez Discord. Imię i nazwisko, lineup oraz zapisy nadal są tylko lokalnym prototypem.';
+      $('entriesIdentityNote').textContent = id ? 'Discord połączony. Dane kierowcy, skład i zgłoszenia pojawią się po uruchomieniu bazy RWIN.' : 'Zaloguj się przez Discord. Przypisanie do zespołu i zapisy zostaną udostępnione później.';
       $('entryDiscordAvatar').style.display = id?.avatar ? 'block' : 'none';
       $('entryDiscordFallback').style.display = id?.avatar ? 'none' : '';
       if (id?.avatar) $('entryDiscordAvatar').src = id.avatar;
       else $('entryDiscordAvatar').removeAttribute('src');
-      $('entryUser').textContent = demo.fullName ? demo.fullName : 'NIE USTAWIONO';
-      $('entryLineup').textContent = demo.lineup || 'BRAK PRZYPISANIA';
+      $('entryUser').textContent = id ? 'DO UZUPEŁNIENIA' : 'ZALOGUJ SIĘ';
+      $('entryLineup').textContent = 'BRAK PRZYPISANIA';
       $('lineupGrid').innerHTML = LINEUPS.map(name => `
-        <article class="lineup-card ${demo.lineup === name ? 'assigned' : ''}">
-          <div class="lineup-head"><h3>${esc(name)}</h3><span class="tag special">${demo.lineup === name ? 'TWÓJ LINEUP · DEMO' : 'LINEUP'}</span></div>
+        <article class="lineup-card">
+          <div class="lineup-head"><h3>${esc(name)}</h3><span class="tag special">LINEUP</span></div>
           <div class="lineup-underline"></div>
-          <p>${demo.lineup === name ? 'Testowe przypisanie: ' + esc(demo.fullName || 'kierowca') + '. ' : ''}Skład kierowców do uzupełnienia. Prawdziwe przypisania wykona manager RWIN.</p>
+          <p>Skład zostanie dodany po uruchomieniu systemu RWIN. Przypisania wykona manager.</p>
         </article>`).join('');
-      const events = demo.entries.map(id=>EVENTS.find(e=>e.id===id)).filter(Boolean);
-      $('myEntries').innerHTML = events.length ? events.map(e=>`
-        <div class="entry-item">
-          <div><span class="tag ${e.type}">${typeName(e.type)}</span><h3>${esc(e.title)}</h3><p>${esc(eventRange(e))} · ${esc(e.track)} · ${esc(e.duration)}</p></div>
-          <button type="button" class="btn btn-outline" data-event="${e.id}">SZCZEGÓŁY / ANULUJ ↗</button>
-        </div>`).join('') : `
-        <div class="panel panel-pad"><div class="eyebrow">NO ENTRIES YET</div><h3 style="font:italic 800 30px var(--font-display)">NIE MASZ JESZCZE ZAPISÓW.</h3><p class="text-muted" style="line-height:1.8">Przejdź do kalendarza i wybierz jeden z wydarzeń RWIN.</p><button class="btn btn-primary" type="button" data-view="calendar">PRZEJDŹ DO KALENDARZA ↗</button></div>`;
+      $('myEntries').innerHTML = `<div class="panel panel-pad"><div class="eyebrow">RWIN RACING / ENTRIES</div><h3 style="font:italic 800 30px var(--font-display)">ZAPISY WKRÓTCE.</h3><p class="text-muted" style="line-height:1.8">System oficjalnych zapisów udostępnimy po podłączeniu bazy danych. Obecnie żadne zgłoszenie nie jest zapisywane na tym urządzeniu.</p><button class="btn btn-outline" type="button" data-view="calendar">PRZEJDŹ DO KALENDARZA ↗</button></div>`;
     }
 
-    function openAccount() {
-      $('discordName').value = authUser ? discordIdentity(authUser).username : '';
-      $('discordName').readOnly = true;
-      $('discordFieldHint').textContent = authUser ? 'Nazwa z Discorda (tylko do odczytu).' : 'Aby wyświetlić nick, zaloguj się przez Discord.';
-      $('fullName').value = demo.fullName;
-      $('driverLineup').value = demo.lineup;
-      $('accountDialog').showModal();
+    function closeAccountMenu() {
+      const menu = $('accountMenu');
+      menu.hidden = true;
+      $('accountButton').setAttribute('aria-expanded', 'false');
+    }
+
+    function toggleAccountMenu() {
+      const menu = $('accountMenu');
+      menu.hidden = !menu.hidden;
+      $('accountButton').setAttribute('aria-expanded', String(!menu.hidden));
     }
 
     function updateAccountButton() {
       const connected = Boolean(authUser);
       const identity = connected ? discordIdentity(authUser) : null;
       const button = $('accountButton');
-      button.classList.toggle('signed-in',connected);
-      button.querySelector('.account-label').textContent = connected ? identity.name : 'LOGOWANIE DISCORD';
-      button.title = connected ? `Discord: ${identity.name} (@${identity.username}) — konto` : 'Zaloguj przez Discord';
-      button.setAttribute('aria-label', connected ? 'Otwórz informacje o zalogowanym koncie Discord' : 'Otwórz logowanie Discord');
-      $('headerDiscordAvatar').style.display = connected && identity.avatar ? 'block' : 'none';
-      if (connected && identity.avatar) $('headerDiscordAvatar').src = identity.avatar;
-      else $('headerDiscordAvatar').removeAttribute('src');
-      button.querySelector('.discord-mark').style.display = connected && identity.avatar ? 'none' : '';
+      button.classList.toggle('signed-in', connected);
+      button.querySelector('.account-label').textContent = connected ? '' : 'LOGOWANIE DISCORD';
+      button.title = connected ? `Konto Discord: ${identity.name} — menu konta` : 'Zaloguj przez Discord';
+      button.setAttribute('aria-label', connected ? 'Otwórz menu konta Discord' : 'Otwórz logowanie Discord');
+      const avatar = $('headerDiscordAvatar');
+      const fallback = $('headerAvatarFallback');
+      // Bez pustego kółka, jeśli Discord/CDN nie dostarczy zdjęcia.
+      avatar.onerror = () => {
+        if (authUser) { avatar.style.display = 'none'; fallback.style.display = 'grid'; }
+      };
+      avatar.style.display = connected && identity.avatar ? 'block' : 'none';
+      if (connected && identity.avatar) avatar.src = identity.avatar;
+      else avatar.removeAttribute('src');
+      fallback.textContent = connected ? (identity.name.trim().charAt(0).toLocaleUpperCase('pl') || 'R') : 'R';
+      fallback.style.display = connected && !identity.avatar ? 'grid' : 'none';
+      button.querySelector('.discord-mark').style.display = connected ? 'none' : '';
+      closeAccountMenu();
     }
 
     // 5. Obsługa kliknięć przez delegację zdarzeń.
@@ -2086,46 +2065,31 @@
 
     $('eventSignup').addEventListener('click', changeSignup);
     $('loginBrandLogo').src = document.querySelector('.brand img').src;
-    $('accountButton').addEventListener('click', openLoginModal);
+    $('accountButton').addEventListener('click', () => authUser ? toggleAccountMenu() : openLoginModal());
+    $('accountSignOut').addEventListener('click', () => { closeAccountMenu(); signOutDiscord(); });
+    document.addEventListener('click', (event) => {
+      if (!$('headerAccount').contains(event.target)) closeAccountMenu();
+    });
+    document.addEventListener('keydown', (event) => {
+      if (event.key === 'Escape') {
+        closeAccountMenu();
+        const lang = $('languageSwitcher');
+        lang.classList.remove('open');
+        $('languageToggle').setAttribute('aria-expanded', 'false');
+      }
+    });
     $('discordLoginStart').addEventListener('click', signInWithDiscord);
     $('discordSignOut').addEventListener('click', signOutDiscord);
     $('loginDialog').addEventListener('click', (event) => {
       // Zamknij po kliknięciu w ciemne tło poza oknem.
       if (event.target === $('loginDialog')) $('loginDialog').close();
     });
-    $('editDriverProfile').addEventListener('click', openAccount);
     $('menuButton').addEventListener('click', () => {
       const isOpen = $('mobileNav').hidden;
       $('mobileNav').hidden = !isOpen;
       $('menuButton').setAttribute('aria-expanded',String(isOpen));
     });
 
-    $('accountForm').addEventListener('submit', (event) => {
-      event.preventDefault();
-      const fullName = $('fullName').value.trim().slice(0,70);
-      if (fullName.length < 2) return;
-      demo.discordName = authUser ? discordIdentity(authUser).username : '';
-      demo.fullName = fullName;
-      demo.lineup = LINEUPS.includes($('driverLineup').value) ? $('driverLineup').value : '';
-      saveDemo();
-      updateAccountButton();
-      renderEntries();
-      $('accountDialog').close();
-      showToast('Zapisano testowy profil kierowcy i lineup.');
-    });
-
-    $('clearAccount').addEventListener('click', () => {
-      demo.discordName = '';
-      demo.fullName = '';
-      demo.lineup = '';
-      demo.entries = [];
-      saveDemo();
-      updateAccountButton();
-      renderCalendar();
-      renderEntries();
-      $('accountDialog').close();
-      showToast('Wyczyszczono lokalne konto i zapisy demo.');
-    });
 
     $('driverSearch').addEventListener('input', renderDrivers);
     $('driverDialog').addEventListener('close', () => { openedDriverIndex = null; });
