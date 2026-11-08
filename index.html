@@ -692,6 +692,22 @@
     .account-menu-logout {width:100%;background:transparent;border:0;color:#ff6578;text-align:left;font-size:12px;font-weight:800;letter-spacing:.08em;padding:12px 13px;border-radius:6px;cursor:pointer;}
     .account-menu-logout:hover,.account-menu-logout:focus-visible{color:#fff;background:#842e42;outline:none;}
     @media(max-width:600px){.site-header .header-account .account-button.signed-in{min-width:38px;max-width:38px;width:38px;height:38px;min-height:38px;padding:0!important}.header-account .account-button.signed-in .account-avatar,.header-account .account-button.signed-in .account-avatar-fallback{width:36px;height:36px}.language-switcher .flag-icon{width:24px;height:16px}.language-toggle{min-width:73px;min-height:38px;gap:5px;padding:5px 7px}.language-options{min-width:164px}.account-menu{right:-4px}}
+
+    /* RWIN v1.9.5 — niezależna bramka członkostwa (nie zastępuje zabezpieczeń bazy). */
+    .membership-panel { position:relative; margin:32px auto 75px; padding:clamp(28px,5vw,65px); max-width:960px; border:1px solid #593a62; background:radial-gradient(circle at 89% 4%,rgba(201,128,216,.14),transparent 48%),#151019; overflow:hidden; }
+    .membership-symbol {position:absolute;right:-25px;top:-72px;font:italic 900 330px/1 var(--font-display);color:rgba(201,128,216,.07);pointer-events:none}
+    .membership-status-line {display:flex;align-items:center;gap:10px;color:#e6c5ed;font-size:11px;font-weight:800;letter-spacing:.16em;position:relative}
+    .membership-pulse {width:9px;height:9px;border-radius:100%;background:#c980d8;box-shadow:0 0 12px #c980d8;flex:0 0 9px}
+    .membership-status-line.waiting .membership-pulse {animation:rwin-membership-pulse 1.5s infinite}
+    .membership-status-line.denied .membership-pulse {background:#f06473;box-shadow:0 0 9px rgba(240,100,115,.5)}
+    @keyframes rwin-membership-pulse {50%{opacity:.25}}
+    .membership-heading {position:relative;font-size:clamp(48px,8vw,100px);margin:24px 0 15px;line-height:.96;overflow-wrap:anywhere}
+    .membership-panel p {color:#c9b7cc;position:relative;max-width:660px;line-height:1.8;font-size:14px}
+    .membership-controls {display:flex;gap:10px;flex-wrap:wrap;position:relative;margin:23px 0 16px}
+    .membership-controls [hidden]{display:none!important}
+    .membership-controls .btn {display:inline-flex;align-items:center;justify-content:center;text-decoration:none;min-height:44px}
+    .membership-panel .membership-footnote {color:#a992af;font-size:11px;margin:15px 0 0}
+    @media(max-width:600px){.membership-heading{font-size:clamp(46px,11vw,70px)}.membership-controls{flex-direction:column}.membership-controls .btn{width:100%}}
   </style>
 </head>
 
@@ -854,6 +870,24 @@
       <div id="eventList" class="event-list"></div>
     </section>
 
+    <!-- ===================== DOSTĘP RWIN / CZŁONKOSTWO ===================== -->
+    <section id="view-access" class="view" aria-label="Weryfikacja członkostwa RWIN Racing">
+      <div class="eyebrow">RWIN RACING / MEMBERS ACCESS</div>
+      <div class="membership-panel" role="status" aria-live="polite">
+        <span class="membership-symbol" aria-hidden="true">R</span>
+        <div class="membership-status-line"><span class="membership-pulse" id="membershipPulse" aria-hidden="true"></span><span id="membershipStatusLabel">STREFA CZŁONKÓW RWIN</span></div>
+        <h1 class="display membership-heading" id="membershipHeading">WERYFIKACJA <span class="text-purple">RWIN.</span></h1>
+        <p id="membershipDescription">Zaloguj się przez Discord, aby sprawdzić członkostwo na serwerze RWIN Racing.</p>
+        <div class="membership-controls">
+          <button type="button" class="btn btn-primary" id="membershipLogin">ZALOGUJ PRZEZ DISCORD ↗</button>
+          <button type="button" class="btn btn-primary" id="membershipRetry" hidden>SPRAWDŹ PONOWNIE ↻</button>
+          <button type="button" class="btn btn-outline" id="membershipLogout" hidden>WYLOGUJ</button>
+          <a class="btn btn-outline membership-invite" id="membershipInvite" href="https://discord.gg/M3RVHEVMDc" target="_blank" rel="noopener noreferrer">DOŁĄCZ DO DISCORDA ↗</a>
+        </div>
+        <p class="membership-footnote">Logowanie Discord potwierdza konto. Dostęp do prywatnych danych uzyskujesz dopiero po potwierdzeniu członkostwa przez bota RWIN.</p>
+      </div>
+    </section>
+
     <!-- ===================== MOJE ZAPISY ===================== -->
     <section id="view-entries" class="view" aria-label="Moje zapisy">
       <div class="eyebrow">RWIN RACING / TEAM OPERATIONS</div>
@@ -949,7 +983,7 @@
         <button type="button" class="login-close" data-close="loginDialog" aria-label="Zamknij okno logowania">✕</button>
       </div>
       <h2 class="login-title" id="loginTitle">ZALOGUJ <span>SIĘ.</span></h2>
-      <p class="login-description" id="loginDescription">Zaloguj się bezpiecznie przez oficjalną autoryzację Discord. Po połączeniu zobaczysz swój prawdziwy nick i avatar w RWIN Hub.</p>
+      <p class="login-description" id="loginDescription">Zaloguj się bezpiecznie przez oficjalną autoryzację Discord. Po zalogowaniu bot zweryfikuje członkostwo w RWIN Racing. Dopiero wtedy uzyskasz dostęp do strefy kierowców.</p>
       <button type="button" class="login-action" id="discordLoginStart" aria-describedby="loginAvailability">
         <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M19.73 5.58a18.1 18.1 0 0 0-4.49-1.39l-.55 1.11a16.8 16.8 0 0 0-5.38 0l-.55-1.11a18.1 18.1 0 0 0-4.49 1.39C1.41 9.8.64 13.9 1.03 17.93a18.3 18.3 0 0 0 5.52 2.78l1.18-1.93c-.64-.23-1.25-.51-1.83-.84l.44-.34a12.8 12.8 0 0 0 11.32 0l.44.34c-.58.33-1.19.61-1.83.84l1.18 1.93a18.3 18.3 0 0 0 5.52-2.78c.46-4.67-.78-8.73-3.24-12.35ZM8.5 15.46c-1.06 0-1.92-.96-1.92-2.13 0-1.18.85-2.14 1.92-2.14 1.07 0 1.94.97 1.92 2.14 0 1.17-.85 2.13-1.92 2.13Zm7 0c-1.06 0-1.92-.96-1.92-2.13 0-1.18.85-2.14 1.92-2.14s1.94.97 1.92 2.14c0 1.17-.85 2.13-1.92 2.13Z"/></svg>
         Zaloguj przez Discord
@@ -959,7 +993,7 @@
       <button class="btn btn-outline" type="button" id="discordSignOut" hidden>WYLOGUJ Z DISCORDA</button>
       <div class="login-oauth-info" id="loginOAuthMessage" role="status" aria-live="polite" hidden></div>
       <div class="login-divider" aria-hidden="true"></div>
-      <p class="login-invite">Logowanie potwierdza tożsamość Discord. <strong>Sprawdzanie członkostwa w RWIN i uprawnienia managera dodamy osobno.</strong><br>Nie jesteś jeszcze członkiem? <a href="https://discord.gg/M3RVHEVMDc" target="_blank" rel="noopener noreferrer">Dołącz do naszego Discorda ↗</a></p>
+      <p class="login-invite">Logowanie potwierdza tożsamość Discord. <strong>Członkostwo w RWIN jest wymagane do dostępu do prywatnej części strony i weryfikowane przez bota.</strong><br>Nie jesteś jeszcze członkiem? <a href="https://discord.gg/M3RVHEVMDc" target="_blank" rel="noopener noreferrer">Dołącz do naszego Discorda ↗</a></p>
       <span class="login-url">discord.gg/M3RVHEVMDc</span>
     </div></div>
   </dialog>
@@ -1002,6 +1036,25 @@
       && RWIN_AUTH_CONFIG.supabasePublishableKey.length > 20;
     let authClient = null;
     let authUser = null;
+    // OAuth to tylko uwierzytelnienie. Dopiero pozytywny wynik RPC bota daje dostęp.
+    const MEMBERSHIP_POLL_INTERVAL_MS = 2500;
+    const MEMBERSHIP_REQUEST_TIMEOUT_MS = 60000;
+    const MEMBERSHIP_RPC_TIMEOUT_MS = 12000;
+    const MEMBERSHIP_REFRESH_AFTER_MS = 85000;
+    const MEMBERSHIP_LOCAL_EXPIRY_MS = 105000; // krócej niż 2-minutowa ważność po stronie SQL.
+    const RWIN_DISCORD_INVITE = 'https://discord.gg/M3RVHEVMDc';
+    let membershipStatus = 'signed_out';
+    let membershipNotice = null;
+    let membershipGeneration = 0;
+    let membershipVerifiedUntil = 0;
+    let membershipVerifiedAt = 0;
+    let membershipRequestId = null;
+    let membershipCheckingActive = false;
+    let membershipPollTimer = null;
+    let membershipRefreshTimer = null;
+    let membershipRequestedEntries = false;
+    let membershipErrorCode = '';
+    let membershipVerifiedUserId = null;
     let lastAuthUserId = (() => { try { return localStorage.getItem('rwin-last-auth-user'); } catch (_) { return null; } })();
 
 
@@ -1261,6 +1314,7 @@
       renderCalendar();
       renderEntries();
       renderDrivers();
+      renderMembershipGate();
       updateCounters();
       updateCountdown();
       translateAll();
@@ -1562,13 +1616,19 @@
     }
 
     function switchView(view) {
+      if (view === 'entries' && !hasMembershipAccess()) {
+        membershipRequestedEntries = true;
+        view = 'access';
+      }
+      if (view === 'entries' && hasMembershipAccess()) membershipRequestedEntries = false;
       state.view = view;
       document.querySelectorAll('.view').forEach(el => el.classList.toggle('active', el.id === 'view-' + view));
-      document.querySelectorAll('.nav-button').forEach(btn => btn.classList.toggle('active', btn.dataset.view === view || (view === 'drivers' && btn.dataset.view === 'about')));
+      document.querySelectorAll('.nav-button').forEach(btn => btn.classList.toggle('active', btn.dataset.view === view || (view === 'access' && btn.dataset.view === 'entries') || (view === 'drivers' && btn.dataset.view === 'about')));
       $('mobileNav').hidden = true;
       $('menuButton').setAttribute('aria-expanded','false');
       if (view === 'calendar') { setCalendarToToday(); renderCalendar(); }
       if (view === 'entries') renderEntries();
+      if (view === 'access') renderMembershipGate();
       if (view === 'drivers') renderDrivers();
       translateAll();
       window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -1722,6 +1782,11 @@
     }
 
     function changeSignup() {
+      if (authUser && !hasMembershipAccess()) {
+        if ($('eventDialog').open) $('eventDialog').close();
+        switchView('access');
+        return;
+      }
       if (!authUser) {
         $('eventDialog').close();
         openLoginModal();
@@ -1829,7 +1894,7 @@
       profilePollTimer = null;
     }
     function isCurrentProfileSession(generation, userId) {
-      return generation === authGeneration && Boolean(userId) && authUser?.id === userId;
+      return generation === authGeneration && Boolean(userId) && authUser?.id === userId && hasMembershipAccess();
     }
 
     // Odczyt z Supabase może zawieść na kilka różnych sposobów. NIE ukrywamy
@@ -1972,6 +2037,7 @@
     }
 
     async function retryOwnRwinProfile() {
+      if (!hasMembershipAccess()) { switchView('access'); return; }
       const user = authUser;
       if (!user || !authClient) return;
       const generation = authGeneration;
@@ -2076,6 +2142,262 @@
       if (!$('loginDialog').open) $('loginDialog').showModal();
     }
 
+
+    // =============================================================
+    // RWIN MEMBERSHIP — kontrakt istniejącej migracji SQL i bota.
+    // Browser nie podaje ID Discorda, serwera, roli ani nicku jako argumentów RPC.
+    // Ochrona poufnych danych musi być równocześnie egzekwowana w bazie (RLS/RPC).
+    // =============================================================
+    function hasMembershipAccess() {
+      return Boolean(authUser?.id) && membershipStatus === 'member' &&
+        membershipVerifiedUserId === authUser.id &&
+        membershipVerifiedUntil > Date.now();
+    }
+
+    function clearMembershipTimers() {
+      if (membershipPollTimer !== null) clearTimeout(membershipPollTimer);
+      if (membershipRefreshTimer !== null) clearTimeout(membershipRefreshTimer);
+      membershipPollTimer = null;
+      membershipRefreshTimer = null;
+    }
+
+    function invalidateMembership(nextStatus = 'signed_out') {
+      ++membershipGeneration;  // unieważnienie także rozpoczętych wywołań RPC
+      clearMembershipTimers();
+      membershipStatus = nextStatus;
+      membershipVerifiedUntil = 0;
+      membershipVerifiedAt = 0;
+      membershipVerifiedUserId = null;
+      membershipRequestId = null;
+      membershipCheckingActive = false;
+      membershipErrorCode = '';
+      ++authGeneration; // unieważnia odczyt profilu/kolejkę poprzedniego członkostwa
+      cancelProfilePolling();
+      ownRwinProfile = null;
+      ownProfileIssue = null;
+      ownProfileStatus = 'signed_out';
+      lastSyncedAvatarUser = null;
+      if (state.view === 'entries') {
+        membershipRequestedEntries = true;
+        switchView('access');
+      }
+      renderEntries();
+      renderMembershipGate();
+      updateAccountButton();
+      updateLoginUI();
+    }
+
+    function isCurrentMembershipRequest(sequence, userId) {
+      return sequence === membershipGeneration && Boolean(userId) && authUser?.id === userId;
+    }
+
+    function renderMembershipGate() {
+      const verified = hasMembershipAccess();
+      const status = verified ? 'member' : (membershipStatus === 'member' ? 'expired' : membershipStatus);
+      const statusInfo = {
+        signed_out: ['STREFA CZŁONKÓW RWIN', 'ZALOGUJ SIĘ.', 'Zaloguj się przez Discord. Bot sprawdzi, czy należysz do serwera RWIN Racing.'],
+        checking: ['WERYFIKACJA DISCORD', 'SPRAWDZAMY CZŁONKOSTWO.', 'Czekamy na potwierdzenie od bota RWIN. Zwykle sprawdza kolejkę co około 15 sekund. Maksymalny czas oczekiwania: 60 sekund.'],
+        member: ['DOSTĘP POTWIERDZONY', 'WITAJ W RWIN.', 'Twoje członkostwo zostało zweryfikowane. Możesz korzystać ze strefy kierowców.'],
+        not_member: ['BRAK CZŁONKOSTWA', 'BRAK DOSTĘPU.', 'Twoje konto nie jest członkiem serwera RWIN Racing. Zostałeś wylogowany. Możesz dołączyć do serwera i spróbować ponownie.'],
+        expired: ['WERYFIKACJA WYGASŁA', 'POTWIERDŹ PONOWNIE.', 'Weryfikacja członkostwa wygasła. Dostęp został zamknięty do czasu nowego potwierdzenia.'],
+        timeout: ['BRAK POTWIERDZENIA', 'SPRAWDŹ PONOWNIE.', 'Bot nie zdążył potwierdzić członkostwa. Dostęp pozostaje zamknięty. Spróbuj ponownie.'],
+        error: ['BŁĄD WERYFIKACJI', 'BRAK DOSTĘPU.', 'Nie udało się połączyć z weryfikacją RWIN. Dostęp pozostaje zamknięty. Spróbuj ponownie lub skontaktuj się z administratorem.'],
+        setup: ['WYMAGANA KONFIGURACJA', 'WERYFIKACJA NIEDOSTĘPNA.', 'Serwer nie udostępnia funkcji weryfikacji członkostwa. Administrator musi wdrożyć nowy SQL i uruchomić bota z obsługą członkostwa.']
+      };
+      const statusInfoEn = {
+        signed_out: ['RWIN MEMBERS AREA', 'SIGN IN.', 'Sign in with Discord. Our bot will verify that you belong to the RWIN Racing server.'],
+        checking: ['VERIFYING DISCORD', 'CHECKING MEMBERSHIP.', 'Waiting for confirmation from the RWIN bot. It usually processes the queue every 15 seconds. Maximum wait: 60 seconds.'],
+        member: ['ACCESS VERIFIED', 'WELCOME TO RWIN.', 'Your server membership has been verified. You can now access the drivers area.'],
+        not_member: ['NOT A SERVER MEMBER', 'ACCESS DENIED.', 'This Discord account is not a member of the RWIN Racing server. You have been signed out. Join the server and try again.'],
+        expired: ['VERIFICATION EXPIRED', 'VERIFY AGAIN.', 'Your membership verification expired. Access is locked until another check succeeds.'],
+        timeout: ['NO CONFIRMATION', 'TRY AGAIN.', 'The bot did not confirm membership in time. Access is still locked. Please try again.'],
+        error: ['VERIFICATION ERROR', 'ACCESS DENIED.', 'Could not complete the RWIN membership check. Access remains locked. Retry or contact a team administrator.'],
+        setup: ['CONFIGURATION REQUIRED', 'VERIFICATION UNAVAILABLE.', 'Server-side membership functions are missing. An administrator must deploy the new SQL and enable membership checks in the bot.']
+      };
+      const dictionary = currentLanguage === 'en' ? statusInfoEn : statusInfo;
+      const info = dictionary[status] || dictionary.error;
+      const headline = $('membershipHeading');
+      $('membershipLogin').textContent = currentLanguage === 'en' ? 'SIGN IN WITH DISCORD ↗' : 'ZALOGUJ PRZEZ DISCORD ↗';
+      $('membershipRetry').textContent = currentLanguage === 'en' ? 'RETRY CHECK ↻' : 'SPRAWDŹ PONOWNIE ↻';
+      $('membershipLogout').textContent = currentLanguage === 'en' ? 'SIGN OUT' : 'WYLOGUJ';
+      $('membershipInvite').textContent = currentLanguage === 'en' ? 'JOIN RWIN DISCORD ↗' : 'DOŁĄCZ DO DISCORDA ↗';
+      const note = document.querySelector('.membership-footnote');
+      if (note) note.textContent = currentLanguage === 'en'
+        ? 'Discord login verifies your identity. Access to private data is granted only after the RWIN bot confirms membership.'
+        : 'Logowanie Discord potwierdza konto. Dostęp do prywatnych danych uzyskujesz dopiero po potwierdzeniu członkostwa przez bota RWIN.';
+      $('membershipStatusLabel').textContent = info[0];
+      headline.textContent = info[1];
+      $('membershipDescription').textContent = membershipNotice === 'not_member' && !authUser ? dictionary.not_member[2] : info[2];
+      if (membershipNotice === 'not_member' && !authUser) {
+        headline.textContent = dictionary.not_member[1];
+        $('membershipStatusLabel').textContent = dictionary.not_member[0];
+      }
+      const waiting = status === 'checking';
+      const denied = ['not_member','error','timeout','expired','setup'].includes(status) || (membershipNotice === 'not_member' && !authUser);
+      const statusRow = $('membershipStatusLabel').parentElement;
+      statusRow.classList.toggle('waiting', waiting);
+      statusRow.classList.toggle('denied', denied);
+      $('membershipLogin').hidden = Boolean(authUser);
+      $('membershipRetry').hidden = !authUser || !['error','timeout','expired','setup'].includes(status);
+      $('membershipLogout').hidden = !authUser;
+      $('membershipInvite').hidden = status === 'member' || (Boolean(authUser) && status === 'checking');
+    }
+
+    // Timeout również dla nieodpowiadającego pojedynczego żądania RPC.
+    async function membershipRpc(name, args, timeoutMs = MEMBERSHIP_RPC_TIMEOUT_MS) {
+      let handle;
+      try {
+        return await Promise.race([
+          authClient.rpc(name, args),
+          new Promise((_resolve, reject) => {
+            handle = setTimeout(() => reject(new Error('membership_rpc_timeout')), timeoutMs);
+          })
+        ]);
+      } finally {
+        if (handle !== undefined) clearTimeout(handle);
+      }
+    }
+
+    function membershipFailureKind(error) {
+      const code = String(error?.code || '');
+      const msg = String(error?.message || '');
+      if (code === 'PGRST202' || code === '42883' || /could not find.*function|function.*does not exist/i.test(msg)) return 'setup';
+      return 'error';
+    }
+
+    function denyMembership(status, sequence, userId, error) {
+      if (!isCurrentMembershipRequest(sequence, userId)) return;
+      if (error) console.warn('RWIN membership check:', error?.code || status, error?.message || '');
+      invalidateMembership(status); // usuwa uprawnienia natychmiast, również po refresh
+      membershipErrorCode = String(error?.code || '');
+      if (state.view !== 'access' && membershipRequestedEntries) switchView('access');
+      renderMembershipGate();
+    }
+
+    async function rejectNonMember(sequence, userId) {
+      if (!isCurrentMembershipRequest(sequence, userId)) return;
+      membershipNotice = 'not_member';
+      invalidateMembership('not_member');
+      // Nie ujawniamy profilu ani avataru jako zweryfikowanej tożsamości RWIN.
+      authUser = null;
+      renderEntries();
+      updateAccountButton();
+      updateLoginUI();
+      if (state.view !== 'access') switchView('access');
+      renderMembershipGate();
+      try {
+        await authClient.auth.signOut();
+      } catch (error) {
+        console.warn('RWIN: nie udało się zakończyć sesji Supabase. Dostęp jest mimo tego zablokowany.', error?.code || '');
+      }
+    }
+
+    async function startMembershipCheck(reason = 'login') {
+      const userId = authUser?.id;
+      if (!userId || !authClient) return;
+      // Token refresh tej samej sesji nie może odpalać kolejnego sprawdzenia.
+      if (membershipCheckingActive && reason !== 'manual') return;
+      const sequence = ++membershipGeneration;
+      membershipCheckingActive = true;
+      clearMembershipTimers();
+      membershipRequestId = null;
+      membershipVerifiedUntil = 0;
+      membershipVerifiedUserId = null;
+      membershipStatus = 'checking';
+      membershipNotice = null;
+      ownRwinProfile = null;
+      ownProfileStatus = 'checking';
+      ownProfileIssue = null;
+      ++authGeneration;
+      cancelProfilePolling();
+      lastSyncedAvatarUser = null;
+      if (state.view === 'entries') {
+        membershipRequestedEntries = true;
+        switchView('access');
+      }
+      renderMembershipGate();
+      renderEntries();
+      updateAccountButton();
+      updateLoginUI();
+      const deadline = Date.now() + MEMBERSHIP_REQUEST_TIMEOUT_MS;
+      let request;
+      try {
+        const {data,error} = await membershipRpc('begin_my_rwin_membership_check');
+        if (!isCurrentMembershipRequest(sequence,userId)) return;
+        if (error) throw error;
+        if (typeof data !== 'string' || !/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(data)) {
+          throw new Error('invalid_membership_request_id');
+        }
+        request = data;
+      } catch (error) {
+        denyMembership(membershipFailureKind(error),sequence,userId,error);
+        return;
+      }
+      if (!isCurrentMembershipRequest(sequence,userId)) return;
+      membershipRequestId = request;
+
+      async function check() {
+        if (!isCurrentMembershipRequest(sequence,userId)) return;
+        if (Date.now() >= deadline) {denyMembership('timeout',sequence,userId);return;}
+        try {
+          const {data,error} = await membershipRpc('get_my_rwin_membership_check',{p_request_id: request});
+          if (!isCurrentMembershipRequest(sequence,userId)) return;
+          if (error) throw error;
+          if (Date.now() >= deadline) { denyMembership('timeout',sequence,userId); return; }
+          if (data === 'member') {
+            // Status z serwera jest przypisany do bieżącego request_id + auth.uid().
+            membershipStatus = 'member';
+            membershipCheckingActive = false;
+            membershipVerifiedUserId = userId;
+            membershipVerifiedAt = Date.now();
+            membershipVerifiedUntil = membershipVerifiedAt + MEMBERSHIP_LOCAL_EXPIRY_MS;
+            membershipRequestId = null;
+            membershipErrorCode = '';
+            renderMembershipGate();
+            updateAccountButton();
+            updateLoginUI();
+            renderEntries();
+            if (membershipRequestedEntries && state.view === 'access') switchView('entries');
+            const currentAuthGeneration = authGeneration;
+            const currentUser = authUser;
+            // Dopiero teraz wolno pobierać własny profil i uruchamiać dotychczasową kolejkę.
+            setTimeout(() => {
+              if (isCurrentProfileSession(currentAuthGeneration,userId)) syncMyDriverAvatar(currentUser,currentAuthGeneration);
+            },0);
+            membershipRefreshTimer = setTimeout(() => {
+              if (authUser?.id !== userId || membershipStatus !== 'member') return;
+              startMembershipCheck('refresh');
+            }, MEMBERSHIP_REFRESH_AFTER_MS);
+            return;
+          }
+          if (data === 'not_member') {await rejectNonMember(sequence,userId);return;}
+          if (data === 'expired') {denyMembership('expired',sequence,userId);return;}
+          if (data !== 'pending') {denyMembership('error',sequence,userId,new Error('unknown_membership_status'));return;}
+          if (Date.now() >= deadline) {denyMembership('timeout',sequence,userId);return;}
+          membershipPollTimer = setTimeout(check,Math.min(MEMBERSHIP_POLL_INTERVAL_MS,Math.max(0,deadline-Date.now())));
+        } catch (error) {
+          denyMembership(membershipFailureKind(error),sequence,userId,error);
+        }
+      }
+      await check();
+    }
+
+    function ensureMembershipFresh() {
+      if (!authUser || membershipStatus === 'checking') return;
+      if (membershipStatus === 'member' && (!hasMembershipAccess() || Date.now() >= membershipVerifiedUntil)) {
+        invalidateMembership('expired');
+        if (authUser?.id) startMembershipCheck('expired');
+      }
+    }
+
+    function handleMembershipVisibilityResume() {
+      if (document.hidden || !authUser) return;
+      ensureMembershipFresh();
+      if (membershipStatus === 'member' && Date.now() - membershipVerifiedAt > 15000) {
+        startMembershipCheck('resume');
+      }
+    }
+
     function resetLocalDemoOnIdentityChange(nextId) {
       lastAuthUserId = nextId;
     }
@@ -2084,45 +2406,44 @@
       const nextUserId = user?.id || null;
       const previousUserId = authUser?.id || null;
       resetLocalDemoOnIdentityChange(nextUserId);
-      // Nie resetujemy profilu przy samym odświeżeniu tokenu tej samej osoby.
       if (nextUserId !== previousUserId) {
-        ++authGeneration;
-        cancelProfilePolling();
-        lastSyncedAvatarUser = null;
-        ownRwinProfile = null;
-        ownProfileIssue = null;
-        ownProfileStatus = nextUserId ? 'checking' : 'signed_out';
+        invalidateMembership(nextUserId ? 'checking' : 'signed_out');
+        if (!nextUserId) membershipRequestedEntries = state.view === 'access' && membershipRequestedEntries;
       }
       authUser = user || null;
-      const generation = authGeneration;
+      if (nextUserId && nextUserId !== previousUserId) {
+        // Po OAuth pokazujemy kontrolę dostępu, nawet jeśli użytkownik był na Dashboardzie.
+        // Po uzyskaniu statusu 'member' przejdziemy do Moje zapisy.
+        membershipRequestedEntries = true;
+        if (state.view !== 'access') switchView('access');
+      }
       if (nextUserId && nextUserId !== previousUserId && authClient) {
-        // Przenosimy wywołanie poza callback onAuthStateChange.
+        // Bez rekurencji podczas TOKEN_REFRESHED / powtórnego SIGNED_IN.
         setTimeout(() => {
-          if (isCurrentProfileSession(generation, nextUserId)) syncMyDriverAvatar(user, generation);
-        }, 0);
+          if (authUser?.id === nextUserId && membershipStatus === 'checking') startMembershipCheck('login');
+        },0);
       }
       updateAccountButton();
       updateLoginUI();
+      renderMembershipGate();
       renderEntries();
       translateAll();
     }
 
     function updateLoginUI() {
       const loggedIn = Boolean(authUser);
+      const verified = hasMembershipAccess();
       $('discordLoginStart').hidden = loggedIn;
       $('discordSignOut').hidden = !loggedIn;
       $('authSignedInSummary').hidden = !loggedIn;
       if (loggedIn) {
-        const identity = discordIdentity(authUser);
         $('authSignedInSummary').replaceChildren();
         const heading = document.createElement('strong');
-        heading.textContent = 'Połączono konto Discord';
-        const detail = document.createElement('p');
-        detail.textContent = `${identity.name} (@${identity.username})`;
+        heading.textContent = verified ? 'RWIN Racing — dostęp potwierdzony' : 'Trwa kontrola członkostwa RWIN';
         const note = document.createElement('small');
-        note.textContent = 'Weryfikację członkostwa na serwerze RWIN dodamy później.';
-        $('authSignedInSummary').append(heading, detail, note);
-        $('loginAvailability').textContent = 'Sesja Discord jest aktywna.';
+        note.textContent = verified ? 'Konto Discord zostało zweryfikowane przez bota RWIN.' : 'Samo zalogowanie na Discordzie nie daje jeszcze dostępu do strefy RWIN.';
+        $('authSignedInSummary').append(heading,note);
+        $('loginAvailability').textContent = verified ? 'Weryfikacja członkostwa zakończona.' : 'Dostęp pozostaje zamknięty do czasu odpowiedzi bota.';
       } else {
         $('loginAvailability').textContent = AUTH_CONFIGURED
           ? 'Zostaniesz przekierowany do oficjalnej autoryzacji Discord.'
@@ -2156,6 +2477,12 @@
 
     async function signOutDiscord() {
       if (!authClient) return;
+      membershipNotice = null;
+      invalidateMembership('signed_out');
+      authUser = null;
+      renderMembershipGate();
+      updateAccountButton();
+      renderEntries();
       $('discordSignOut').disabled = true;
       try {
         const { error } = await authClient.auth.signOut();
@@ -2195,8 +2522,12 @@
         // Dodatkowe odświeżenie przy dłużej otwartej stronie.
         setInterval(() => { if (!document.hidden) loadLiveDriverAvatars(); }, 45000);
         document.addEventListener('visibilitychange', () => {
-          if (!document.hidden) loadLiveDriverAvatars();
+          if (!document.hidden) {
+            loadLiveDriverAvatars();
+            handleMembershipVisibilityResume();
+          }
         });
+        setInterval(ensureMembershipFresh,5000);
         authClient.auth.onAuthStateChange((event, session) => {
           // Przy SIGNED_IN można dostać też odświeżenie tokenu.
           setAuthenticatedUser(session?.user || null);
@@ -2216,7 +2547,7 @@
     }
 
     function renderEntries() {
-      const id = authUser ? discordIdentity(authUser) : null;
+      const id = hasMembershipAccess() ? discordIdentity(authUser) : null;
       $('entryDiscord').textContent = id ? id.name : 'NIEPOŁĄCZONE';
       $('discordStatus').textContent = id ? `@${id.username} · DISCORD POŁĄCZONY` : 'BRAK LOGOWANIA';
       $('discordIdentityHint').textContent = id ? 'Tożsamość pobrana z oficjalnego logowania Discord.' : 'Zaloguj się, aby wyświetlić prawdziwe konto Discord.';
@@ -2241,7 +2572,7 @@
       else entryAvatar.removeAttribute('src');
       // Nazwisko wyłącznie z bezpiecznego własnego profilu RPC, nigdy z nicku
       // lub dowolnego pola podawanego przez odwiedzającego.
-      $('entryUser').textContent = ownRwinProfile?.name || (id
+      $('entryUser').textContent = (hasMembershipAccess() ? ownRwinProfile?.name : '') || (id
         ? (ownProfileStatus === 'queued' ? 'OCZEKIWANIE NA BOTA'
           : ownProfileStatus === 'checking' ? 'SPRAWDZANIE…'
           : ownProfileStatus === 'setup' || ownProfileStatus === 'queue_setup' ? 'WYMAGANA AKTUALIZACJA BAZY'
@@ -2297,25 +2628,25 @@
     }
 
     function updateAccountButton() {
-      const connected = Boolean(authUser);
-      const identity = connected ? discordIdentity(authUser) : null;
+      const verified = hasMembershipAccess();
+      const awaiting = Boolean(authUser) && !verified;
+      const identity = verified ? discordIdentity(authUser) : null;
       const button = $('accountButton');
-      button.classList.toggle('signed-in', connected);
-      button.querySelector('.account-label').textContent = connected ? '' : 'LOGOWANIE DISCORD';
-      button.title = connected ? `Konto Discord: ${identity.name} — menu konta` : 'Zaloguj przez Discord';
-      button.setAttribute('aria-label', connected ? 'Otwórz menu konta Discord' : 'Otwórz logowanie Discord');
+      button.classList.toggle('signed-in', verified);
+      button.querySelector('.account-label').textContent = verified ? '' : awaiting ? 'WERYFIKACJA RWIN' : 'LOGOWANIE DISCORD';
+      button.title = verified ? 'Konto RWIN — menu konta' : awaiting ? 'Sprawdź status członkostwa RWIN' : 'Zaloguj przez Discord';
+      button.setAttribute('aria-label', verified ? 'Otwórz menu konta Discord' : awaiting ? 'Otwórz weryfikację członkostwa' : 'Otwórz logowanie Discord');
       const avatar = $('headerDiscordAvatar');
       const fallback = $('headerAvatarFallback');
-      // Bez pustego kółka, jeśli Discord/CDN nie dostarczy zdjęcia.
       avatar.onerror = () => {
-        if (authUser) { avatar.style.display = 'none'; fallback.style.display = 'grid'; }
+        if (hasMembershipAccess()) { avatar.style.display = 'none'; fallback.style.display = 'grid'; }
       };
-      avatar.style.display = connected && identity.avatar ? 'block' : 'none';
-      if (connected && identity.avatar) avatar.src = identity.avatar;
+      avatar.style.display = verified && identity.avatar ? 'block' : 'none';
+      if (verified && identity.avatar) avatar.src = identity.avatar;
       else avatar.removeAttribute('src');
-      fallback.textContent = connected ? (identity.name.trim().charAt(0).toLocaleUpperCase('pl') || 'R') : 'R';
-      fallback.style.display = connected && !identity.avatar ? 'grid' : 'none';
-      button.querySelector('.discord-mark').style.display = connected ? 'none' : '';
+      fallback.textContent = verified ? (identity.name.trim().charAt(0).toLocaleUpperCase('pl') || 'R') : 'R';
+      fallback.style.display = verified && !identity.avatar ? 'grid' : 'none';
+      button.querySelector('.discord-mark').style.display = verified || awaiting ? 'none' : '';
       closeAccountMenu();
     }
 
@@ -2368,8 +2699,11 @@
 
     $('eventSignup').addEventListener('click', changeSignup);
     $('loginBrandLogo').src = document.querySelector('.brand img').src;
-    $('accountButton').addEventListener('click', () => authUser ? toggleAccountMenu() : openLoginModal());
+    $('accountButton').addEventListener('click', () => hasMembershipAccess() ? toggleAccountMenu() : authUser ? switchView('access') : openLoginModal());
     $('accountSignOut').addEventListener('click', () => { closeAccountMenu(); signOutDiscord(); });
+    $('membershipLogin').addEventListener('click', openLoginModal);
+    $('membershipRetry').addEventListener('click', () => startMembershipCheck('manual'));
+    $('membershipLogout').addEventListener('click', signOutDiscord);
     $('retryRwinProfile').addEventListener('click', retryOwnRwinProfile);
     document.addEventListener('click', (event) => {
       if (!$('headerAccount').contains(event.target)) closeAccountMenu();
@@ -2403,6 +2737,7 @@
     updateCounters();
     renderCalendar();
     renderEntries();
+    renderMembershipGate();
     renderDrivers();
     updateCountdown();
     setInterval(updateCountdown,1000);
