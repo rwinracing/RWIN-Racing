@@ -649,7 +649,24 @@
     .account-button.signed-in .discord-mark {display:none;}
     .account-button.signed-in .account-avatar {display:block;}
     .account-button.signed-in .account-label {max-width:155px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;}
-    #entryDiscordAvatar { width:48px; height:48px; border-radius:50%; object-fit:cover; border:2px solid #c980d8; display:none; }
+    /* v1.8.1: po zalogowaniu bez niebieskiego kwadratu pod okrągłym zdjęciem */
+    .discord-avatar.discord-logged-in {
+      width: 48px; height: 48px; flex: 0 0 48px;
+      border: 0; border-radius: 50%; background: transparent;
+      overflow: hidden;
+    }
+    #entryDiscordAvatar {
+      width: 48px; height: 48px; box-sizing: border-box;
+      border-radius: 50%; object-fit: cover;
+      border: 2px solid #c980d8; display: none;
+    }
+    .discord-avatar.discord-logged-in.no-photo {
+      background: #382144; border: 2px solid #c980d8;
+    }
+    #entryAvatarInitial {
+      display: none; font: 900 24px/1 var(--font-display);
+      color: #f9eaff;
+    }
     #authSignedInSummary {padding:13px; margin-top:12px; background:#1f1927; border:1px solid #54375d; color:#f1e8f3; line-height:1.7; font-size:12px;}
     #authSignedInSummary strong {color:#c980d8;}
     #discordSignOut {margin-top:12px; width:100%;}
@@ -846,7 +863,7 @@
         <div class="entry-stat">
           <div class="eyebrow">01 / ZALOGOWANE KONTO DISCORD</div>
           <div class="account-identity">
-            <span class="discord-avatar" aria-hidden="true"><img id="entryDiscordAvatar" alt="" referrerpolicy="no-referrer" /><svg id="entryDiscordFallback" viewBox="0 0 24 24" fill="currentColor"><path d="M19.73 5.58a18.1 18.1 0 0 0-4.49-1.39l-.55 1.11a16.8 16.8 0 0 0-5.38 0l-.55-1.11a18.1 18.1 0 0 0-4.49 1.39C1.41 9.8.64 13.9 1.03 17.93a18.3 18.3 0 0 0 5.52 2.78l1.18-1.93c-.64-.23-1.25-.51-1.83-.84l.44-.34a12.8 12.8 0 0 0 11.32 0l.44.34c-.58.33-1.19.61-1.83.84l1.18 1.93a18.3 18.3 0 0 0 5.52-2.78c.46-4.67-.78-8.73-3.24-12.35ZM8.5 15.46c-1.06 0-1.92-.96-1.92-2.13 0-1.18.85-2.14 1.92-2.14 1.07 0 1.94.97 1.92 2.14 0 1.17-.85 2.13-1.92 2.13Zm7 0c-1.06 0-1.92-.96-1.92-2.13 0-1.18.85-2.14 1.92-2.14s1.94.97 1.92 2.14c0 1.17-.85 2.13-1.92 2.13Z"/></svg></span>
+            <span class="discord-avatar" aria-hidden="true"><img id="entryDiscordAvatar" alt="" referrerpolicy="no-referrer" /><span id="entryAvatarInitial" aria-hidden="true">R</span><svg id="entryDiscordFallback" viewBox="0 0 24 24" fill="currentColor"><path d="M19.73 5.58a18.1 18.1 0 0 0-4.49-1.39l-.55 1.11a16.8 16.8 0 0 0-5.38 0l-.55-1.11a18.1 18.1 0 0 0-4.49 1.39C1.41 9.8.64 13.9 1.03 17.93a18.3 18.3 0 0 0 5.52 2.78l1.18-1.93c-.64-.23-1.25-.51-1.83-.84l.44-.34a12.8 12.8 0 0 0 11.32 0l.44.34c-.58.33-1.19.61-1.83.84l1.18 1.93a18.3 18.3 0 0 0 5.52-2.78c.46-4.67-.78-8.73-3.24-12.35ZM8.5 15.46c-1.06 0-1.92-.96-1.92-2.13 0-1.18.85-2.14 1.92-2.14 1.07 0 1.94.97 1.92 2.14 0 1.17-.85 2.13-1.92 2.13Zm7 0c-1.06 0-1.92-.96-1.92-2.13 0-1.18.85-2.14 1.92-2.14s1.94.97 1.92 2.14c0 1.17-.85 2.13-1.92 2.13Z"/></svg></span>
             <div class="account-copy"><strong id="entryDiscord" class="entry-name">NIEPOŁĄCZONE</strong><span id="discordStatus" class="identity-status">BRAK LOGOWANIA</span></div>
           </div>
           <small class="entry-note" id="discordIdentityHint">Po połączeniu nick i avatar zostaną pobrane bezpośrednio z Discorda.</small>
@@ -854,7 +871,7 @@
         <div class="entry-stat"><div class="eyebrow">02 / IMIĘ I NAZWISKO</div><strong id="entryUser" class="entry-name">NIE USTAWIONO</strong><small class="entry-note">Dane zatwierdzi manager RWIN Racing</small></div>
         <div class="entry-stat"><div class="eyebrow">03 / PRZYPISANY LINEUP</div><strong id="entryLineup" class="entry-name lineup-assignment">BRAK PRZYPISANIA</strong><small class="entry-note">Lineup przypisuje manager RWIN Racing</small></div>
       </div>
-      <div class="identity-actions"><p id="entriesIdentityNote">Dane zespołowe i zgłoszenia zostaną udostępnione po uruchomieniu systemu zapisów RWIN.</p></div>
+      <div class="identity-actions"><p id="entriesIdentityNote" aria-live="polite">Dane zespołowe i zgłoszenia zostaną udostępnione po uruchomieniu systemu zapisów RWIN.</p></div>
       <div class="section-heading"><div><div class="eyebrow">RWIN RACING / ENDURANCE CREWS</div><h2 class="section-title">LINE<span class="text-purple">UP.</span></h2></div><span class="tag special">SKŁADY DO UZUPEŁNIENIA</span></div>
       <div id="lineupGrid" class="lineup-grid" aria-label="Lineupy RWIN Racing"></div>
       <div class="section-heading"><div><div class="eyebrow">RACE ENTRIES / YOUR GRID</div><h2 class="section-title">MOJE <span class="text-purple">ZGŁOSZENIA.</span></h2></div><button type="button" class="btn btn-primary" data-view="calendar">DODAJ ZAPIS ↗</button></div>
@@ -1156,7 +1173,19 @@
       'Zaloguj się przez Discord. Przypisanie do zespołu i zapisy zostaną udostępnione później.':'Sign in with Discord. Team assignments and registration will be available later.',
       'ZALOGUJ SIĘ':'SIGN IN',
       'DO UZUPEŁNIENIA':'TO BE COMPLETED',
-      'ZAPISZ SIĘ ↗':'REGISTER ↗'
+      'ZAPISZ SIĘ ↗':'REGISTER ↗',
+      'OCZEKIWANIE NA BOTA':'WAITING FOR BOT',
+      'SPRAWDZANIE…':'CHECKING…',
+      'BŁĄD POBIERANIA':'FETCH ERROR',
+      'NIE POTWIERDZONO':'NOT VERIFIED',
+      'BRAK PROFILU RWIN':'NO RWIN PROFILE',
+      'Bot RWIN weryfikuje konto i profil. Sprawdzamy postęp przez maksymalnie 84 sekundy (bot odczytuje kolejkę co około 15 sekund).':'The RWIN bot is verifying your account. We will check for up to 84 seconds (the bot polls about every 15 seconds).',
+      'Sprawdzamy profil kierowcy w bazie RWIN…':'Checking your driver profile in RWIN…',
+      'Profil kierowcy połączony z kontem Discord i potwierdzony przez system RWIN. Lineup nie jest jeszcze podłączony.':'Your Discord account is connected to a verified RWIN driver profile. Lineup assignment is not connected yet.',
+      'Konto Discord działa, ale profil RWIN nie został jeszcze powiązany przez bota. Sprawdź nick serwerowy i członkostwo.':'Your Discord account works, but the RWIN bot has not linked a driver profile. Check your server nickname and membership.',
+      'Nie otrzymaliśmy jeszcze potwierdzenia od bota. Odśwież stronę za chwilę lub skontaktuj się z managerem RWIN.':'The bot has not confirmed your profile yet. Refresh later or contact an RWIN manager.',
+      'Nie można odczytać profilu RWIN. Sprawdź połączenie i migrację SQL, następnie odśwież stronę.':'Could not read your RWIN profile. Check your connection and SQL migration, then refresh.',
+      'Zaloguj się przez Discord. Dane kierowcy pojawią się dopiero po zatwierdzeniu przez bota RWIN.':'Sign in with Discord. Driver details appear after verification by the RWIN bot.'
     });
     let currentLanguage = 'pl';
     try { currentLanguage = localStorage.getItem('rwin_language') === 'en' ? 'en' : 'pl'; } catch (_) {}
@@ -1296,9 +1325,22 @@
     // Zdjęcia Discord pobierane z PUBLICZNEGO ODCZYTU tabeli Supabase.
     // Nikt nie może sam edytować tej tabeli z HTML: zmiany wykonuje zaufana funkcja SQL.
     const LIVE_DRIVER_AVATARS = Object.create(null);
+    // Profile zweryfikowane przez bota, których nazwy nie ma na statycznej liście:
+    // pokazujemy je jako ODDZIELNE karty, nigdy nie zgadujemy tożsamości.
+    let LIVE_EXTRA_DRIVERS = [];
+    let driverAvatarRequestId = 0;
     let lastSyncedAvatarUser = null;
     let driverAvatarFetchWarningShown = false;
     let openedDriverIndex = null;
+    let openedDriverName = null;
+    // Stan prywatnego profilu: tylko RPC z auth.uid() + auth.identities.
+    let ownRwinProfile = null;
+    let ownProfileStatus = 'signed_out';
+    let authGeneration = 0;
+    let profilePollTimer = null;
+    const PROFILE_POLL_MS = 6000;
+    const PROFILE_POLL_MAX_ATTEMPTS = 14; // maksymalnie ~84 s, bot sprawdza co 15 s.
+
     const DRIVERS = [
       'Michał Kiedrowicz',
       'Marek Legnica',
@@ -1724,62 +1766,196 @@
       } catch (_) { return ''; }
     }
 
-    // Odświeża zdjęcia dla WSZYSTKICH odwiedzających, niezależnie od logowania.
+    // Tylko normalizacja zapisu (NFC, spacje, wielkość liter).
+    // NIE usuwamy polskich znaków, nie używamy podobieństwa nazw ani nazwy Discorda
+    // do ustalania uprawnień. Ostateczne powiązanie konta robi bot w bazie.
+    function canonicalDriverName(value) {
+      return typeof value === 'string'
+        ? value.normalize('NFC').replace(/\s+/gu, ' ').trim().toLocaleLowerCase('pl')
+        : '';
+    }
+
+    function getDriverRoster() { return DRIVERS.concat(LIVE_EXTRA_DRIVERS); }
+
+    // Odświeża PUBLICZNE kolumny driver_name i avatar_url; ID Discord pozostają prywatne.
     async function loadLiveDriverAvatars() {
       if (!authClient) return;
+      const request = ++driverAvatarRequestId;
       try {
         const { data, error } = await authClient.from('rwin_driver_profiles')
           .select('driver_name,avatar_url');
         if (error) throw error;
+        if (request !== driverAvatarRequestId) return; // starsza odpowiedź nie nadpisuje nowszej
+
+        const officialNames = new Map();
+        for (const name of DRIVERS) {
+          const canonical = canonicalDriverName(name);
+          officialNames.set(canonical, officialNames.has(canonical) ? null : name);
+        }
+        const validRows = (data || []).filter(row =>
+          typeof row?.driver_name === 'string' && row.driver_name.trim().length > 0 &&
+          row.driver_name.length <= 100 && safeDiscordAvatarUrl(row.avatar_url)
+        );
+        const frequency = new Map();
+        for (const row of validRows) {
+          const canonical = canonicalDriverName(row.driver_name);
+          frequency.set(canonical, (frequency.get(canonical) || 0) + 1);
+        }
         const next = Object.create(null);
-        for (const item of data || []) {
-          if (!DRIVERS.includes(item.driver_name)) continue;
-          const url = safeDiscordAvatarUrl(item.avatar_url);
-          if (url) next[item.driver_name] = url;
+        const extras = [];
+        for (const item of validRows) {
+          const canonical = canonicalDriverName(item.driver_name);
+          // Kolizja nazw = brak automatycznego przypisania niejednoznacznego profilu.
+          if (frequency.get(canonical) !== 1) continue;
+          const actualOfficial = officialNames.get(canonical);
+          if (actualOfficial) {
+            next[actualOfficial] = safeDiscordAvatarUrl(item.avatar_url);
+          } else if (!officialNames.has(canonical) && extras.length < 100) {
+            // Bot zweryfikował konto, ale zapis nicku nie odpowiada oficjalnej liście.
+            // Nie zastępujemy zdjęcia żadnego innego kierowcy na podstawie podobieństwa.
+            const displayName = item.driver_name.normalize('NFC').replace(/\s+/gu,' ').trim();
+            extras.push(displayName);
+            next[displayName] = safeDiscordAvatarUrl(item.avatar_url);
+          }
         }
-        const before = JSON.stringify(LIVE_DRIVER_AVATARS);
-        Object.keys(LIVE_DRIVER_AVATARS).forEach(k => delete LIVE_DRIVER_AVATARS[k]);
-        Object.assign(LIVE_DRIVER_AVATARS,next);
-        if (JSON.stringify(next) !== before) {
+        extras.sort((a,b) => a.localeCompare(b, 'pl'));
+        const before = JSON.stringify([LIVE_DRIVER_AVATARS, LIVE_EXTRA_DRIVERS]);
+        Object.keys(LIVE_DRIVER_AVATARS).forEach(key => delete LIVE_DRIVER_AVATARS[key]);
+        Object.assign(LIVE_DRIVER_AVATARS, next);
+        LIVE_EXTRA_DRIVERS = extras;
+        if (before !== JSON.stringify([LIVE_DRIVER_AVATARS, LIVE_EXTRA_DRIVERS])) {
           renderDrivers();
-          if ($('driverDialog').open && openedDriverIndex != null) openDriver(openedDriverIndex);
+          if ($('driverDialog').open && openedDriverName) {
+            const index = getDriverRoster().indexOf(openedDriverName);
+            if (index >= 0) openDriver(index);
+            else $('driverDialog').close();
+          }
         }
+        driverAvatarFetchWarningShown = false;
       } catch (error) {
+        // Przy błędzie nie czyścimy ostatnich poprawnych zdjęć.
         if (!driverAvatarFetchWarningShown) {
-          console.warn('RWIN: Brak dostępu do katalogu awatarów. Wgraj schemat SQL z ZIP.', error);
+          console.warn('RWIN: Nie udało się pobrać katalogu kierowców; sprawdź RLS i połączenie.', error);
           driverAvatarFetchWarningShown = true;
         }
       }
     }
 
-    // SQL po stronie Supabase odczytuje zweryfikowane ID z auth.identities.
-    // Wybranie imienia i nazwiska w formularzu NIE daje prawa do aktualizacji cudzego profilu.
-    async function syncMyDriverAvatar(user) {
-      if (!authClient || !user || lastSyncedAvatarUser === user.id) return;
-      lastSyncedAvatarUser = user.id;
+    function cancelProfilePolling() {
+      if (profilePollTimer !== null) clearTimeout(profilePollTimer);
+      profilePollTimer = null;
+    }
+    function isCurrentProfileSession(generation, userId) {
+      return generation === authGeneration && Boolean(userId) && authUser?.id === userId;
+    }
+
+    // Odczyt WYŁĄCZNIE własnego profilu. RPC na serwerze porównuje
+    // auth.uid() z auth.identities (provider = 'discord'); nie przyjmuje ID
+    // ani nazwiska od przeglądarki. Funkcja SQL dołączona w migracji.
+    async function readOwnRwinProfile(generation, userId) {
+      if (!authClient || !isCurrentProfileSession(generation, userId)) return 'stale';
       try {
-        const { data, error } = await authClient.rpc('sync_my_rwin_avatar');
+        const { data, error } = await authClient.rpc('get_my_rwin_driver_profile');
+        if (!isCurrentProfileSession(generation, userId)) return 'stale';
         if (error) throw error;
-        if (data === 'updated') {
-          await loadLiveDriverAvatars();
-          showToast('Zdjęcie profilowe Discord zsynchronizowane z profilem RWIN!');
-        } else if (data === 'not_linked') {
-          console.info('RWIN: Kierowca zalogowany, ale manager nie przypisał jeszcze jego ID Discord do profilu.');
-        } else if (data === 'no_avatar') {
-          console.info('RWIN: To konto Discord nie ma nowego zdjęcia do synchronizacji.');
+        const rows = Array.isArray(data) ? data : (data ? [data] : []);
+        const row = rows[0];
+        if (rows.length === 1 && typeof row?.driver_name === 'string' && row.driver_name.trim()) {
+          ownRwinProfile = {
+            name: row.driver_name.normalize('NFC').replace(/\s+/gu, ' ').trim(),
+            avatar: safeDiscordAvatarUrl(row.avatar_url)
+          };
+          ownProfileStatus = 'linked';
+          renderEntries();
+          return 'linked';
         }
+        ownRwinProfile = null;
+        renderEntries();
+        return 'missing';
       } catch (error) {
-        console.warn('RWIN: Nie udało się zsynchronizować avatara; sprawdź schemat SQL i uprawnienia.', error);
-        lastSyncedAvatarUser = null;
+        if (!isCurrentProfileSession(generation,userId)) return 'stale';
+        console.warn('RWIN: Błąd pobierania własnego profilu (sprawdź migrację SQL).', error);
+        ownProfileStatus = 'error';
+        renderEntries();
+        return 'error';
       }
     }
 
-    // Karty kierowców z miejscem na docelowe profile.
+    function scheduleProfileCheck(generation, userId, attempt = 1) {
+      if (!isCurrentProfileSession(generation, userId)) return;
+      cancelProfilePolling();
+      profilePollTimer = setTimeout(async () => {
+        profilePollTimer = null;
+        if (!isCurrentProfileSession(generation, userId)) return;
+        const outcome = await readOwnRwinProfile(generation, userId);
+        if (!isCurrentProfileSession(generation, userId)) return;
+        if (outcome === 'linked') {
+          await loadLiveDriverAvatars();
+          return;
+        }
+        if (outcome === 'missing' && attempt < PROFILE_POLL_MAX_ATTEMPTS) {
+          scheduleProfileCheck(generation, userId, attempt + 1);
+        } else if (outcome === 'missing') {
+          ownProfileStatus = 'timeout';
+          renderEntries();
+        }
+        // Błąd API kończy odliczanie, bez udawania udanego przypisania.
+      }, PROFILE_POLL_MS);
+    }
+
+    // Funkcja synchro w aktualnej bazie dodaje zweryfikowane ID do kolejki bota.
+    // 'queued' NIE oznacza ukończenia — sprawdzamy wynik maksymalnie ~84 sekundy.
+    async function syncMyDriverAvatar(user, generation = authGeneration) {
+      if (!authClient || !user || lastSyncedAvatarUser === user.id) return;
+      lastSyncedAvatarUser = user.id;
+      const userId = user.id;
+      try {
+        const { data, error } = await authClient.rpc('sync_my_rwin_avatar');
+        if (!isCurrentProfileSession(generation, userId)) return;
+        if (error) throw error;
+        if (data === 'queued' || data === 'updated') {
+          ownProfileStatus = data === 'queued' ? 'queued' : 'checking';
+          renderEntries();
+          const outcome = await readOwnRwinProfile(generation, userId);
+          if (!isCurrentProfileSession(generation, userId)) return;
+          if (outcome === 'linked') {
+            await loadLiveDriverAvatars();
+            return;
+          }
+          if (outcome === 'missing' && data === 'queued') {
+            scheduleProfileCheck(generation, userId);
+          } else if (outcome === 'missing') {
+            ownProfileStatus = 'not_linked';
+            renderEntries();
+          }
+        } else if (data === 'not_linked' || data === 'no_avatar') {
+          const outcome = await readOwnRwinProfile(generation, userId);
+          if (outcome === 'missing' && isCurrentProfileSession(generation, userId)) {
+            ownProfileStatus = 'not_linked';
+            renderEntries();
+          }
+        } else {
+          ownProfileStatus = 'error';
+          renderEntries();
+          console.warn('RWIN: Nieoczekiwana odpowiedź synchronizacji:', data);
+        }
+      } catch (error) {
+        if (!isCurrentProfileSession(generation, userId)) return;
+        ownProfileStatus = 'error';
+        lastSyncedAvatarUser = null;
+        renderEntries();
+        console.warn('RWIN: Błąd kolejki synchronizacji / RPC.', error);
+      }
+    }
+
+    // Karty kierowców: lista oficjalna + osobne karty dla zweryfikowanych
+    // przez bota profili z innym zapisem nazwy (bez zgadywania tożsamości).
     function renderDrivers() {
+      const roster = getDriverRoster();
       const query = ($('driverSearch').value || '').toLocaleLowerCase('pl').trim();
-      const matches = DRIVERS.map((name, index) => ({ name, index }))
+      const matches = roster.map((name, index) => ({ name, index }))
         .filter(driver => driver.name.toLocaleLowerCase('pl').includes(query));
-      $('driversVisibleCount').textContent = `${matches.length} / ${DRIVERS.length}`;
+      $('driversVisibleCount').textContent = `${matches.length} / ${roster.length}`;
       $('driversNoResults').hidden = matches.length > 0;
       $('driversGrid').innerHTML = matches.map(({name, index}) => {
         const initials = name.split(/\s+/).map(part => part[0] || '').slice(0, 2).join('').toLocaleUpperCase('pl');
@@ -1797,7 +1973,7 @@
     }
 
     function openDriver(index) {
-      const name = DRIVERS[index];
+      const name = getDriverRoster()[index];
       if (!name) return;
       const initials = name.split(/\s+/).map(part => part[0] || '').slice(0,2).join('').toLocaleUpperCase('pl');
       const isDiscordAvatar = Boolean(LIVE_DRIVER_AVATARS[name]);
@@ -1806,6 +1982,7 @@
         ? `<img class="driver-profile-avatar ${name === 'Filip Pustelnik' && !isDiscordAvatar ? 'driver-profile-avatar-car' : ''}" src="${esc(avatar)}" alt="Zdjęcie profilowe: ${esc(name)}" referrerpolicy="no-referrer" />`
         : `<div class="driver-profile-placeholder" aria-hidden="true">${esc(initials)}</div>`;
       openedDriverIndex = index;
+      openedDriverName = name;
       $('driverDialogTitle').textContent = name;
       $('driverDialogContent').innerHTML = `<div class="driver-profile-hero">${photo}<div class="driver-profile-info"><span class="driver-profile-mini">RWIN RACING / KIEROWCA ${String(index+1).padStart(2,'0')}</span><h3>${esc(name)}</h3><span class="tag special">TEAM RWIN</span><p>Pełny opis kierowcy, statystyki i osiągnięcia zostaną dodane później.</p></div></div>`;
       if (!$('driverDialog').open) $('driverDialog').showModal();
@@ -1845,11 +2022,25 @@
     }
 
     function setAuthenticatedUser(user) {
-      resetLocalDemoOnIdentityChange(user?.id || null);
+      const nextUserId = user?.id || null;
+      const previousUserId = authUser?.id || null;
+      resetLocalDemoOnIdentityChange(nextUserId);
+      // Nie resetujemy profilu przy samym odświeżeniu tokenu tej samej osoby.
+      if (nextUserId !== previousUserId) {
+        ++authGeneration;
+        cancelProfilePolling();
+        lastSyncedAvatarUser = null;
+        ownRwinProfile = null;
+        ownProfileStatus = nextUserId ? 'checking' : 'signed_out';
+      }
       authUser = user || null;
-      if (!authUser) lastSyncedAvatarUser = null;
-      // Wywołania do Supabase poza callbackiem onAuthStateChange.
-      if (authUser && authClient) setTimeout(() => syncMyDriverAvatar(authUser), 0);
+      const generation = authGeneration;
+      if (nextUserId && nextUserId !== previousUserId && authClient) {
+        // Przenosimy wywołanie poza callback onAuthStateChange.
+        setTimeout(() => {
+          if (isCurrentProfileSession(generation, nextUserId)) syncMyDriverAvatar(user, generation);
+        }, 0);
+      }
       updateAccountButton();
       updateLoginUI();
       renderEntries();
@@ -1965,13 +2156,47 @@
       $('entryDiscord').textContent = id ? id.name : 'NIEPOŁĄCZONE';
       $('discordStatus').textContent = id ? `@${id.username} · DISCORD POŁĄCZONY` : 'BRAK LOGOWANIA';
       $('discordIdentityHint').textContent = id ? 'Tożsamość pobrana z oficjalnego logowania Discord.' : 'Zaloguj się, aby wyświetlić prawdziwe konto Discord.';
-      $('entriesIdentityNote').textContent = id ? 'Discord połączony. Dane kierowcy, skład i zgłoszenia pojawią się po uruchomieniu bazy RWIN.' : 'Zaloguj się przez Discord. Przypisanie do zespołu i zapisy zostaną udostępnione później.';
-      $('entryDiscordAvatar').style.display = id?.avatar ? 'block' : 'none';
-      $('entryDiscordFallback').style.display = id?.avatar ? 'none' : '';
-      if (id?.avatar) $('entryDiscordAvatar').src = id.avatar;
-      else $('entryDiscordAvatar').removeAttribute('src');
-      $('entryUser').textContent = id ? 'DO UZUPEŁNIENIA' : 'ZALOGUJ SIĘ';
+      // Zalogowany: avatar jest samodzielnym kołem; nigdy nie pokazujemy pod nim
+      // niebieskiego tła ani logotypu Discord. Przy braku zdjęcia wstawiamy inicjał.
+      const entryAvatar = $('entryDiscordAvatar');
+      const entryAvatarBox = entryAvatar.parentElement;
+      const entryInitial = $('entryAvatarInitial');
+      entryAvatarBox.classList.toggle('discord-logged-in', Boolean(id));
+      entryAvatarBox.classList.toggle('no-photo', Boolean(id && !id.avatar));
+      $('entryDiscordFallback').style.display = id ? 'none' : '';
+      entryInitial.textContent = id ? (id.name.trim().charAt(0).toLocaleUpperCase('pl') || 'R') : 'R';
+      entryInitial.style.display = id && !id.avatar ? 'block' : 'none';
+      entryAvatar.onerror = () => {
+        if (!authUser) return;
+        entryAvatar.style.display = 'none';
+        entryAvatarBox.classList.add('no-photo');
+        entryInitial.style.display = 'block';
+      };
+      entryAvatar.style.display = id?.avatar ? 'block' : 'none';
+      if (id?.avatar) entryAvatar.src = id.avatar;
+      else entryAvatar.removeAttribute('src');
+      // Nazwisko wyłącznie z bezpiecznego własnego profilu RPC, nigdy z nicku
+      // lub dowolnego pola podawanego przez odwiedzającego.
+      $('entryUser').textContent = ownRwinProfile?.name || (id
+        ? (ownProfileStatus === 'queued' ? 'OCZEKIWANIE NA BOTA'
+          : ownProfileStatus === 'checking' ? 'SPRAWDZANIE…'
+          : ownProfileStatus === 'error' ? 'BŁĄD POBIERANIA'
+          : ownProfileStatus === 'timeout' ? 'NIE POTWIERDZONO'
+          : 'BRAK PROFILU RWIN')
+        : 'ZALOGUJ SIĘ');
+      // Bot nie dostarcza jeszcze źródła lineupów — NIE zgadujemy przypisań.
       $('entryLineup').textContent = 'BRAK PRZYPISANIA';
+      const profileHints = {
+        queued: 'Bot RWIN weryfikuje konto i profil. Sprawdzamy postęp przez maksymalnie 84 sekundy (bot odczytuje kolejkę co około 15 sekund).',
+        checking: 'Sprawdzamy profil kierowcy w bazie RWIN…',
+        linked: 'Profil kierowcy połączony z kontem Discord i potwierdzony przez system RWIN. Lineup nie jest jeszcze podłączony.',
+        not_linked: 'Konto Discord działa, ale profil RWIN nie został jeszcze powiązany przez bota. Sprawdź nick serwerowy i członkostwo.',
+        timeout: 'Nie otrzymaliśmy jeszcze potwierdzenia od bota. Odśwież stronę za chwilę lub skontaktuj się z managerem RWIN.',
+        error: 'Nie można odczytać profilu RWIN. Sprawdź połączenie i migrację SQL, następnie odśwież stronę.'
+      };
+      $('entriesIdentityNote').textContent = id
+        ? (profileHints[ownProfileStatus] || profileHints.checking)
+        : 'Zaloguj się przez Discord. Dane kierowcy pojawią się dopiero po zatwierdzeniu przez bota RWIN.';
       $('lineupGrid').innerHTML = LINEUPS.map(name => `
         <article class="lineup-card">
           <div class="lineup-head"><h3>${esc(name)}</h3><span class="tag special">LINEUP</span></div>
@@ -2092,7 +2317,7 @@
 
 
     $('driverSearch').addEventListener('input', renderDrivers);
-    $('driverDialog').addEventListener('close', () => { openedDriverIndex = null; });
+    $('driverDialog').addEventListener('close', () => { openedDriverIndex = null; openedDriverName = null; });
 
     // Uruchomienie pierwszego widoku.
     updateAccountButton();
