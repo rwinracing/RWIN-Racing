@@ -6,7 +6,7 @@
   <meta name="theme-color" content="#09090d" />
   <meta name="description" content="RWIN Racing Hub — kalendarz Le Mans Ultimate, zapisy i endurance racing." />
   <title>RWIN Racing | LMU Team</title>
-  <!-- RWIN Racing Hub v1.9.4 | Dynamiczny katalog kierowców po weryfikacji roli Discord -->
+  <!-- RWIN Racing Hub v1.9.6 | Zapisy tylko dla świeżo zweryfikowanych KIEROWCÓW -->
 
   <!-- Fonty z Google Fonts. Bez internetu przeglądarka użyje czcionek systemowych. -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -708,6 +708,12 @@
     .membership-controls .btn {display:inline-flex;align-items:center;justify-content:center;text-decoration:none;min-height:44px}
     .membership-panel .membership-footnote {color:#a992af;font-size:11px;margin:15px 0 0}
     @media(max-width:600px){.membership-heading{font-size:clamp(46px,11vw,70px)}.membership-controls{flex-direction:column}.membership-controls .btn{width:100%}}
+    /* Członek bez roli KIEROWCY jest zalogowany, ale nie widzi prywatnych danych ani formularzy. */
+    .driver-role-gate {margin:28px 0 60px;padding:clamp(24px,5vw,46px);border:1px solid #593a62;background:linear-gradient(130deg,#211626,#120e16 76%);}
+    .driver-role-gate h2 {font:italic 900 clamp(34px,5vw,56px)/1 var(--font-display);margin:13px 0;}
+    .driver-role-gate p {max-width:730px;line-height:1.8;color:#d8c5de;font-size:14px;}
+    .driver-role-gate .btn {margin-top:16px;}
+    #driverEntriesPrivate[hidden], #driverRoleGate[hidden] {display:none!important;}
   </style>
 </head>
 
@@ -893,6 +899,13 @@
       <div class="eyebrow">RWIN RACING / TEAM OPERATIONS</div>
       <h1 class="display" style="font-size:clamp(70px,9vw,115px);margin:22px 0 15px">MOJE <span class="text-purple">ZAPISY.</span></h1>
       <p class="text-muted" style="line-height:1.9;max-width:790px">Konto Discord jest połączone z RWIN Racing. Imię i nazwisko potwierdza bot RWIN na podstawie Twojego profilu serwerowego; lineup przypisze manager po uruchomieniu systemu składów.</p>
+      <div id="driverRoleGate" class="driver-role-gate" role="status" aria-live="polite">
+        <div class="eyebrow" id="driverRoleGateLabel">RWIN RACING / DOSTĘP DO ZAPISÓW</div>
+        <h2 id="driverRoleGateTitle">SPRAWDZAMY UPRAWNIENIA.</h2>
+        <p id="driverRoleGateMessage">Trwa weryfikacja roli KIEROWCY na serwerze RWIN.</p>
+        <button type="button" class="btn btn-outline" id="driverRoleRetry">SPRAWDŹ PONOWNIE ↻</button>
+      </div>
+      <div id="driverEntriesPrivate" hidden>
       <div class="entry-summary" aria-label="Dane konta i przypisanie kierowcy">
         <div class="entry-stat">
           <div class="eyebrow">01 / ZALOGOWANE KONTO DISCORD</div>
@@ -910,6 +923,7 @@
       <div id="lineupGrid" class="lineup-grid" aria-label="Lineupy RWIN Racing"></div>
       <div class="section-heading"><div><div class="eyebrow">RACE ENTRIES / YOUR GRID</div><h2 class="section-title">MOJE <span class="text-purple">ZGŁOSZENIA.</span></h2></div><button type="button" class="btn btn-primary" data-view="calendar">DODAJ ZAPIS ↗</button></div>
       <div id="myEntries"></div>
+      </div><!-- /driverEntriesPrivate -->
     </section>
 
     <!-- ===================== ABOUT US ===================== -->
@@ -1055,6 +1069,16 @@
     let membershipRequestedEntries = false;
     let membershipErrorCode = '';
     let membershipVerifiedUserId = null;
+    // Rola KIEROWCY jest sprawdzana wyłącznie przez aktualne, zaufane RPC Supabase.
+    // Publiczna kolumna is_driver nie jest źródłem uprawnień do prywatnej strefy.
+    let registrationAccessStatus = 'unknown';  // unknown | checking | allowed | denied | error
+    let registrationAccessUserId = null;
+    let registrationAccessUntil = 0;
+    let registrationAccessGeneration = 0;
+    let registrationAccessError = '';
+    let registrationAccessRetryTimer = null;
+    let registrationAccessExpiryTimer = null;
+    let registrationAccessRetries = 0;
     let lastAuthUserId = (() => { try { return localStorage.getItem('rwin-last-auth-user'); } catch (_) { return null; } })();
 
 
@@ -1616,6 +1640,9 @@
     }
 
     function switchView(view) {
+      // Każda nawigacja (również link głęboki / przycisk) korzysta z tej samej bramy.
+      // Po udanym członkostwie do Moich zapisów wolno wejść, ale dane są ukryte
+      // aż do pozytywnego get_my_rwin_access() z aktualnego sprawdzenia bota.
       if (view === 'entries' && !hasMembershipAccess()) {
         membershipRequestedEntries = true;
         view = 'access';
@@ -1782,6 +1809,8 @@
     }
 
     function changeSignup() {
+      // Brak aktywnego API zapisów w tej wersji. Przyszła wysyłka musi sprawdzić
+      // taką samą świeżą rolę po stronie bazy, a nie tylko w JS.
       if (authUser && !hasMembershipAccess()) {
         if ($('eventDialog').open) $('eventDialog').close();
         switchView('access');
@@ -1791,6 +1820,11 @@
         $('eventDialog').close();
         openLoginModal();
         showToast('Najpierw zaloguj się przez Discord.');
+        return;
+      }
+      if (!hasRegistrationAccess()) {
+        if ($('eventDialog').open) $('eventDialog').close();
+        switchView('entries');
         return;
       }
       showToast('Zapisy uruchomimy po podłączeniu wspólnej bazy i uprawnień RWIN.');
@@ -1894,7 +1928,7 @@
       profilePollTimer = null;
     }
     function isCurrentProfileSession(generation, userId) {
-      return generation === authGeneration && Boolean(userId) && authUser?.id === userId && hasMembershipAccess();
+      return generation === authGeneration && Boolean(userId) && authUser?.id === userId && hasRegistrationAccess();
     }
 
     // Odczyt z Supabase może zawieść na kilka różnych sposobów. NIE ukrywamy
@@ -2154,6 +2188,138 @@
         membershipVerifiedUntil > Date.now();
     }
 
+    function hasRegistrationAccess() {
+      return hasMembershipAccess() && registrationAccessStatus === 'allowed' &&
+        registrationAccessUserId === authUser?.id && registrationAccessUntil > Date.now();
+    }
+
+    function resetRegistrationAccess() {
+      ++registrationAccessGeneration; // ignoruje stare odpowiedzi RPC po wylogowaniu / zmianie konta
+      if (registrationAccessRetryTimer !== null) clearTimeout(registrationAccessRetryTimer);
+      if (registrationAccessExpiryTimer !== null) clearTimeout(registrationAccessExpiryTimer);
+      registrationAccessRetryTimer = null;
+      registrationAccessExpiryTimer = null;
+      registrationAccessRetries = 0;
+      registrationAccessStatus = 'unknown';
+      registrationAccessUserId = null;
+      registrationAccessUntil = 0;
+      registrationAccessError = '';
+      renderRegistrationGate();
+    }
+
+    function renderRegistrationGate() {
+      const permitted = hasRegistrationAccess();
+      const privateArea = $('driverEntriesPrivate');
+      const gate = $('driverRoleGate');
+      if (!privateArea || !gate) return;
+      privateArea.hidden = !permitted;
+      gate.hidden = permitted;
+      if (permitted) return;
+      const en = currentLanguage === 'en';
+      const isMember = hasMembershipAccess();
+      let title, message, retry = false;
+      if (!isMember) {
+        title = en ? 'MEMBERSHIP VERIFICATION REQUIRED.' : 'WYMAGANA WERYFIKACJA RWIN.';
+        message = en ? 'Sign in and wait for RWIN Discord membership verification.' : 'Zaloguj się i zaczekaj na sprawdzenie członkostwa RWIN.';
+        retry = Boolean(authUser) && membershipStatus !== 'checking';
+      } else if (registrationAccessStatus === 'checking' || registrationAccessStatus === 'unknown') {
+        title = en ? 'CHECKING DRIVER ROLE.' : 'SPRAWDZAMY ROLĘ KIEROWCY.';
+        message = en ? 'Checking your current RWIN Discord permissions.' : 'Sprawdzamy aktualne uprawnienia na serwerze Discord RWIN.';
+      } else if (registrationAccessStatus === 'denied') {
+        title = en ? 'DRIVER ROLE REQUIRED.' : 'BRAK ROLI KIEROWCY.';
+        message = en
+          ? 'Registrations are only available to members with the DRIVER role on the RWIN server.'
+          : 'Zapisy są dostępne wyłącznie dla osób z rolą KIEROWCY na serwerze RWIN.';
+        retry = true;
+      } else {
+        title = en ? 'PERMISSIONS UNAVAILABLE.' : 'NIE MOŻNA POTWIERDZIĆ UPRAWNIEŃ.';
+        message = en
+          ? 'Could not verify your driver role. Registrations stay locked. Retry the membership check or contact RWIN staff.'
+          : 'Nie udało się potwierdzić roli kierowcy. Zapisy są zablokowane. Ponów sprawdzenie lub skontaktuj się z administracją RWIN.';
+        retry = true;
+      }
+      $('driverRoleGateLabel').textContent = en ? 'RWIN RACING / ENTRIES ACCESS' : 'RWIN RACING / DOSTĘP DO ZAPISÓW';
+      $('driverRoleGateTitle').textContent = title;
+      $('driverRoleGateMessage').textContent = message;
+      $('driverRoleRetry').textContent = en ? 'CHECK AGAIN ↻' : 'SPRAWDŹ PONOWNIE ↻';
+      $('driverRoleRetry').hidden = !retry;
+    }
+
+    async function readRegistrationAccess(membershipSequence, userId) {
+      if (!isCurrentMembershipRequest(membershipSequence, userId) || !hasMembershipAccess()) return;
+      const generation = ++registrationAccessGeneration;
+      registrationAccessStatus = 'checking';
+      registrationAccessUserId = null;
+      registrationAccessUntil = 0;
+      registrationAccessError = '';
+      renderRegistrationGate();
+      try {
+        const {data,error} = await membershipRpc('get_my_rwin_access');
+        if (generation !== registrationAccessGeneration ||
+            !isCurrentMembershipRequest(membershipSequence,userId) || !hasMembershipAccess()) return;
+        if (error) throw error;
+        // Jedyny akceptowany kontrakt: JSON {is_member: boolean,can_register:boolean}.
+        // Ani argumenty przeglądarki, ani publiczne is_driver nie nadają uprawnień.
+        if (!data || Array.isArray(data) || typeof data !== 'object' ||
+            typeof data.is_member !== 'boolean' || typeof data.can_register !== 'boolean' ||
+            (data.can_register && !data.is_member)) throw new Error('invalid_access_rpc_response');
+        if (!data.is_member) {
+          // Sprzeczność z poprzednią odpowiedzią: fail closed, recheck ręcznie/okresowo.
+          registrationAccessStatus = 'error';
+        } else {
+          registrationAccessStatus = data.can_register ? 'allowed' : 'denied';
+        }
+        registrationAccessUserId = userId;
+        registrationAccessUntil = data.can_register && data.is_member ?
+          Math.min(membershipVerifiedUntil, Date.now() + 80000) : 0;
+      } catch (error) {
+        if (generation !== registrationAccessGeneration ||
+            !isCurrentMembershipRequest(membershipSequence,userId)) return;
+        registrationAccessStatus = 'error';
+        registrationAccessUserId = null;
+        registrationAccessUntil = 0;
+        registrationAccessError = String(error?.code || error?.message || 'unknown').slice(0,100);
+        console.warn('RWIN: weryfikacja roli KIEROWCY nieudana:', registrationAccessError);
+      }
+      if (!isCurrentMembershipRequest(membershipSequence,userId)) return;
+      if (registrationAccessStatus === 'allowed') {
+        // Nie pozostawiaj widocznych danych, gdy lokalny limit ważności minie.
+        if (registrationAccessExpiryTimer !== null) clearTimeout(registrationAccessExpiryTimer);
+        registrationAccessExpiryTimer = setTimeout(() => {
+          registrationAccessExpiryTimer = null;
+          renderEntries();
+        },Math.max(0,registrationAccessUntil-Date.now()+1));
+      } else if (registrationAccessStatus === 'error' && registrationAccessRetries < 1) {
+        // Jedno automatyczne ponowienie RPC (bez nieskończonego odpytywania).
+        registrationAccessRetries++;
+        if (registrationAccessRetryTimer !== null) clearTimeout(registrationAccessRetryTimer);
+        registrationAccessRetryTimer = setTimeout(() => {
+          registrationAccessRetryTimer = null;
+          if (isCurrentMembershipRequest(membershipSequence,userId) && hasMembershipAccess()) {
+            void readRegistrationAccess(membershipSequence,userId);
+          }
+        },8000);
+      }
+      renderEntries();
+      if (registrationAccessStatus === 'allowed') {
+        const user = authUser;
+        const currentAuthGeneration = authGeneration;
+        // Dopiero po świeżo potwierdzonej roli uruchamiamy odczyt profilu i kolejkę.
+        if (user && isCurrentProfileSession(currentAuthGeneration,userId)) {
+          void syncMyDriverAvatar(user,currentAuthGeneration);
+        }
+      } else {
+        // Nigdy nie zachowuj profilu poprzedniego potwierdzenia po odebraniu roli.
+        ++authGeneration;
+        cancelProfilePolling();
+        ownRwinProfile = null;
+        ownProfileStatus = 'signed_out';
+        ownProfileIssue = null;
+        lastSyncedAvatarUser = null;
+        renderEntries();
+      }
+    }
+
     function clearMembershipTimers() {
       if (membershipPollTimer !== null) clearTimeout(membershipPollTimer);
       if (membershipRefreshTimer !== null) clearTimeout(membershipRefreshTimer);
@@ -2171,6 +2337,7 @@
       membershipRequestId = null;
       membershipCheckingActive = false;
       membershipErrorCode = '';
+      resetRegistrationAccess(); // uprawnienia kierowcy wygasają razem z członkostwem
       ++authGeneration; // unieważnia odczyt profilu/kolejkę poprzedniego członkostwa
       cancelProfilePolling();
       ownRwinProfile = null;
@@ -2299,6 +2466,8 @@
       if (membershipCheckingActive && reason !== 'manual') return;
       const sequence = ++membershipGeneration;
       membershipCheckingActive = true;
+      // Każde odświeżenie członkostwa od razu odbiera starą zgodę na zapisy.
+      resetRegistrationAccess();
       clearMembershipTimers();
       membershipRequestId = null;
       membershipVerifiedUntil = 0;
@@ -2358,12 +2527,9 @@
             updateLoginUI();
             renderEntries();
             if (membershipRequestedEntries && state.view === 'access') switchView('entries');
-            const currentAuthGeneration = authGeneration;
-            const currentUser = authUser;
-            // Dopiero teraz wolno pobierać własny profil i uruchamiać dotychczasową kolejkę.
-            setTimeout(() => {
-              if (isCurrentProfileSession(currentAuthGeneration,userId)) syncMyDriverAvatar(currentUser,currentAuthGeneration);
-            },0);
+            // Po potwierdzeniu member odczytujemy osobno świeżą rolę z bazy.
+            // Konto bez roli pozostaje zalogowane; treści Moich zapisów są zamknięte.
+            void readRegistrationAccess(sequence,userId);
             membershipRefreshTimer = setTimeout(() => {
               if (authUser?.id !== userId || membershipStatus !== 'member') return;
               startMembershipCheck('refresh');
@@ -2547,7 +2713,21 @@
     }
 
     function renderEntries() {
-      const id = hasMembershipAccess() ? discordIdentity(authUser) : null;
+      renderRegistrationGate();
+      if (!hasRegistrationAccess()) {
+        // Prywatne karty nie mogą zatrzymać danych z poprzedniego konta/roli.
+        $('entryDiscord').textContent = 'NIEPOŁĄCZONE';
+        $('discordStatus').textContent = 'BRAK DOSTĘPU';
+        $('entryUser').textContent = '—';
+        $('entryLineup').textContent = '—';
+        $('entryDiscordAvatar').style.display = 'none';
+        $('entryDiscordAvatar').removeAttribute('src');
+        $('lineupGrid').replaceChildren();
+        $('myEntries').replaceChildren();
+        $('retryRwinProfile').hidden = true;
+        return;
+      }
+      const id = discordIdentity(authUser);
       $('entryDiscord').textContent = id ? id.name : 'NIEPOŁĄCZONE';
       $('discordStatus').textContent = id ? `@${id.username} · DISCORD POŁĄCZONY` : 'BRAK LOGOWANIA';
       $('discordIdentityHint').textContent = id ? 'Tożsamość pobrana z oficjalnego logowania Discord.' : 'Zaloguj się, aby wyświetlić prawdziwe konto Discord.';
@@ -2572,7 +2752,7 @@
       else entryAvatar.removeAttribute('src');
       // Nazwisko wyłącznie z bezpiecznego własnego profilu RPC, nigdy z nicku
       // lub dowolnego pola podawanego przez odwiedzającego.
-      $('entryUser').textContent = (hasMembershipAccess() ? ownRwinProfile?.name : '') || (id
+      $('entryUser').textContent = (hasRegistrationAccess() ? ownRwinProfile?.name : '') || (id
         ? (ownProfileStatus === 'queued' ? 'OCZEKIWANIE NA BOTA'
           : ownProfileStatus === 'checking' ? 'SPRAWDZANIE…'
           : ownProfileStatus === 'setup' || ownProfileStatus === 'queue_setup' ? 'WYMAGANA AKTUALIZACJA BAZY'
@@ -2704,6 +2884,12 @@
     $('membershipLogin').addEventListener('click', openLoginModal);
     $('membershipRetry').addEventListener('click', () => startMembershipCheck('manual'));
     $('membershipLogout').addEventListener('click', signOutDiscord);
+    $('driverRoleRetry').addEventListener('click', () => {
+      if (!authUser) { openLoginModal(); return; }
+      if (membershipCheckingActive) return;
+      // Pełen nowy pomiar: bot odczyta też bieżącą rolę z serwera Discord.
+      startMembershipCheck('manual');
+    });
     $('retryRwinProfile').addEventListener('click', retryOwnRwinProfile);
     document.addEventListener('click', (event) => {
       if (!$('headerAccount').contains(event.target)) closeAccountMenu();
@@ -2732,6 +2918,22 @@
     $('driverSearch').addEventListener('input', renderDrivers);
     $('driverDialog').addEventListener('close', () => { openedDriverIndex = null; openedDriverName = null; });
 
+    // Linki z #entries / ?view=entries zawsze przechodzą przez centralny guard.
+    function applyRequestedDeepLink() {
+      const hash = (window.location.hash || '').replace(/^#/, '').toLowerCase();
+      const query = new URLSearchParams(window.location.search).get('view');
+      if (['entries','moje-zapisy','zapisy','my-entries'].includes(hash) ||
+          query === 'entries') switchView('entries');
+    }
+    window.addEventListener('hashchange', applyRequestedDeepLink);
+    // Weryfikacja stalej zakładki także po wznowieniu strony.
+    setInterval(() => {
+      if (authUser && !document.hidden) {
+        ensureMembershipFresh();
+        if (state.view === 'entries' && !hasRegistrationAccess()) renderRegistrationGate();
+      }
+    }, 2000);
+
     // Uruchomienie pierwszego widoku.
     updateAccountButton();
     updateCounters();
@@ -2745,6 +2947,7 @@
     updateLanguageUI();
     translateAll();
     initializeDiscordAuth();
+    applyRequestedDeepLink();
   </script>
 </body>
 </html>
