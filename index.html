@@ -6,7 +6,7 @@
   <meta name="theme-color" content="#09090d" />
   <meta name="description" content="RWIN Racing Hub — kalendarz Le Mans Ultimate, zapisy i endurance racing." />
   <title>RWIN Racing | LMU Team</title>
-  <!-- RWIN Racing Hub v1.9.6 | Zapisy tylko dla świeżo zweryfikowanych KIEROWCÓW -->
+  <!-- RWIN Racing Hub v1.9.9 | Panel ZARZĄDU z kontrolą RPC i ważności 30 s -->
 
   <!-- Fonty z Google Fonts. Bez internetu przeglądarka użyje czcionek systemowych. -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -89,6 +89,8 @@
     .discord-mark { display: block; flex-shrink: 0; width: 19px; height: 19px; }
     .menu-button { display: none; }
     .mobile-nav { display: none; }
+    /* Nawigacja prywatna musi być ukryta przed potwierdzeniem Supabase. */
+    [data-private-tab][hidden] { display: none !important; }
 
     /* Pasek demo */
     .demo-strip { display: flex; justify-content: space-between; gap: 20px; border: 1px solid var(--line); border-left: 3px solid var(--purple); padding: 10px 14px; background: #17121c; color: #c9b8cf; font-size: 11px; margin: 0 0 24px; }
@@ -688,11 +690,27 @@
     .header-account .account-button.signed-in .account-avatar-fallback {display:grid;place-items:center;width:42px;height:42px;border-radius:50%;background:#382144;color:#f9eaff;border:2px solid #c980d8;font:900 22px var(--font-display);}
     .header-account .account-button.signed-in:focus-visible {outline:2px solid #eed0f3;outline-offset:5px;}
     .account-menu {position:absolute;top:calc(100% + 12px);right:0;z-index:120;width:178px;background:#1a141f;border:1px solid #6b4671;box-shadow:0 18px 44px #000d;padding:7px;border-radius:10px;}
-    .account-menu[hidden]{display:none!important;}
+    .account-menu[hidden],.account-menu-panel[hidden]{display:none!important;}
+    .account-menu-panel {width:100%;background:transparent;border:0;color:#eac8f0;text-align:left;font-size:12px;font-weight:800;letter-spacing:.08em;padding:12px 13px;border-radius:6px;cursor:pointer;}
+    .account-menu-panel:hover,.account-menu-panel:focus-visible{color:#fff;background:rgba(201,128,216,.19);outline:none;}
+    .account-menu-panel:not([hidden]) + .account-menu-logout {margin-top:3px;border-top:1px solid rgba(201,128,216,.19);border-radius:0 0 6px 6px;}
     .account-menu-logout {width:100%;background:transparent;border:0;color:#ff6578;text-align:left;font-size:12px;font-weight:800;letter-spacing:.08em;padding:12px 13px;border-radius:6px;cursor:pointer;}
     .account-menu-logout:hover,.account-menu-logout:focus-visible{color:#fff;background:#842e42;outline:none;}
     @media(max-width:600px){.site-header .header-account .account-button.signed-in{min-width:38px;max-width:38px;width:38px;height:38px;min-height:38px;padding:0!important}.header-account .account-button.signed-in .account-avatar,.header-account .account-button.signed-in .account-avatar-fallback{width:36px;height:36px}.language-switcher .flag-icon{width:24px;height:16px}.language-toggle{min-width:73px;min-height:38px;gap:5px;padding:5px 7px}.language-options{min-width:164px}.account-menu{right:-4px}}
 
+    /* RWIN v1.9.8 — Panel ZARZĄDU, placeholder bez operacji administracyjnych. */
+    .admin-hero {position:relative;overflow:hidden;margin:12px 0 32px;padding:clamp(26px,5vw,58px);border:1px solid #62436b;background:radial-gradient(circle at 100% 0%,rgba(201,128,216,.18),transparent 48%),linear-gradient(135deg,#211526,#130f18);}
+    .admin-hero::after {content:'R';position:absolute;right:3%;top:-18%;font:italic 900 clamp(190px,30vw,360px)/1 var(--font-display);color:rgba(201,128,216,.07);pointer-events:none;}
+    .admin-kicker {font-size:11px;letter-spacing:.21em;font-weight:900;color:#d8a2e1;position:relative;z-index:1;}
+    .admin-heading {font-size:clamp(48px,8.3vw,105px);line-height:.97;margin:22px 0 16px;position:relative;z-index:1;overflow-wrap:anywhere;}
+    .admin-intro {max-width:670px;color:#cbb9cf;line-height:1.8;font-size:14px;position:relative;z-index:1;}
+    .admin-role-chip {display:inline-flex;align-items:center;gap:9px;margin-top:20px;border:1px solid #90699b;padding:10px 14px;color:#e9c9ef;font:800 11px var(--font-ui);letter-spacing:.13em;position:relative;z-index:1;}
+    .admin-feature-grid {display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;margin:22px 0 55px;}
+    .admin-feature {padding:26px 24px;min-height:165px;background:#17111c;border:1px solid #45304e;}
+    .admin-feature small{display:block;color:#a97fb0;font-size:11px;font-weight:900;letter-spacing:.15em;margin-bottom:22px;}
+    .admin-feature h3{margin:0 0 9px;font:italic 800 26px/1.1 var(--font-display);color:#fff;}
+    .admin-feature p{color:#a995ae;font-size:12px;line-height:1.65;margin:0;}
+    @media(max-width:760px){.admin-feature-grid{grid-template-columns:1fr}.admin-feature{min-height:0}}
     /* RWIN v1.9.5 — niezależna bramka członkostwa (nie zastępuje zabezpieczeń bazy). */
     .membership-panel { position:relative; margin:32px auto 75px; padding:clamp(28px,5vw,65px); max-width:960px; border:1px solid #593a62; background:radial-gradient(circle at 89% 4%,rgba(201,128,216,.14),transparent 48%),#151019; overflow:hidden; }
     .membership-symbol {position:absolute;right:-25px;top:-72px;font:italic 900 330px/1 var(--font-display);color:rgba(201,128,216,.07);pointer-events:none}
@@ -741,8 +759,8 @@
       <nav class="main-nav" aria-label="Menu główne">
         <button type="button" class="nav-button active" data-view="dashboard">STRONA GŁÓWNA</button>
         <button type="button" class="nav-button" data-view="calendar">KALENDARZ LMU</button>
-        <button type="button" class="nav-button" data-view="entries">MOJE ZAPISY</button>
-        <button type="button" class="nav-button" data-view="strategy">STRATEGIA</button>
+        <button type="button" class="nav-button" data-view="entries" data-private-tab="entries" hidden>MOJE ZAPISY</button>
+        <button type="button" class="nav-button" data-view="strategy" data-private-tab="strategy" hidden>STRATEGIA</button>
         <div class="nav-dropdown" id="aboutDropdown">
           <button type="button" class="nav-button nav-about" data-view="about" aria-haspopup="true" aria-expanded="false">ABOUT US <span class="nav-chevron" aria-hidden="true">⌄</span></button>
           <div class="nav-submenu" aria-label="Podmenu About Us">
@@ -755,6 +773,7 @@
         <div class="header-account" id="headerAccount">
           <button id="accountButton" type="button" class="btn btn-discord account-button" aria-label="Otwórz ekran logowania Discord" aria-expanded="false" aria-controls="accountMenu" aria-haspopup="true"><img id="headerDiscordAvatar" class="account-avatar" alt="" referrerpolicy="no-referrer" /><span id="headerAvatarFallback" class="account-avatar-fallback" aria-hidden="true" style="display:none">R</span><svg class="discord-mark" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" focusable="false"><path d="M19.73 5.58a18.1 18.1 0 0 0-4.49-1.39l-.55 1.11a16.8 16.8 0 0 0-5.38 0l-.55-1.11a18.1 18.1 0 0 0-4.49 1.39C1.41 9.8.64 13.9 1.03 17.93a18.3 18.3 0 0 0 5.52 2.78l1.18-1.93c-.64-.23-1.25-.51-1.83-.84l.44-.34a12.8 12.8 0 0 0 11.32 0l.44.34c-.58.33-1.19.61-1.83.84l1.18 1.93a18.3 18.3 0 0 0 5.52-2.78c.46-4.67-.78-8.73-3.24-12.35ZM8.5 15.46c-1.06 0-1.92-.96-1.92-2.13 0-1.18.85-2.14 1.92-2.14 1.07 0 1.94.97 1.92 2.14 0 1.17-.85 2.13-1.92 2.13Zm7 0c-1.06 0-1.92-.96-1.92-2.13 0-1.18.85-2.14 1.92-2.14s1.94.97 1.92 2.14c0 1.17-.85 2.13-1.92 2.13Z"/></svg><span class="account-label">LOGOWANIE DISCORD</span></button>
           <div class="account-menu" id="accountMenu" role="menu" aria-label="Konto Discord" hidden>
+            <button type="button" id="accountPanel" class="account-menu-panel" role="menuitem" hidden>◈ &nbsp; PANEL</button>
             <button type="button" id="accountSignOut" class="account-menu-logout" role="menuitem">WYLOGUJ</button>
           </div>
         </div>
@@ -764,8 +783,8 @@
     <nav id="mobileNav" class="mobile-nav" aria-label="Menu mobilne" hidden>
       <button type="button" data-view="dashboard">STRONA GŁÓWNA</button>
       <button type="button" data-view="calendar">KALENDARZ LMU</button>
-      <button type="button" data-view="entries">MOJE ZAPISY</button>
-      <button type="button" data-view="strategy">STRATEGIA</button>
+      <button type="button" data-view="entries" data-private-tab="entries" hidden>MOJE ZAPISY</button>
+      <button type="button" data-view="strategy" data-private-tab="strategy" hidden>STRATEGIA</button>
       <button type="button" data-view="about">ABOUT US</button>
       <button type="button" data-view="drivers">KIEROWCY</button>
     </nav>
@@ -974,6 +993,25 @@
       <div id="driversNoResults" class="drivers-no-results" hidden>Brak kierowcy o podanej nazwie.</div>
     </section>
 
+    <!-- ===================== PANEL ADMINISTRACYJNY ===================== -->
+    <!-- Bez danych poufnych w HTML; przyszłe operacje muszą sprawdzać rolę po stronie API/SQL. -->
+    <section id="view-admin" class="view" aria-label="Panel Administracyjny RWIN Racing">
+      <div class="eyebrow">RWIN RACING / TEAM MANAGEMENT</div>
+      <div class="admin-hero">
+        <div class="admin-kicker">RWIN RACING / ZARZĄD</div>
+        <h1 class="display admin-heading">PANEL <span class="text-purple">ADMINISTRACYJNY.</span></h1>
+        <p class="admin-intro">Prywatna przestrzeń zarządzania zespołem RWIN Racing. Dostęp wyłącznie dla zweryfikowanych członków z rolą ↣｜ZARZĄD. Narzędzia administracyjne zostaną dodane w kolejnych aktualizacjach.</p>
+        <div class="admin-role-chip">◆ &nbsp; ROLA DISCORD: ZARZĄD</div>
+        <p id="adminVerifiedStatus" class="admin-kicker" aria-live="polite"></p>
+      </div>
+      <div class="section-heading"><div><div class="eyebrow">MANAGEMENT TOOLS / SOON</div><h2 class="section-title">NARZĘDZIA <span class="text-purple">WKRÓTCE.</span></h2></div></div>
+      <div class="admin-feature-grid" aria-label="Planowane sekcje panelu">
+        <article class="admin-feature"><small>01 / ZESPÓŁ</small><h3>Kierowcy</h3><p>Zarządzanie listą i profilami kierowców — w przygotowaniu.</p></article>
+        <article class="admin-feature"><small>02 / WYDARZENIA</small><h3>Zapisy</h3><p>Zarządzanie zgłoszeniami na wyścigi — w przygotowaniu.</p></article>
+        <article class="admin-feature"><small>03 / SKŁADY</small><h3>Lineupy</h3><p>Przypisywanie kierowców do składów — w przygotowaniu.</p></article>
+      </div>
+    </section>
+
     <!-- ===================== STRATEGIA ===================== -->
     <section id="view-strategy" class="view" aria-label="Strategia wyścigowa w przygotowaniu">
       <div class="eyebrow" style="margin:0 0 20px">RWIN RACING / RACE ENGINEERING</div>
@@ -1079,6 +1117,17 @@
     let registrationAccessRetryTimer = null;
     let registrationAccessExpiryTimer = null;
     let registrationAccessRetries = 0;
+    // Dostęp do Panelu ADMIN jest niezależny od roli KIEROWCY.
+    // Wyłącznie pole can_access_admin === true z get_my_rwin_access() daje dostęp.
+    let adminAccessStatus = 'unknown';
+    let adminAccessUserId = null;
+    let adminAccessUntil = 0;
+    let strategyAccessStatus = 'unknown';
+    let strategyAccessUserId = null;
+    let strategyAccessUntil = 0;
+    let adminPanelData = null;
+    let adminPanelRequestGeneration = 0;
+    let adminPanelRecheckInFlight = false;
     let lastAuthUserId = (() => { try { return localStorage.getItem('rwin-last-auth-user'); } catch (_) { return null; } })();
 
 
@@ -1090,6 +1139,17 @@
     /* ===== RWIN v1.3 | dwujęzyczny interfejs PL / UK ===== */
     const I18N = {
       'STRONA GŁÓWNA':'HOME',
+      'PANEL ADMINISTRACYJNY':'ADMIN PANEL',
+      'PANEL':'PANEL',
+      'NARZĘDZIA':'TOOLS',
+      'WKRÓTCE.':'COMING SOON.',
+      'Prywatna przestrzeń zarządzania zespołem RWIN Racing. Dostęp wyłącznie dla zweryfikowanych członków z rolą ↣｜ZARZĄD. Narzędzia administracyjne zostaną dodane w kolejnych aktualizacjach.':'Private management area for RWIN Racing. Access is restricted to verified members with the MANAGEMENT Discord role. Administrative tools will be added in future updates.',
+      'Zarządzanie listą i profilami kierowców — w przygotowaniu.':'Driver roster and profile management — coming soon.',
+      'Zarządzanie zgłoszeniami na wyścigi — w przygotowaniu.':'Race entry management — coming soon.',
+      'Przypisywanie kierowców do składów — w przygotowaniu.':'Driver lineup assignments — coming soon.',
+      'Kierowcy':'Drivers',
+      'Zapisy':'Entries',
+      'Lineupy':'Lineups',
       'Treningi. Rywalizacja. Rozwój.':'Practice. Competition. Growth.',
       'Organizujemy prywatne treningi z innymi zespołami, podczas których sprawdzamy tempo wyścigowe i przygotowujemy się do wspólnych startów. Bierzemy udział w Championship oraz Special Events w Le Mans Ultimate. Planujemy również stworzyć własną aplikację, która pomoże nam w zarządzaniu zespołem i strategiami wyścigowymi.':'We organize private practice sessions with other teams to assess our race pace and prepare for upcoming events. We compete in Championship races and Special Events in Le Mans Ultimate. We also plan to build our own application to support team management and race strategy.',
       'Ścigamy się w':'We race in','Polski zespół simracingowy. Zapraszamy wszystkich!':'A Polish sim racing team. Everyone is welcome!',
@@ -1639,15 +1699,23 @@
       showToast.timer = setTimeout(() => { toast.hidden = true; }, 4200);
     }
 
-    function switchView(view) {
-      // Każda nawigacja (również link głęboki / przycisk) korzysta z tej samej bramy.
-      // Po udanym członkostwie do Moich zapisów wolno wejść, ale dane są ukryte
-      // aż do pozytywnego get_my_rwin_access() z aktualnego sprawdzenia bota.
-      if (view === 'entries' && !hasMembershipAccess()) {
+    function switchView(view, adminRpcVerified = false) {
+      // Wszystkie ścieżki wejścia podlegają bramie. Admin wymaga dodatkowo osobnego RPC.
+      if (view === 'entries' && !hasRegistrationAccess()) {
         membershipRequestedEntries = true;
         view = 'access';
       }
-      if (view === 'entries' && hasMembershipAccess()) membershipRequestedEntries = false;
+      if (view === 'strategy' && !hasStrategyAccess()) {
+        if (hasMembershipAccess()) showToast(currentLanguage === 'en' ? 'The DRIVER role is required for Strategy.' : 'Strategia jest tylko dla osób z rolą KIEROWCY.');
+        view = hasMembershipAccess() ? 'dashboard' : 'access';
+      }
+      if (view === 'admin') {
+        if (!adminRpcVerified) { void openVerifiedAdminPanel(); return; }
+        if (!hasAdminAccess() || !adminPanelData) view = hasMembershipAccess() ? 'dashboard' : 'access';
+      }
+      if (state.view === 'admin' && view !== 'admin') clearAdminPanelData();
+      if (view !== 'admin' && state.view !== 'admin') ++adminPanelRequestGeneration;
+      if (view === 'entries' && hasRegistrationAccess()) membershipRequestedEntries = false;
       state.view = view;
       document.querySelectorAll('.view').forEach(el => el.classList.toggle('active', el.id === 'view-' + view));
       document.querySelectorAll('.nav-button').forEach(btn => btn.classList.toggle('active', btn.dataset.view === view || (view === 'access' && btn.dataset.view === 'entries') || (view === 'drivers' && btn.dataset.view === 'about')));
@@ -2193,6 +2261,80 @@
         registrationAccessUserId === authUser?.id && registrationAccessUntil > Date.now();
     }
 
+    function hasAdminAccess() {
+      return hasMembershipAccess() && adminAccessStatus === 'allowed' &&
+        adminAccessUserId === authUser?.id && adminAccessUntil > Date.now();
+    }
+
+    function hasStrategyAccess() {
+      return hasMembershipAccess() && strategyAccessStatus === 'allowed' &&
+        strategyAccessUserId === authUser?.id && strategyAccessUntil > Date.now();
+    }
+
+    function clearAdminPanelData() {
+      adminPanelData = null;
+      ++adminPanelRequestGeneration; // spóźnione odpowiedzi nie otworzą panelu
+      const label = $('adminVerifiedStatus');
+      if (label) label.textContent = '';
+    }
+
+    function closeAdminPanel() {
+      clearAdminPanelData();
+      if (state.view === 'admin') switchView(hasMembershipAccess() ? 'dashboard' : 'access');
+    }
+
+    // Przed otwarciem panelu wymagamy świeżego get_my_rwin_admin_panel().
+    async function openVerifiedAdminPanel() {
+      if (!hasAdminAccess()) {
+        showToast(currentLanguage === 'en' ? 'MANAGEMENT role required.' : 'Panel dostępny tylko dla zweryfikowanego ZARZĄDU.');
+        if (state.view === 'admin') closeAdminPanel();
+        return;
+      }
+      const sequence = ++adminPanelRequestGeneration;
+      const userId = authUser.id;
+      const membershipSequence = membershipGeneration;
+      const accessSequence = registrationAccessGeneration;
+      try {
+        const {data,error} = await membershipRpc('get_my_rwin_admin_panel');
+        if (sequence !== adminPanelRequestGeneration || authUser?.id !== userId ||
+            membershipSequence !== membershipGeneration ||
+            accessSequence !== registrationAccessGeneration || !hasAdminAccess()) return;
+        if (error) throw error;
+        if (!data || Array.isArray(data) || data.title !== 'Panel Administracyjny' || data.version !== 1) {
+          throw new Error('invalid_admin_panel_response');
+        }
+        adminPanelData = {title:data.title, version:data.version};
+        $('adminVerifiedStatus').textContent = currentLanguage === 'en' ? 'SERVER ACCESS VERIFIED' : 'DOSTĘP POTWIERDZONY PRZEZ SERWER';
+        switchView('admin', true);
+      } catch (error) {
+        if (sequence !== adminPanelRequestGeneration || authUser?.id !== userId) return;
+        closeAdminPanel();
+        console.warn('RWIN: brak serwerowego potwierdzenia panelu',error?.code || error?.message || 'error');
+        showToast(currentLanguage === 'en' ? 'Admin panel verification failed.' : 'Nie udało się potwierdzić dostępu do Panelu.');
+      }
+    }
+
+    // Strategia i Moje zapisy: KIEROWCY. Panel: ZARZĄD. Niezależne role.
+    function updatePrivateNavigation() {
+      const driver = hasRegistrationAccess();
+      const strategy = hasStrategyAccess();
+      document.querySelectorAll('[data-private-tab]').forEach(button => {
+        const permitted = button.dataset.privateTab === 'strategy' ? strategy : driver;
+        button.hidden = !permitted;
+        button.setAttribute('aria-hidden', String(!permitted));
+      });
+      const panel = $('accountPanel');
+      if (panel) {
+        panel.hidden = !hasAdminAccess();
+        panel.setAttribute('aria-hidden', String(panel.hidden));
+      }
+      if (state.view === 'strategy' && !strategy) switchView(hasMembershipAccess() ? 'dashboard' : 'access');
+      if (state.view === 'admin' && (!hasAdminAccess() || !adminPanelData)) {
+        closeAccountMenu();
+        closeAdminPanel();
+      }
+    }
+
     function resetRegistrationAccess() {
       ++registrationAccessGeneration; // ignoruje stare odpowiedzi RPC po wylogowaniu / zmianie konta
       if (registrationAccessRetryTimer !== null) clearTimeout(registrationAccessRetryTimer);
@@ -2203,8 +2345,16 @@
       registrationAccessStatus = 'unknown';
       registrationAccessUserId = null;
       registrationAccessUntil = 0;
+      adminAccessStatus = 'unknown';
+      adminAccessUserId = null;
+      adminAccessUntil = 0;
+      strategyAccessStatus = 'unknown';
+      strategyAccessUserId = null;
+      strategyAccessUntil = 0;
+      clearAdminPanelData();
       registrationAccessError = '';
       renderRegistrationGate();
+      updatePrivateNavigation();
     }
 
     function renderRegistrationGate() {
@@ -2214,6 +2364,7 @@
       if (!privateArea || !gate) return;
       privateArea.hidden = !permitted;
       gate.hidden = permitted;
+      updatePrivateNavigation();
       if (permitted) return;
       const en = currentLanguage === 'en';
       const isMember = hasMembershipAccess();
@@ -2245,71 +2396,116 @@
       $('driverRoleRetry').hidden = !retry;
     }
 
-    async function readRegistrationAccess(membershipSequence, userId) {
-      if (!isCurrentMembershipRequest(membershipSequence, userId) || !hasMembershipAccess()) return;
+    // Daty ważności zwracane są przez zaufany serwer. Liczymy różnicę względem
+    // server_time, nie zegara klienta; odejmujemy bufor na opóźnienia sieci.
+    function remainingServerAccessMs(validUntil, serverTime, maxMs) {
+      if (typeof validUntil !== 'string' || typeof serverTime !== 'string') return 0;
+      const end = Date.parse(validUntil), now = Date.parse(serverTime);
+      if (!Number.isFinite(end) || !Number.isFinite(now)) return 0;
+      return Math.max(0, Math.min(maxMs, end - now - 1500));
+    }
+
+    async function readRegistrationAccess(membershipSequence, userId, options = {}) {
+      if (!isCurrentMembershipRequest(membershipSequence,userId) || !hasMembershipAccess()) return false;
+      const background = Boolean(options.background);
       const generation = ++registrationAccessGeneration;
-      registrationAccessStatus = 'checking';
-      registrationAccessUserId = null;
-      registrationAccessUntil = 0;
-      registrationAccessError = '';
-      renderRegistrationGate();
+      const previouslyDriver = hasRegistrationAccess();
+      if (!background) {
+        registrationAccessStatus = 'checking';
+        registrationAccessUserId = null;
+        registrationAccessUntil = 0;
+        strategyAccessStatus = 'checking';
+        strategyAccessUserId = null;
+        strategyAccessUntil = 0;
+        adminAccessStatus = 'unknown';
+        adminAccessUserId = null;
+        adminAccessUntil = 0;
+        clearAdminPanelData();
+        registrationAccessError = '';
+        renderRegistrationGate();
+      }
       try {
         const {data,error} = await membershipRpc('get_my_rwin_access');
         if (generation !== registrationAccessGeneration ||
-            !isCurrentMembershipRequest(membershipSequence,userId) || !hasMembershipAccess()) return;
+            !isCurrentMembershipRequest(membershipSequence,userId) || !hasMembershipAccess()) return false;
         if (error) throw error;
-        // Jedyny akceptowany kontrakt: JSON {is_member: boolean,can_register:boolean}.
-        // Ani argumenty przeglądarki, ani publiczne is_driver nie nadają uprawnień.
         if (!data || Array.isArray(data) || typeof data !== 'object' ||
             typeof data.is_member !== 'boolean' || typeof data.can_register !== 'boolean' ||
-            (data.can_register && !data.is_member)) throw new Error('invalid_access_rpc_response');
-        if (!data.is_member) {
-          // Sprzeczność z poprzednią odpowiedzią: fail closed, recheck ręcznie/okresowo.
-          registrationAccessStatus = 'error';
-        } else {
-          registrationAccessStatus = data.can_register ? 'allowed' : 'denied';
+            typeof data.can_use_strategy !== 'boolean' || typeof data.can_access_admin !== 'boolean' ||
+            typeof data.server_time !== 'string' ||
+            data.can_register !== data.can_use_strategy ||
+            ((data.can_register || data.can_use_strategy || data.can_access_admin) && !data.is_member)) {
+          throw new Error('invalid_access_rpc_response');
         }
+        // Kierowca i strategia muszą mieć świeże członkostwo; admin jeszcze
+        // świeższy dowód roli ZARZĄD (<=30 s po stronie SQL).
+        const memberMs = data.is_member ? remainingServerAccessMs(data.member_valid_until,data.server_time,100000) : 0;
+        const adminMs = data.can_access_admin ? remainingServerAccessMs(data.admin_valid_until,data.server_time,28000) : 0;
+        const validMember = data.is_member && memberMs > 0;
+        const localMemberEnd = Math.min(membershipVerifiedUntil,Date.now() + memberMs);
+        registrationAccessStatus = validMember ? (data.can_register ? 'allowed' : 'denied') : 'error';
         registrationAccessUserId = userId;
-        registrationAccessUntil = data.can_register && data.is_member ?
-          Math.min(membershipVerifiedUntil, Date.now() + 80000) : 0;
+        registrationAccessUntil = validMember && data.can_register ? localMemberEnd : 0;
+        strategyAccessStatus = validMember ? (data.can_use_strategy ? 'allowed' : 'denied') : 'error';
+        strategyAccessUserId = userId;
+        strategyAccessUntil = validMember && data.can_use_strategy ? localMemberEnd : 0;
+        adminAccessStatus = validMember && data.can_access_admin && adminMs > 0 ? 'allowed' : 'denied';
+        adminAccessUserId = userId;
+        adminAccessUntil = validMember && data.can_access_admin && adminMs > 0 ?
+          Math.min(localMemberEnd,Date.now()+adminMs) : 0;
+        if (!hasAdminAccess()) clearAdminPanelData();
+        registrationAccessError = '';
       } catch (error) {
-        if (generation !== registrationAccessGeneration ||
-            !isCurrentMembershipRequest(membershipSequence,userId)) return;
+        if (generation !== registrationAccessGeneration || !isCurrentMembershipRequest(membershipSequence,userId)) return false;
         registrationAccessStatus = 'error';
         registrationAccessUserId = null;
         registrationAccessUntil = 0;
+        strategyAccessStatus = 'error';
+        strategyAccessUserId = null;
+        strategyAccessUntil = 0;
+        adminAccessStatus = 'error';
+        adminAccessUserId = null;
+        adminAccessUntil = 0;
+        clearAdminPanelData();
         registrationAccessError = String(error?.code || error?.message || 'unknown').slice(0,100);
-        console.warn('RWIN: weryfikacja roli KIEROWCY nieudana:', registrationAccessError);
+        console.warn('RWIN: nieudana kontrola uprawnień:',registrationAccessError);
       }
-      if (!isCurrentMembershipRequest(membershipSequence,userId)) return;
-      if (registrationAccessStatus === 'allowed') {
-        // Nie pozostawiaj widocznych danych, gdy lokalny limit ważności minie.
-        if (registrationAccessExpiryTimer !== null) clearTimeout(registrationAccessExpiryTimer);
+      if (generation !== registrationAccessGeneration || !isCurrentMembershipRequest(membershipSequence,userId)) return false;
+      if (registrationAccessExpiryTimer !== null) clearTimeout(registrationAccessExpiryTimer);
+      registrationAccessExpiryTimer = null;
+      const deadlines = [registrationAccessUntil,strategyAccessUntil,adminAccessUntil].filter(n => n>Date.now());
+      if (deadlines.length) {
         registrationAccessExpiryTimer = setTimeout(() => {
           registrationAccessExpiryTimer = null;
           renderEntries();
-        },Math.max(0,registrationAccessUntil-Date.now()+1));
-      } else if (registrationAccessStatus === 'error' && registrationAccessRetries < 1) {
-        // Jedno automatyczne ponowienie RPC (bez nieskończonego odpytywania).
+          updatePrivateNavigation();
+          closeAccountMenu();
+        },Math.max(0,Math.min(...deadlines)-Date.now()+1));
+      } else if (registrationAccessStatus === 'error' && !background && registrationAccessRetries < 1) {
         registrationAccessRetries++;
         if (registrationAccessRetryTimer !== null) clearTimeout(registrationAccessRetryTimer);
         registrationAccessRetryTimer = setTimeout(() => {
           registrationAccessRetryTimer = null;
-          if (isCurrentMembershipRequest(membershipSequence,userId) && hasMembershipAccess()) {
+          if (isCurrentMembershipRequest(membershipSequence,userId) && hasMembershipAccess())
             void readRegistrationAccess(membershipSequence,userId);
-          }
         },8000);
       }
       renderEntries();
-      if (registrationAccessStatus === 'allowed') {
+      if (hasRegistrationAccess() && membershipRequestedEntries && state.view === 'access') {
+        membershipRequestedEntries = false;
+        switchView('entries');
+      } else if (registrationAccessStatus === 'denied' && membershipRequestedEntries && state.view === 'access') {
+        membershipRequestedEntries = false;
+        showToast(currentLanguage === 'en' ? 'The DRIVER role is required for entries.' : 'Do Moich zapisów wymagana jest rola KIEROWCY.');
+        switchView('dashboard');
+      }
+      if (hasRegistrationAccess()) {
         const user = authUser;
         const currentAuthGeneration = authGeneration;
-        // Dopiero po świeżo potwierdzonej roli uruchamiamy odczyt profilu i kolejkę.
-        if (user && isCurrentProfileSession(currentAuthGeneration,userId)) {
+        if (!previouslyDriver && user && isCurrentProfileSession(currentAuthGeneration,userId))
           void syncMyDriverAvatar(user,currentAuthGeneration);
-        }
       } else {
-        // Nigdy nie zachowuj profilu poprzedniego potwierdzenia po odebraniu roli.
+        if (state.view === 'entries') switchView('access');
         ++authGeneration;
         cancelProfilePolling();
         ownRwinProfile = null;
@@ -2317,6 +2513,22 @@
         ownProfileIssue = null;
         lastSyncedAvatarUser = null;
         renderEntries();
+      }
+      return registrationAccessStatus !== 'error';
+    }
+
+    // Podczas otwartego Panelu co 5 sekund odpytujemy źródło uprawnień.
+    // Błąd, odebranie roli albo wygaśnięcie zamyka go natychmiast.
+    async function recheckOpenAdminPanel() {
+      if (adminPanelRecheckInFlight || state.view !== 'admin') return;
+      if (!hasAdminAccess() || !adminPanelData || !authUser?.id) {closeAdminPanel();return;}
+      adminPanelRecheckInFlight = true;
+      const sequence = membershipGeneration, userId = authUser.id;
+      try {
+        await readRegistrationAccess(sequence,userId,{background:true});
+        if (state.view === 'admin' && (!hasAdminAccess() || !adminPanelData)) closeAdminPanel();
+      } finally {
+        adminPanelRecheckInFlight = false;
       }
     }
 
@@ -2344,10 +2556,11 @@
       ownProfileIssue = null;
       ownProfileStatus = 'signed_out';
       lastSyncedAvatarUser = null;
-      if (state.view === 'entries') {
-        membershipRequestedEntries = true;
+      if (state.view === 'entries' || state.view === 'strategy' || state.view === 'admin') {
+        membershipRequestedEntries = state.view === 'entries';
         switchView('access');
       }
+      updatePrivateNavigation();
       renderEntries();
       renderMembershipGate();
       updateAccountButton();
@@ -2480,10 +2693,11 @@
       ++authGeneration;
       cancelProfilePolling();
       lastSyncedAvatarUser = null;
-      if (state.view === 'entries') {
-        membershipRequestedEntries = true;
+      if (state.view === 'entries' || state.view === 'strategy' || state.view === 'admin') {
+        membershipRequestedEntries = state.view === 'entries';
         switchView('access');
       }
+      updatePrivateNavigation();
       renderMembershipGate();
       renderEntries();
       updateAccountButton();
@@ -2526,7 +2740,10 @@
             updateAccountButton();
             updateLoginUI();
             renderEntries();
-            if (membershipRequestedEntries && state.view === 'access') switchView('entries');
+            updatePrivateNavigation();
+            // Zalogowanie otwiera prywatne menu dopiero po weryfikacji.
+            // Jeśli użytkownik specjalnie próbował wejść do zapisów, poczekaj na RPC roli.
+            if (!membershipRequestedEntries && state.view === 'access') switchView('dashboard');
             // Po potwierdzeniu member odczytujemy osobno świeżą rolę z bazy.
             // Konto bez roli pozostaje zalogowane; treści Moich zapisów są zamknięte.
             void readRegistrationAccess(sequence,userId);
@@ -2578,9 +2795,9 @@
       }
       authUser = user || null;
       if (nextUserId && nextUserId !== previousUserId) {
-        // Po OAuth pokazujemy kontrolę dostępu, nawet jeśli użytkownik był na Dashboardzie.
-        // Po uzyskaniu statusu 'member' przejdziemy do Moje zapisy.
-        membershipRequestedEntries = true;
+        // Po OAuth pokazujemy kontrolę dostępu; nie przenosimy automatycznie
+        // do zapisów bez świadomego wyboru i sprawdzenia roli KIEROWCY.
+        // Zachowaj intencję wejścia tylko jeśli wybrano zapisy przed zalogowaniem.
         if (state.view !== 'access') switchView('access');
       }
       if (nextUserId && nextUserId !== previousUserId && authClient) {
@@ -2691,6 +2908,7 @@
           if (!document.hidden) {
             loadLiveDriverAvatars();
             handleMembershipVisibilityResume();
+            if (state.view === 'admin') void recheckOpenAdminPanel();
           }
         });
         setInterval(ensureMembershipFresh,5000);
@@ -2801,13 +3019,21 @@
       $('accountButton').setAttribute('aria-expanded', 'false');
     }
 
+    function openAccountMenu() {
+      if (!hasMembershipAccess()) return;
+      updatePrivateNavigation();
+      $('accountMenu').hidden = false;
+      $('accountButton').setAttribute('aria-expanded','true');
+    }
+
     function toggleAccountMenu() {
       const menu = $('accountMenu');
-      menu.hidden = !menu.hidden;
-      $('accountButton').setAttribute('aria-expanded', String(!menu.hidden));
+      if (menu.hidden) openAccountMenu();
+      else closeAccountMenu();
     }
 
     function updateAccountButton() {
+      updatePrivateNavigation();
       const verified = hasMembershipAccess();
       const awaiting = Boolean(authUser) && !verified;
       const identity = verified ? discordIdentity(authUser) : null;
@@ -2880,6 +3106,17 @@
     $('eventSignup').addEventListener('click', changeSignup);
     $('loginBrandLogo').src = document.querySelector('.brand img').src;
     $('accountButton').addEventListener('click', () => hasMembershipAccess() ? toggleAccountMenu() : authUser ? switchView('access') : openLoginModal());
+    // Desktop: menu otwiera się po najechaniu na avatar. Telefon: po kliknięciu.
+    $('headerAccount').addEventListener('mouseenter', () => {
+      if (window.matchMedia('(hover: hover) and (pointer: fine)').matches) openAccountMenu();
+    });
+    $('headerAccount').addEventListener('mouseleave', () => {
+      if (window.matchMedia('(hover: hover) and (pointer: fine)').matches) closeAccountMenu();
+    });
+    $('accountPanel').addEventListener('click', () => {
+      closeAccountMenu();
+      switchView('admin'); // dodatkowe get_my_rwin_admin_panel() przed wejściem
+    });
     $('accountSignOut').addEventListener('click', () => { closeAccountMenu(); signOutDiscord(); });
     $('membershipLogin').addEventListener('click', openLoginModal);
     $('membershipRetry').addEventListener('click', () => startMembershipCheck('manual'));
@@ -2924,6 +3161,8 @@
       const query = new URLSearchParams(window.location.search).get('view');
       if (['entries','moje-zapisy','zapisy','my-entries'].includes(hash) ||
           query === 'entries') switchView('entries');
+      if (['strategy','strategia'].includes(hash) || query === 'strategy') switchView('strategy');
+      if (['admin','panel','panel-administracyjny'].includes(hash) || query === 'admin' || query === 'panel') switchView('admin'); // obowiązkowe RPC panelu
     }
     window.addEventListener('hashchange', applyRequestedDeepLink);
     // Weryfikacja stalej zakładki także po wznowieniu strony.
@@ -2931,8 +3170,17 @@
       if (authUser && !document.hidden) {
         ensureMembershipFresh();
         if (state.view === 'entries' && !hasRegistrationAccess()) renderRegistrationGate();
+        if ((state.view === 'strategy' && !hasStrategyAccess()) ||
+            (state.view === 'admin' && (!hasAdminAccess() || !adminPanelData))) updatePrivateNavigation();
+        if (!$('accountMenu').hidden && !hasMembershipAccess()) closeAccountMenu();
+        if (!$('accountPanel').hidden && !hasAdminAccess()) updatePrivateNavigation();
       }
     }, 2000);
+    // Aktualne uprawnienie ADMIN: sprawdzenie co 5 s podczas otwartego panelu.
+    setInterval(() => { if (!document.hidden && state.view === 'admin') void recheckOpenAdminPanel(); },5000);
+    window.addEventListener('focus', () => {
+      if (authUser && state.view === 'admin') void recheckOpenAdminPanel();
+    });
 
     // Uruchomienie pierwszego widoku.
     updateAccountButton();
