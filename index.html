@@ -740,7 +740,7 @@
     #driverEntriesPrivate[hidden], #driverRoleGate[hidden] {display:none!important;}
   
 .rwin-reg-field[hidden]{display:none!important}
-/* RWIN Registration Hub v1.9.14 — działające RPC z RWIN-zapisy-lineupy.sql. */
+/* RWIN Registration Hub v1.9.16 — RPC i preferencje startów. */
 .rwin-race-form-dialog{width:min(760px,calc(100vw - 22px));max-height:92dvh;overflow:auto;border:1px solid #5c3e61;background:#100d16;color:#f7eff8;box-shadow:0 24px 110px #000b;padding:0}
 .rwin-race-form-dialog::backdrop{background:#030208d9;backdrop-filter:blur(5px)}
 .rwin-reg-shell{padding:clamp(18px,4vw,34px)}
@@ -782,6 +782,38 @@
 .rwin-reg-divider{height:1px;background:#48354d;margin:20px 0}
 .rwin-reg-link{word-break:break-all;color:#e5acf0}
 @media(max-width:650px){.rwin-reg-fields,.rwin-reg-form-row{grid-template-columns:1fr}.rwin-reg-range{grid-template-columns:1fr}.rwin-reg-shell{padding:16px}}
+
+
+/* v1.9.15 — klasy wybierane przez ZARZĄD, stały katalog modeli */
+.rwin-admin-class-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin:13px 0}
+.rwin-admin-class-item{position:relative;cursor:pointer;display:flex;align-items:center;gap:11px;padding:15px 13px;border:1px solid #5e4568;border-radius:7px;background:#211627;transition:border-color .16s,background .16s;color:#f7f0fa}
+.rwin-admin-class-item:has(input:checked){background:#352039;border-color:#c980d8;box-shadow:inset 0 0 0 1px #c980d8}
+.rwin-admin-class-item:focus-within{outline:2px solid #c980d8;outline-offset:2px}
+.rwin-admin-class-item input{width:17px;height:17px;min-height:0;flex:none;accent-color:#c980d8;cursor:pointer}
+.rwin-admin-class-item strong{display:block;font:800 15px Arial,sans-serif;letter-spacing:.05em}
+.rwin-admin-class-item small{display:block;color:#c9b5d2;font:12px Arial,sans-serif;margin-top:5px}
+.rwin-admin-class-item:has(input:disabled){opacity:.65;cursor:not-allowed}
+.rwin-admin-car-preview{border:1px solid #44344c;background:#100d14;border-radius:6px;padding:16px;margin:10px 0 6px}
+.rwin-admin-car-preview h4{font:800 14px Arial,sans-serif;letter-spacing:.04em;color:#c980d8;margin:10px 0 7px}
+.rwin-admin-car-preview h4:first-child{margin-top:0}
+.rwin-admin-car-preview .rwin-admin-car-pills{display:flex;flex-wrap:wrap;gap:7px}
+.rwin-admin-car-pill{font:12px Arial,sans-serif;border:1px solid #493550;border-radius:3px;padding:7px 9px;color:#ddd0e1;background:#201826}
+.rwin-admin-schedule{margin:18px 0;border:1px solid #433449;border-radius:5px;padding:15px}
+.rwin-admin-schedule summary{cursor:pointer;color:#dbb4e6;font-weight:750;letter-spacing:.03em}
+.rwin-admin-schedule[open] summary{margin-bottom:16px}
+@media(max-width:750px){.rwin-admin-class-grid{grid-template-columns:1fr}}
+
+
+/* RWIN v1.9.16 — uproszczone szczegóły, zapis i panel klas */
+.rwin-info-stack{display:flex;flex-direction:column;gap:3px;line-height:1.55}
+.rwin-weather-simple{font-size:14px;color:#f1e6f4;margin:16px 0 4px}
+.rwin-admin-event-fields{margin-bottom:24px}
+.rwin-admin-class-panel{margin-top:20px}
+.rwin-admin-class-grid{margin:12px 0 9px}
+.rwin-admin-car-preview[hidden]{display:none!important}
+.rwin-admin-class-item{min-height:72px}
+.rwin-reg-field input[readonly]{background:#261b2b;color:#f1e5f5;cursor:default}
+@media(max-width:650px){.rwin-admin-class-grid{grid-template-columns:1fr}}
 
 </style>
 </head>
@@ -1051,7 +1083,7 @@
       <div class="admin-hero">
         <div class="admin-kicker">RWIN RACING / ZARZĄD</div>
         <h1 class="display admin-heading">PANEL <span class="text-purple">ADMINISTRACYJNY.</span></h1>
-        <p class="admin-intro">Prywatna przestrzeń zarządzania zespołem RWIN Racing. Dostęp wyłącznie dla zweryfikowanych członków z rolą ↣｜ZARZĄD. Sekcje zapisów i lineupów znajdują się poniżej. Operacje zostaną aktywowane dopiero po zatwierdzeniu kontraktu SQL i uruchomieniu bota.</p>
+        <p class="admin-intro">Prywatna przestrzeń zarządzania zespołem RWIN Racing. Dostęp wyłącznie dla zweryfikowanych członków z rolą ↣｜ZARZĄD. Sekcje zapisów i lineupów znajdują się poniżej. Zapisy, lineupy i publikacje obsługuje Supabase z kontrolą uprawnień ZARZĄDU.</p>
         <div class="admin-role-chip">◆ &nbsp; ROLA DISCORD: ZARZĄD</div>
         <p id="adminVerifiedStatus" class="admin-kicker" aria-live="polite"></p>
       </div>
@@ -1066,9 +1098,21 @@
         <div class="eyebrow">RWIN RACING / RACE MANAGEMENT</div><h2 class="section-title">ZAPISY I <span class="text-purple">LINEUPY.</span></h2>
         <div id="rwinRaceAdminNotice" class="rwin-reg-message" role="status" aria-live="polite">Weryfikuję dostęp do operacji zapisów…</div>
         <div class="rwin-admin-box"><h3>WYDARZENIE I OKNO ZAPISÓW</h3>
-          <div class="rwin-reg-form-row"><div class="rwin-reg-field"><label for="rwinAdminRaceSelect">Wydarzenie</label><select id="rwinAdminRaceSelect"></select></div><div class="rwin-reg-field"><label for="rwinAdminOpenTime">Otwarcie (Europe/Warsaw)</label><input type="datetime-local" id="rwinAdminOpenTime"></div><div class="rwin-reg-field"><label for="rwinAdminCloseTime">Zamknięcie (Europe/Warsaw)</label><input type="datetime-local" id="rwinAdminCloseTime"></div></div>
-          <div class="rwin-reg-form-row"><div class="rwin-reg-field"><label for="rwinAdminEventStart">Start wyścigu (Europe/Warsaw)</label><input type="datetime-local" id="rwinAdminEventStart"></div><div class="rwin-reg-field"><label for="rwinAdminEventEnd">Koniec wyścigu (Europe/Warsaw)</label><input type="datetime-local" id="rwinAdminEventEnd"></div></div>
-          <div class="rwin-reg-field wide"><label for="rwinAdminOptions">Dozwolone samochody — jedna opcja w wierszu: ID | Klasa | Samochód</label><textarea id="rwinAdminOptions" rows="4" spellcheck="false" placeholder="opcja-01 | Hypercar | [nazwa auta z regulaminu]"></textarea><p class="rwin-reg-small">Wpisz prawdziwe opcje wydarzenia, nie fikcyjne auta. Nie zmieniaj ID opcji po pierwszych zgłoszeniach.</p></div>
+          <div class="rwin-reg-form-row rwin-admin-event-fields">
+            <div class="rwin-reg-field"><label for="rwinAdminRaceSelect">Wydarzenie</label><select id="rwinAdminRaceSelect"></select></div>
+            <div class="rwin-reg-field"><label for="rwinAdminOpenTime">Otwarcie (Europe/Warsaw)</label><input type="datetime-local" id="rwinAdminOpenTime"></div>
+            <div class="rwin-reg-field"><label for="rwinAdminCloseTime">Zamknięcie (Europe/Warsaw)</label><input type="datetime-local" id="rwinAdminCloseTime"></div>
+          </div>
+          <div class="rwin-reg-field wide rwin-admin-class-panel"><label>DOZWOLONE KLASY</label>
+            <div class="rwin-admin-class-grid" id="rwinAdminClassChoices" role="group" aria-label="Wybór dozwolonych klas">
+              <label class="rwin-admin-class-item"><input type="checkbox" value="Hypercar" data-rwin-class><span><strong>HYPERCAR</strong></span></label>
+              <label class="rwin-admin-class-item"><input type="checkbox" value="LMP2" data-rwin-class><span><strong>LMP2</strong></span></label>
+              <label class="rwin-admin-class-item"><input type="checkbox" value="GT3" data-rwin-class><span><strong>LMGT3</strong></span></label>
+            </div>
+            <p class="rwin-reg-small">Wybrane klasy automatycznie udostępnią odpowiednie modele aut w zapisach.</p>
+            <div id="rwinAdminCarPreview" class="rwin-admin-car-preview" aria-live="polite" hidden></div>
+            <p id="rwinAdminClassHint" class="rwin-reg-small" aria-live="polite">Po pierwszym zgłoszeniu nie można zmienić wybranych klas.</p>
+          </div>
           <div class="rwin-reg-actions"><button type="button" class="btn btn-outline" id="rwinAdminReload">ODŚWIEŻ Z BAZY</button><button type="button" class="btn btn-primary" id="rwinAdminSaveWindow" disabled>ZAPISZ USTAWIENIA WYŚCIGU</button></div>
         </div>
         <div class="rwin-admin-box"><h3>ZGŁOSZENIA KIEROWCÓW</h3><div id="rwinAdminEntries" class="rwin-reg-scroll"><p class="rwin-reg-small">Dane pobierzemy po wdrożeniu RPC.</p></div></div>
@@ -1107,13 +1151,15 @@
       <div id="rwinRaceSignupNotice" class="rwin-reg-message" role="status" aria-live="polite">Odczytujemy dane wydarzenia z bazy RWIN…</div>
       <form id="rwinRaceSignupForm" novalidate>
         <div class="rwin-reg-fields">
-          <div class="rwin-reg-field wide"><label for="rwinRaceDriverName">Kierowca — dane zweryfikowane</label><input id="rwinRaceDriverName" type="text" readonly placeholder="Oczekiwanie na profil bota RWIN" autocomplete="off"></div>
+          <div class="rwin-reg-field wide"><input id="rwinRaceDriverName" type="text" aria-label="Imię i nazwisko potwierdzone przez bota RWIN" readonly placeholder="Oczekiwanie na profil bota RWIN" autocomplete="off"></div>
           <div class="rwin-reg-field wide"><label>Dostępność podczas wyścigu · strefa Europe/Warsaw</label><div class="rwin-reg-choice"><label><input type="radio" name="rwinAvailabilityMode" value="whole" checked> Cały wyścig</label><label><input type="radio" name="rwinAvailabilityMode" value="ranges"> Przedziały godzin</label></div></div>
           <div class="rwin-reg-field wide" id="rwinRaceAvailabilityRanges" hidden><label>Przedziały dostępności (czas polski)</label><div id="rwinRaceHours" class="rwin-reg-hours"></div><button type="button" id="rwinRaceAddHours" class="btn btn-outline" style="align-self:start">+ DODAJ PRZEDZIAŁ</button></div>
-          <div class="rwin-reg-field"><label for="rwinRaceClass">Preferowana klasa</label><select id="rwinRaceClass" required><option value="">Oczekiwanie na opcje wydarzenia</option></select></div>
+          <div class="rwin-reg-field"><label for="rwinRaceClass">Klasa samochodu</label><select id="rwinRaceClass" required><option value="">Oczekiwanie na opcje wydarzenia</option></select></div>
           <div class="rwin-reg-field"><label for="rwinRaceCar">Preferowany samochód</label><select id="rwinRaceCar" required><option value="">Oczekiwanie na opcje wydarzenia</option></select></div>
+          <div class="rwin-reg-field"><label for="rwinRaceStartDay">Preferowany dzień startu</label><select id="rwinRaceStartDay" required><option value="">Wybierz dzień</option></select></div>
+          <div class="rwin-reg-field"><label for="rwinRaceStartHour">Preferowana godzina startu</label><select id="rwinRaceStartHour" required><option value="">Wybierz godzinę</option></select></div>
           <div class="rwin-reg-field wide"><label class="rwin-reg-checkbox" for="rwinRaceReserve"><input type="checkbox" id="rwinRaceReserve"> Zgadzam się na ewentualne pełnienie roli rezerwowego (to nie jest przydział do rezerwy)</label></div>
-          <div class="rwin-reg-field wide"><label for="rwinRaceNote">Uwaga dla ZARZĄDU (opcjonalnie)</label><textarea id="rwinRaceNote" maxlength="500" placeholder="Np. preferowana zmiana, ograniczenia czasowe"></textarea></div>
+          <div class="rwin-reg-field wide"><label for="rwinRaceNote">Uwagi: (opcjonalnie)</label><textarea id="rwinRaceNote" maxlength="500" placeholder="Np. preferowana zmiana, ograniczenia czasowe"></textarea></div>
         </div>
         <div class="rwin-reg-actions"><button id="rwinRaceSubmit" type="submit" class="btn btn-primary" disabled>WYŚLIJ ZGŁOSZENIE ↗</button></div>
         <p class="rwin-reg-small">Zgłoszenie istnieje dopiero po potwierdzeniu przez bazę Supabase. Tożsamość i uprawnienia są sprawdzane na serwerze.</p>
@@ -1159,7 +1205,7 @@
     'use strict';
 
     /* =========================================================
-       RWIN RACING HUB v1.9.14 — JAVASCRIPT
+       RWIN RACING HUB v1.9.16 — JAVASCRIPT
        Jeden plik HTML: brak Reacta, npm i serwera.
        Logowanie OAuth działa przez Supabase po uzupełnieniu konfiguracji.
        Formularze zapisów nie zapisują fikcyjnych danych lokalnych; wymagają bezpiecznej bazy RWIN.
@@ -1561,6 +1607,82 @@
       'Moje zapisy':'My entries'
     });
 
+    Object.assign(I18N, {
+      'OTWÓRZ ZAPISY — WYBIERZ KLASY':'OPEN REGISTRATION — CHOOSE CLASSES',
+      'DOPUSZCZONE KLASY — zaznacz, które mogą wystartować. Samochody pojawiają się automatycznie.':'ELIGIBLE CLASSES — select the classes allowed to race. Cars will be added automatically.',
+      '12 modeli prototypów':'12 prototype models',
+      '1 model prototypu':'1 prototype model',
+      '10 modeli samochodów':'10 car models',
+      'Zaznacz klasę, aby wyświetlić dostępne auta.':'Select a class to see the available cars.',
+      'GODZINY WYŚCIGU I ZAMKNIĘCIE ZAPISÓW':'RACE TIMES AND ENTRY DEADLINE',
+      'Godziny wyścigu ustawiasz tylko raz. Przy otwarciu zapisów ich początek jest ustawiany automatycznie na teraz. Zamknięcie: domyślnie start wyścigu.':'Configure race times once. When opening entries, the opening time defaults to now. The closing time defaults to the start of the race.',
+      'Opcje są zapisywane w Supabase. Po pierwszym zgłoszeniu nie można zmienić klas ani samochodów tego wyścigu.':'Options are saved in Supabase. Once the first entry is submitted, classes and cars cannot be changed for that event.',
+      'OTWÓRZ ZAPISY DLA WYBRANYCH KLAS':'OPEN REGISTRATION FOR SELECTED CLASSES',
+      'Klasy są zablokowane, ponieważ w bazie istnieją już zgłoszenia. Nie usuwamy ani nie zmieniamy ich aut.':'Classes are locked because registrations already exist. Existing car selections stay unchanged.',
+      'Samochody wybierane są automatycznie z katalogu RWIN. Po pierwszym zapisie baza blokuje zmianę opcji aut.':'Cars are assigned automatically from the RWIN catalog. Database locks car options after the first entry.'
+    });
+
+    Object.assign(I18N, {
+      'WYDARZENIE I OKNO ZAPISÓW':'EVENT AND REGISTRATION WINDOW',
+      'DOZWOLONE KLASY':'ALLOWED CLASSES',
+      'Wydarzenie':'Event',
+      'Otwarcie (Europe/Warsaw)':'Opens (Europe/Warsaw)',
+      'Zamknięcie (Europe/Warsaw)':'Closes (Europe/Warsaw)',
+      'Wybrane klasy automatycznie udostępnią odpowiednie modele aut w zapisach.':'Selected classes automatically make their car models available for registration.',
+      'ZAPISZ USTAWIENIA WYŚCIGU':'SAVE RACE SETTINGS',
+      'Brak aktualnych danych z pogody':'No current weather data',
+      'GODZINY STARTÓW':'START TIMES',
+      'DNI SESJI':'SESSION DAYS',
+      'Klasa samochodu':'Car class',
+      'Preferowany dzień startu':'Preferred start day',
+      'Preferowana godzina startu':'Preferred start time',
+      'Wybierz dzień':'Select day',
+      'Wybierz godzinę':'Select time',
+      'Uwagi: (opcjonalnie)':'Notes (optional)',
+      'Preferowany start':'Preferred start',
+      'Uwagi':'Notes',
+      'Piątek':'Friday','Sobota':'Saturday','Niedziela':'Sunday'
+    });
+    const RWIN_SESSION_START_TIMES=Object.freeze(['03:00','10:00','13:00','18:00','23:00']);
+    const RWIN_WEEKDAY_NAMES=Object.freeze(['Niedziela','Poniedziałek','Wtorek','Środa','Czwartek','Piątek','Sobota']);
+    function rwinEventDayOptions(e){
+      if(!e?.date)return [];
+      const result=[],end=e.endDate||e.date;
+      const cursor=new Date(`${e.date}T12:00:00Z`);
+      for(let i=0;i<7 && cursor.toISOString().slice(0,10)<=end;i++){
+        const id=cursor.toISOString().slice(0,10);
+        result.push({id,name:`${RWIN_WEEKDAY_NAMES[cursor.getUTCDay()]} · ${id.slice(8,10)}.${id.slice(5,7)}.${id.slice(0,4)}`});
+        cursor.setUTCDate(cursor.getUTCDate()+1);
+      }
+      return result;
+    }
+    // Baza rwin_save_registration ma obecnie wyłącznie pole note, bez kolumn preferencji.
+    // Zachowujemy je w wersjonowanej linii notatki bez tworzenia nowego RPC.
+    const RWIN_START_PREFERENCE_PREFIX='[RWIN_START_PREF_V1]';
+    function rwinReadStartPreference(note){
+      const raw=typeof note==='string'?note:'';
+      const match=raw.match(/^\[RWIN_START_PREF_V1\](\d{4}-\d{2}-\d{2})\|(\d{2}:\d{2})\r?\n?/);
+      return match?{day:match[1],hour:match[2],note:raw.slice(match[0].length)}:{day:'',hour:'',note:raw};
+    }
+    function rwinPackStartPreference(day,hour,note){
+      return `${RWIN_START_PREFERENCE_PREFIX}${day}|${hour}\n${note}`;
+    }
+    function rwinApplySignupNote(rawNote){
+      const pref=rwinReadStartPreference(rawNote);
+      $('rwinRaceNote').value=pref.note;
+      $('rwinRaceStartDay').value=rwinEventDayOptions(EVENTS.find(e=>e.id===raceSelectedId)).some(d=>d.id===pref.day)?pref.day:'';
+      $('rwinRaceStartHour').value=RWIN_SESSION_START_TIMES.includes(pref.hour)?pref.hour:'';
+    }
+    // SQL wymaga starts_at/ends_at do walidacji dostępności. Są to techniczne
+    // granice weekendu, nie godziny konkretnych sesji. Nie prosimy admina o ręczne wpisanie.
+    function rwinEventWeekendBounds(eventId){
+      const e=EVENTS.find(item=>item.id===eventId);
+      if(!e)throw raceError('BAD_EVENT','Nieznane wydarzenie.');
+      const next=new Date(`${e.endDate||e.date}T12:00:00Z`);
+      next.setUTCDate(next.getUTCDate()+1);
+      return {start_local:`${e.date}T00:00`,end_local:`${next.toISOString().slice(0,10)}T12:00`}; // obejmuje niedzielny start o 23:00 i metę w poniedziałek
+    }
+
     const EVENTS = [
       {
         id: 'special-barcelona-2026', title: 'BARCELONA 6H',
@@ -1641,7 +1763,7 @@
     function trackSource(event) {
       const map = TRACK_MAPS[event.id];
       if (!map) return '';
-      if (map.inlineArtwork) return `<div class="map-source"><b>${esc(map.variant)}</b><span>Grafika przekazana do RWIN Racing Hub</span></div>`;
+      if (map.inlineArtwork) return ''; // Pod grafiką pozostaje jedna nazwa toru.
       return `<div class="map-source"><b>${esc(map.variant)}</b><span>Mapa: ${esc(map.author)}, ${esc(map.license)} · <a href="${map.source}" target="_blank" rel="noopener noreferrer">Wikimedia Commons ↗</a></span></div>`;
     }
 
@@ -1680,15 +1802,8 @@
       if (!iso || !Number.isFinite(Date.parse(iso))) return 'Nie podano godziny startu';
       return new Intl.DateTimeFormat(currentLanguage==='en'?'en-GB':'pl-PL', {timeZone:'Europe/Warsaw',day:'numeric',month:'long',hour:'2-digit',minute:'2-digit',year:'numeric'}).format(new Date(iso))+(currentLanguage==='en'?' (Warsaw)':' (Polska)');
     }
-    function weatherMarkup(event) {
-      const weather = eventInfo(event).weather;
-      const valid = weather && typeof weather.status === 'string' && weather.status.trim().length;
-      if (!valid) return `<div class="weather-state"><span class="weather-symbol" aria-hidden="true">◌</span><div><b>Brak danych z LMU</b><span>Warunki z RaceControl nie są jeszcze synchronizowane.</span></div></div>
-        <p class="race-info-note">To pole będzie pokazywać pogodę ustawioną dla sesji w LMU, gdy podłączymy źródło danych. Nie wyświetlamy pogody z miasta zamiast warunków wyścigu.</p>`;
-      const fields = [
-        ['Temperatura',weather.temperature],['Deszcz',weather.rain],['Wiatr',weather.wind],['Tor',weather.track]
-      ].filter(([_,value]) => typeof value === 'string' || typeof value === 'number').map(([k,v])=>`<div class="weather-metric"><small>${esc(k)}</small><b>${esc(v)}</b></div>`).join('');
-      return `<div class="weather-state"><span class="weather-symbol" aria-hidden="true">☁</span><div><b>${esc(weather.status)}</b><span>Warunki sesji LMU / dane wprowadzone z RaceControl</span></div></div>${fields?`<div class="weather-forecast-grid">${fields}</div>`:''}`;
+    function weatherMarkup(_event) {
+      return `<p class="rwin-weather-simple">Brak aktualnych danych z pogody</p>`;
     }
     function weekendStart(e) {
       const startAt = eventInfo(e).startAt;
@@ -1975,15 +2090,10 @@
       state.selectedEventId = eventId;
       $('eventDialogTitle').textContent = event.title;
       const registered = false;
-      const info = eventInfo(event);
-      const sessions = info.sessions || [];
-      const startLabel = info.startAt ? formatEventStart(info.startAt) : 'Godzina do uzupełnienia';
-      const sessionText = sessions.length
-        ? sessions.map(item=>`<div class="race-data-item"><span>${esc(item.name)}</span><strong>${esc(formatEventStart(item.startAt))}</strong></div>`).join('')
-        : `<div class="race-data-item" style="grid-column:1/-1"><span>GODZINY SESJI</span><strong>Brak opublikowanych godzin w RWIN Hub</strong></div>`;
-      const trackNote = TRACK_MAPS[event.id]?.inlineArtwork
-        ? (TRACK_MAPS[event.id].caption || TRACK_MAPS[event.id].variant)
-        : (event.trackTBA ? 'Układ toru poznamy po premierze DLC.' : 'Rzeczywista mapa toru w wariancie GP. Dokładny wariant, sektory i numeracja zakrętów dla konkretnego wydarzenia LMU wymagają potwierdzenia w grze.');
+      // Godziny i dni sesji RWIN podane dla tego kalendarza; nie są prognozą LMU.
+      const startSlots=RWIN_SESSION_START_TIMES.map(time=>`<span>${esc(time)}</span>`).join('');
+      const sessionDays=rwinEventDayOptions(event).map(day=>`<span>${esc(day.name.split(' · ')[0])}</span>`).join('');
+      const trackNote = event.trackTBA ? 'Tor do ogłoszenia' : event.track;
       $('eventDialogBody').innerHTML = `
         <div class="race-dialog-banner"><span class="race-dialog-badge">${esc(typeName(event.type))}</span><span class="tag demo">RWIN RACING • EVENT INFO</span></div>
         <div class="race-dialog-layout">
@@ -2000,17 +2110,16 @@
                 <div class="race-data-item"><span>TOR</span><strong>${esc(event.track)}</strong></div>
                 <div class="race-data-item"><span>DŁUGOŚĆ WYŚCIGU</span><strong>${esc(event.duration)}</strong></div>
                 <div class="race-data-item"><span>TERMIN WEEKENDU</span><strong>${esc(eventRange(event))}</strong></div>
-                <div class="race-data-item"><span>START WYŚCIGU</span><strong>${esc(startLabel)}</strong></div>
-                ${sessionText}
+                <div class="race-data-item"><span>GODZINY STARTÓW</span><strong class="rwin-info-stack">${startSlots}</strong></div>
+                <div class="race-data-item"><span>DNI SESJI</span><strong class="rwin-info-stack">${sessionDays}</strong></div>
               </div>
             </div>
             <div class="weather-box">
-              <div class="race-section-head"><span>03 / PROGNOZA POGODY</span><span class="text-purple">LMU</span></div>
+              <div class="race-section-head"><span>03 / PROGNOZA POGODY</span></div>
               ${weatherMarkup(event)}
             </div>
           </div>
-        </div>
-        <p class="race-info-note">Szczegóły i ustawienia sesji możesz także sprawdzić w <a href="https://racecontrol.gg/" target="_blank" rel="noopener noreferrer">RaceControl ↗</a>. Część danych będzie automatyczna dopiero po integracji LMU.</p>`;
+        </div>`;
       $('eventSignup').textContent = 'ZAPISZ SIĘ ↗';
       if (!refreshOnly && !$('eventDialog').open) $('eventDialog').showModal();
       translateAll();
@@ -2140,6 +2249,73 @@
       if(data.event_id!==eventId || !Number.isInteger(data.version))throw raceError('INVALID_RESPONSE','Baza nie potwierdziła zapisania roboczego składu.');
       return {confirmed:true,version:data.version};
     }
+    // Stały katalog klas i samochodów RWIN. Admin wybiera WYŁĄCZNIE klasy.
+    // Jedna opcja = jeden model; id jest deterministyczne, aby pozostać stabilne między zapisami.
+    const RWIN_CAR_CATALOG=Object.freeze({
+      Hypercar:Object.freeze([
+        'Alpine A424',
+        'Aston Martin Valkyrie AMR LMH',
+        'BMW M Hybrid V8',
+        'Cadillac V-Series.R',
+        'Ferrari 499P',
+        'Glickenhaus 007 LMH',
+        'Isotta Fraschini Tipo 6 Competizione',
+        'Lamborghini SC63',
+        'Peugeot 9X8',
+        'Porsche 963',
+        'Toyota GR010 Hybrid',
+        'Vanwall Vandervell 680'
+      ]),
+      LMP2:Object.freeze(['ORECA 07 Gibson']),
+      GT3:Object.freeze([
+        'Aston Martin Vantage AMR LMGT3',
+        'BMW M4 LMGT3',
+        'Chevrolet Corvette Z06 GT3',
+        'Ferrari 296 LMGT3',
+        'Ford Mustang LMGT3',
+        'Lamborghini Huracán LMGT3 Evo2',
+        'Lexus RC F LMGT3',
+        'McLaren 720S LMGT3 Evo',
+        'Mercedes-AMG LMGT3',
+        'Porsche 911 GT3 R'
+      ])
+    });
+    const RWIN_CAR_CLASS_ORDER=Object.freeze(['Hypercar','LMP2','GT3']);
+    function rwinClassFromStored(name){return name==='LMGT3'?'GT3':name;}
+    function rwinOptionSlug(value){return String(value).normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'');}
+    function rwinGetSelectedRaceClasses(){
+      return RWIN_CAR_CLASS_ORDER.filter(c=>[...document.querySelectorAll('[data-rwin-class]:checked')].some(input=>input.value===c));
+    }
+    function rwinBuildCatalogOptions(selected,existing=[]){
+      if(!Array.isArray(selected)||!selected.length||selected.some(id=>!RWIN_CAR_CLASS_ORDER.includes(id)))
+        throw raceError('RWIN_INVALID_OPTION','Zaznacz co najmniej jedną klasę: Hypercar, LMP2 lub GT3.');
+      const used=new Set(),result=[];
+      for(const className of RWIN_CAR_CLASS_ORDER){
+        if(!selected.includes(className))continue;
+        for(const carName of RWIN_CAR_CATALOG[className]){
+          // Zachowaj istniejące ID dla takiego samego samochodu, żeby nie zerwać powiązań.
+          const prior=existing.find(o=>rwinClassFromStored(o.class_name)===className && o.car_name===carName && /^[a-zA-Z0-9_-]{1,80}$/.test(o.id||'') && !used.has(o.id));
+          const id=prior?prior.id:(rwinOptionSlug(className)+'-'+rwinOptionSlug(carName)).slice(0,80);
+          if(used.has(id))throw raceError('RWIN_INVALID_OPTION','Konflikt identyfikatorów aut.');
+          used.add(id);result.push({id,class_name:prior?.class_name||className,car_name:carName});
+        }
+      }
+      return result;
+    }
+    function rwinPreviewAdminCars(){
+      const selected=rwinGetSelectedRaceClasses();
+      const box=$('rwinAdminCarPreview');
+      const en=currentLanguage==='en';
+      if(!selected.length){box.textContent=en?'Select at least one class to show the available cars.':'Zaznacz klasę, aby wyświetlić listę samochodów.';return;}
+      // Po pierwszym zgłoszeniu pokazuj PRAWDZIWE opcje z bazy, a nie proponowaną nową listę.
+      const locked=Boolean(raceAdminSnapshot?.entries?.length);
+      const stored=rwinOptionList(raceAdminSnapshot?.event);
+      const groups=selected.map(className=>({name:className,cars:locked?
+        stored.filter(x=>rwinClassFromStored(x.class_name)===className).map(x=>x.car_name):RWIN_CAR_CATALOG[className]}));
+      const count=groups.reduce((n,group)=>n+group.cars.length,0);
+      box.innerHTML=`<p class="rwin-reg-small">${locked?(en?'CARS ALREADY SAVED IN DATABASE':'AUTA ZAPISANE JUŻ W BAZIE'):(en?'AVAILABLE CAR MODELS':'DOSTĘPNE MODELE AUT')}: ${count}</p>`+groups.map(group=>
+        `<h4>${esc(group.name==='GT3'?'GT3 / LMGT3':group.name)} — ${group.cars.length} ${en?(group.cars.length===1?'MODEL':'MODELS'):(group.cars.length===1?'MODEL':'MODELI')}</h4><div class="rwin-admin-car-pills">${group.cars.map(name=>`<span class="rwin-admin-car-pill">${esc(name)}</span>`).join('')}</div>`).join('');
+    }
     function rwinAdminParseOptions(text){
       const arr=[];const ids=new Set();
       for(const line of String(text||'').split(/\r?\n/).map(x=>x.trim()).filter(Boolean)){
@@ -2209,10 +2385,14 @@
       },
       async adminUpdateWindow(eventId,form){
         const s=rwinSnapshot(),e=s.event;
+        const storedClasses=[...new Set(rwinOptionList(e).map(x=>rwinClassFromStored(x.class_name)))];
+        if(s.entries.length && (storedClasses.length!==form.class_ids.length || !storedClasses.every(c=>form.class_ids.includes(c))))
+          throw raceError('RWIN_EVENT_HAS_REGISTRATIONS','Ten wyścig ma już zapisy. Nie wolno zmieniać dostępnych klas.');
         const data=rwinRequireObject(await rwinRpc('rwin_admin_save_event',{
           p_event:{id:eventId,title:e.title,starts_at:rwinWarsawToIso(form.start_local),ends_at:rwinWarsawToIso(form.end_local),
             timezone:RWIN_RACE_TIME_ZONE,registration_opens_at:rwinWarsawToIso(form.open_local),
-            registration_closes_at:rwinWarsawToIso(form.close_local),options:rwinAdminParseOptions(form.options_text)},
+            registration_closes_at:rwinWarsawToIso(form.close_local),
+            options:s.entries.length ? e.options : rwinBuildCatalogOptions(form.class_ids,e.options)},
           p_expected_version:e.version
         }));
         if(data.event_id!==eventId||!Number.isInteger(data.version))throw raceError('UNCONFIRMED_WRITE','Baza nie potwierdziła konfiguracji wydarzenia.');
@@ -2423,7 +2603,10 @@
       if(!option)throw raceError('RWIN_INVALID_OPTION','Wybierz klasę i samochód z oferty wydarzenia.');
       const mode=document.querySelector('input[name="rwinAvailabilityMode"]:checked')?.value||'whole';
       const intervals=raceReadHours();
-      const note=$('rwinRaceNote').value.trim();
+      const day=$('rwinRaceStartDay').value,hour=$('rwinRaceStartHour').value;
+      if(!rwinEventDayOptions(EVENTS.find(e=>e.id===raceSelectedId)).some(d=>d.id===day) || !RWIN_SESSION_START_TIMES.includes(hour))
+        throw raceError('RWIN_INVALID_START_PREFERENCE','Wybierz preferowany dzień i godzinę startu.');
+      const note=rwinPackStartPreference(day,hour,$('rwinRaceNote').value.trim());
       return {event_id:raceSelectedId,availability:{mode:mode==='ranges'?'intervals':'whole',timezone:RWIN_RACE_TIME_ZONE,...(mode==='ranges'?{intervals}:{})},
         option_id:optionId,accept_reserve:$('rwinRaceReserve').checked,note};
     }
@@ -2436,7 +2619,9 @@
     function raceUpdateSubmitState(){
       const ready=Boolean(raceDetails?.registration_open && ownRwinProfile?.name);
       const choice=rwinOptionList(raceDetails?.event).find(o=>o.class_name===$('rwinRaceClass').value && o.id===$('rwinRaceCar').value);
-      $('rwinRaceSubmit').disabled=!ready || !choice || raceBusy;
+      const dayValid=rwinEventDayOptions(EVENTS.find(e=>e.id===raceSelectedId)).some(d=>d.id===$('rwinRaceStartDay').value);
+      const hourValid=RWIN_SESSION_START_TIMES.includes($('rwinRaceStartHour').value);
+      $('rwinRaceSubmit').disabled=!ready || !choice || !dayValid || !hourValid || raceBusy;
     }
     function raceSetFormAvailability(mode) {
       const ranges=mode==='ranges';
@@ -2478,7 +2663,9 @@
       $('rwinRaceSignupHeading').textContent=existing?'EDYTUJ ZAPIS':'ZAPIS NA WYŚCIG';
       $('rwinRaceSignupEvent').textContent=event.title+' · '+eventRange(event)+' · '+event.track;
       $('rwinRaceDriverName').value=ownRwinProfile?.name||'';
-      $('rwinRaceNote').value=existing?.note||'';
+      racePopulateSelect($('rwinRaceStartDay'),rwinEventDayOptions(event),'Wybierz dzień');
+      racePopulateSelect($('rwinRaceStartHour'),RWIN_SESSION_START_TIMES.map(t=>({id:t,name:t})),'Wybierz godzinę');
+      rwinApplySignupNote(existing?.note||'');
       $('rwinRaceReserve').checked=existing?.available_as_reserve===true;
       const mode=existing?.availability?.type==='ranges'?'ranges':'whole';
       document.querySelector('input[name="rwinAvailabilityMode"][value="'+mode+'"]').checked=true;
@@ -2505,7 +2692,7 @@
           if(prior?._rawStatus==='active'){
             existing=prior;raceFormMode='edit';raceExistingEntryId=prior.id;
             $('rwinRaceSignupHeading').textContent='EDYTUJ ZAPIS';
-            $('rwinRaceNote').value=prior.note||'';
+            rwinApplySignupNote(prior.note||'');
             $('rwinRaceReserve').checked=prior.accept_reserve===true;
             const existingMode=prior.availability?.type==='ranges'?'ranges':'whole';
             document.querySelector(`input[name="rwinAvailabilityMode"][value="${existingMode}"]`).checked=true;
@@ -2579,8 +2766,10 @@
         const event=EVENTS.find(x=>x.id===row.event_id);
         const title=event?.title||String(row.event_id||'WYDARZENIE');
         const availability=row.availability?.type==='ranges'?(row.availability.intervals||[]).map(p=>esc(p.start_local)+' – '+esc(p.end_local)).join(', '):'Cały wyścig';
+        const preference=rwinReadStartPreference(row.note);
+        const startPref=preference.day&&preference.hour?`${preference.day} · ${preference.hour}`:'—';
         const assignment=row.assignment?.published===true?row.assignment:null;
-        return `<article class="rwin-reg-card"><span class="rwin-reg-status">${esc(raceStatusLabel(row.status))}</span><h3>${esc(title)}</h3><div class="rwin-reg-meta">Aktualizacja: <strong>${raceSafeWhen(row.updated_at)}</strong><br>Dostępność (${RWIN_RACE_TIME_ZONE}): <strong>${availability||'Brak przedziałów'}</strong><br>Klasa / auto: <strong>${esc(row.class_name||row.class_id||'—')} / ${esc(row.car_name||row.car_id||'—')}</strong><br>Rezerwa — zgoda: <strong>${row.available_as_reserve?'TAK':'NIE'}</strong></div>${assignment?`<div class="rwin-reg-divider"></div><div class="rwin-reg-status">OGŁOSZONY LINEUP</div><p>${esc(assignment.name||'Skład RWIN')} · ${esc(assignment.car||'')} · ${assignment.role==='reserve'?'REZERWOWY':'KIEROWCA'}</p><p class="rwin-reg-small">Twoja odpowiedź: ${esc(raceStatusLabel(assignment.response))}</p><div class="rwin-reg-actions">${assignment.can_respond===true?`<button type="button" class="btn btn-primary" data-rwin-entry-action="accept" data-entry-id="${esc(row.id)}">POTWIERDZAM</button><button type="button" class="btn btn-outline" data-rwin-entry-action="decline" data-entry-id="${esc(row.id)}">ODRZUCAM</button>`:''}</div>`:''}<div class="rwin-reg-actions">${row.can_edit===true?`<button type="button" class="btn btn-outline" data-rwin-entry-action="edit" data-entry-id="${esc(row.id)}">EDYTUJ ZAPIS</button>`:''}${row.can_withdraw===true?`<button type="button" class="btn btn-outline" data-rwin-entry-action="withdraw" data-entry-id="${esc(row.id)}">WYCOFAJ</button>`:''}<button class="btn btn-outline" type="button" data-rwin-entry-action="event" data-entry-id="${esc(row.id)}">ZOBACZ WYDARZENIE</button></div></article>`;
+        return `<article class="rwin-reg-card"><span class="rwin-reg-status">${esc(raceStatusLabel(row.status))}</span><h3>${esc(title)}</h3><div class="rwin-reg-meta">Aktualizacja: <strong>${raceSafeWhen(row.updated_at)}</strong><br>Dostępność (${RWIN_RACE_TIME_ZONE}): <strong>${availability||'Brak przedziałów'}</strong><br>Klasa / auto: <strong>${esc(row.class_name||row.class_id||'—')} / ${esc(row.car_name||row.car_id||'—')}</strong><br>Preferowany start: <strong>${esc(startPref)}</strong><br>Rezerwa — zgoda: <strong>${row.available_as_reserve?'TAK':'NIE'}</strong></div>${assignment?`<div class="rwin-reg-divider"></div><div class="rwin-reg-status">OGŁOSZONY LINEUP</div><p>${esc(assignment.name||'Skład RWIN')} · ${esc(assignment.car||'')} · ${assignment.role==='reserve'?'REZERWOWY':'KIEROWCA'}</p><p class="rwin-reg-small">Twoja odpowiedź: ${esc(raceStatusLabel(assignment.response))}</p><div class="rwin-reg-actions">${assignment.can_respond===true?`<button type="button" class="btn btn-primary" data-rwin-entry-action="accept" data-entry-id="${esc(row.id)}">POTWIERDZAM</button><button type="button" class="btn btn-outline" data-rwin-entry-action="decline" data-entry-id="${esc(row.id)}">ODRZUCAM</button>`:''}</div>`:''}<div class="rwin-reg-actions">${row.can_edit===true?`<button type="button" class="btn btn-outline" data-rwin-entry-action="edit" data-entry-id="${esc(row.id)}">EDYTUJ ZAPIS</button>`:''}${row.can_withdraw===true?`<button type="button" class="btn btn-outline" data-rwin-entry-action="withdraw" data-entry-id="${esc(row.id)}">WYCOFAJ</button>`:''}<button class="btn btn-outline" type="button" data-rwin-entry-action="event" data-entry-id="${esc(row.id)}">ZOBACZ WYDARZENIE</button></div></article>`;
       }).join('');
     }
     function raceRenderOwnedLineups(){
@@ -2695,17 +2884,23 @@
       if(!raceAdminConfigDirty){
         $('rwinAdminOpenTime').value=snap.window.open_local;
         $('rwinAdminCloseTime').value=snap.window.close_local;
-        $('rwinAdminEventStart').value=rwinRaceLocalTime(event.starts_at);
-        $('rwinAdminEventEnd').value=rwinRaceLocalTime(event.ends_at);
-        $('rwinAdminOptions').value=rwinOptionList(event).map(o=>`${o.id} | ${o.class_name} | ${o.car_name}`).join('\n');
+        const selected=new Set(rwinOptionList(event).map(o=>rwinClassFromStored(o.class_name)));
+        document.querySelectorAll('[data-rwin-class]').forEach(input=>input.checked=selected.has(input.value));
+        rwinPreviewAdminCars();
       }
+      const locked=snap.entries.length>0;
+      document.querySelectorAll('[data-rwin-class]').forEach(input=>input.disabled=locked);
+      $('rwinAdminClassHint').textContent=locked
+        ? (currentLanguage==='en'?'Classes are locked because registrations already exist. Existing car selections stay unchanged.':'Klasy są zablokowane, ponieważ w bazie istnieją już zgłoszenia. Nie usuwamy ani nie zmieniamy ich aut.')
+        : (currentLanguage==='en'?'Cars are assigned automatically from the RWIN catalog. Database locks car options after the first entry.':'Samochody wybierane są automatycznie z katalogu RWIN. Po pierwszym zapisie baza blokuje zmianę opcji aut.');
+      rwinPreviewAdminCars();
       const optionSelect=$('rwinAdminLineupCar');
       const prior=optionSelect.value;
       racePopulateSelect(optionSelect,rwinOptionList(event).map(o=>({id:o.id,name:rwinOptionLabel(o)})),'Wybierz opcję wydarzenia');
       if(rwinOptionList(event).some(o=>o.id===prior))optionSelect.value=prior;
       raceAdminDisableWrite(false);
       const entries=snap.entries;
-      $('rwinAdminEntries').innerHTML=entries.length?`<table class="rwin-reg-table"><thead><tr><th>Kierowca</th><th>Status</th><th>Dostępność (PL)</th><th>Rezerwa</th><th>Przydział i odpowiedź</th><th>Akcja</th></tr></thead><tbody>${entries.map(r=>`<tr><td>${esc(r.driver_name)}</td><td>${esc(raceStatusLabel(r.status))}</td><td>${esc(rwinAvailabilityText(r._availabilityRaw))}</td><td>${r.accept_reserve?'TAK':'NIE'}</td><td>${r.assignment?esc((r.assignment.details?.lineup_name||'RWIN')+' / '+raceStatusLabel(r.assignment.response)):'—'}</td><td>${r.status==='active'?`<button class="btn btn-outline" type="button" data-rwin-admin-withdraw="${esc(r.id)}">WYCOFAJ</button>`:'—'}</td></tr>`).join('')}</tbody></table>`:'<p class="rwin-reg-small">Brak zgłoszeń do tego wydarzenia.</p>';
+      $('rwinAdminEntries').innerHTML=entries.length?`<table class="rwin-reg-table"><thead><tr><th>Kierowca</th><th>Status</th><th>Dostępność (PL)</th><th>Preferowany start</th><th>Uwagi</th><th>Rezerwa</th><th>Przydział i odpowiedź</th><th>Akcja</th></tr></thead><tbody>${entries.map(r=>`<tr><td>${esc(r.driver_name)}</td><td>${esc(raceStatusLabel(r.status))}</td><td>${esc(rwinAvailabilityText(r._availabilityRaw))}</td><td>${esc((()=>{const p=rwinReadStartPreference(r.note);return p.day&&p.hour?p.day+' · '+p.hour:'—';})())}</td><td style="white-space:pre-wrap;overflow-wrap:anywhere">${esc(rwinReadStartPreference(r.note).note||'—')}</td><td>${r.accept_reserve?'TAK':'NIE'}</td><td>${r.assignment?esc((r.assignment.details?.lineup_name||'RWIN')+' / '+raceStatusLabel(r.assignment.response)):'—'}</td><td>${r.status==='active'?`<button class="btn btn-outline" type="button" data-rwin-admin-withdraw="${esc(r.id)}">WYCOFAJ</button>`:'—'}</td></tr>`).join('')}</tbody></table>`:'<p class="rwin-reg-small">Brak zgłoszeń do tego wydarzenia.</p>';
       const assigned=new Set(snap.lineups.flatMap(l=>(l.members||[]).map(m=>m.registration_id)));
       const available=entries.filter(r=>r.status==='active'&&!assigned.has(r.id));
       $('rwinAdminLineups').innerHTML=snap.lineups.length?snap.lineups.map(lineup=>{
@@ -2742,16 +2937,36 @@
       document.querySelectorAll('input[name="rwinAvailabilityMode"]').forEach(input=>input.addEventListener('change',()=>raceSetFormAvailability(input.value)));
       $('rwinRaceClass').addEventListener('change',raceFilterCarOptions);
       $('rwinRaceCar').addEventListener('change',raceUpdateSubmitState);
+      $('rwinRaceStartDay').addEventListener('change',raceUpdateSubmitState);
+      $('rwinRaceStartHour').addEventListener('change',raceUpdateSubmitState);
       $('myEntries').addEventListener('click',event=>void raceOwnedEntryAction(event));
       $('rwinAdminRaceSelect').replaceChildren(...EVENTS.map(e=>new Option(e.title,e.id)));
       $('rwinAdminRaceSelect').addEventListener('change',()=>{raceAdminConfigDirty=false;raceAdminEventId=$('rwinAdminRaceSelect').value;void raceLoadAdmin(true);});
       $('rwinAdminReload').addEventListener('click',()=>{raceAdminConfigDirty=false;void raceLoadAdmin(true);});
-      ['rwinAdminOpenTime','rwinAdminCloseTime','rwinAdminEventStart','rwinAdminEventEnd','rwinAdminOptions'].forEach(id=>$(id).addEventListener('input',()=>{raceAdminConfigDirty=true;}));
+      ['rwinAdminOpenTime','rwinAdminCloseTime'].forEach(id=>$(id).addEventListener('input',()=>{raceAdminConfigDirty=true;}));
+      document.querySelectorAll('[data-rwin-class]').forEach(input=>input.addEventListener('change',()=>{
+        raceAdminConfigDirty=true;rwinPreviewAdminCars();
+      }));
       $('rwinAdminSaveWindow').addEventListener('click',()=>{
-        const start=$('rwinAdminEventStart').value,end=$('rwinAdminEventEnd').value;
-        const open=$('rwinAdminOpenTime').value,close=$('rwinAdminCloseTime').value;
-        if(!start||!end||!open||!close||start>=end||open>=close||close>end){showToast('Uzupełnij poprawnie czas wyścigu i okno zapisów.');return;}
-        void raceAdminPerform('adminUpdateWindow',[raceAdminEventId,{start_local:start,end_local:end,open_local:open,close_local:close,options_text:$('rwinAdminOptions').value}], 'Ustawienia wydarzenia zapisane.');
+        const selected=rwinGetSelectedRaceClasses();
+        if(!selected.length){showToast('Wybierz co najmniej jedną klasę wyścigową.');return;}
+        const open=$('rwinAdminOpenTime').value;
+        const close=$('rwinAdminCloseTime').value;
+        if(!open || !close){showToast('Ustaw datę otwarcia i zamknięcia zapisów.');return;}
+        let bounds;
+        try {
+          const existing=raceAdminSnapshot?.event;
+          bounds=raceAdminSnapshot?.entries?.length && existing?.starts_at && existing?.ends_at
+            ? {start_local:rwinRaceLocalTime(existing.starts_at),end_local:rwinRaceLocalTime(existing.ends_at)}
+            : rwinEventWeekendBounds(raceAdminEventId);
+          if(Date.parse(rwinWarsawToIso(close))<=Date.parse(rwinWarsawToIso(open)))
+            throw raceError('RWIN_INVALID_EVENT','Zamknięcie musi być później niż otwarcie.');
+          if(Date.parse(rwinWarsawToIso(close))>Date.parse(rwinWarsawToIso(bounds.end_local)))
+            throw raceError('RWIN_INVALID_EVENT','Zamknięcie musi przypadać najpóźniej do końca weekendu wyścigowego.');
+        } catch(error){showToast(error.message||'Nieprawidłowe godziny zapisów.');return;}
+        void raceAdminPerform('adminUpdateWindow',[raceAdminEventId,{
+          start_local:bounds.start_local,end_local:bounds.end_local,open_local:open,close_local:close,class_ids:selected
+        }], 'Zapisy i wybrane klasy zostały potwierdzone w Supabase.');
       });
       $('rwinAdminCreateLineup').addEventListener('submit',event=>{
         event.preventDefault();
