@@ -1152,6 +1152,7 @@
         <div class="rwin-admin-box"><h3>ZGŁOSZENIA KIEROWCÓW</h3><div id="rwinAdminEntries" class="rwin-reg-scroll"><p class="rwin-reg-small">Dane pobierzemy po wdrożeniu RPC.</p></div></div>
         <div class="rwin-admin-box"><h3>USTAWIENIA LINEUPÓW</h3>
           <form id="rwinAdminCreateLineup"><div class="rwin-reg-form-row"><div class="rwin-reg-field"><label for="rwinAdminLineupName">Nazwa lineupu</label><select id="rwinAdminLineupName" required><option value="RWIN 01">RWIN 01</option><option value="RWIN 02">RWIN 02</option><option value="RWIN 03">RWIN 03</option><option value="RWIN 04">RWIN 04</option><option value="RWIN 05">RWIN 05</option></select></div><div class="rwin-reg-field"><label for="rwinAdminLineupClass">Klasa samochodu</label><select id="rwinAdminLineupClass" required><option value="">Wybierz klasę</option></select></div><div class="rwin-reg-field"><label for="rwinAdminLineupCar">Model samochodu</label><select id="rwinAdminLineupCar" required><option value="">Najpierw wybierz klasę</option></select></div><div class="rwin-reg-field"><label for="rwinAdminLineupLimit">Limit kierowców</label><select id="rwinAdminLineupLimit" required><option value="2">2</option><option value="3" selected>3</option><option value="4">4</option><option value="5">5</option><option value="6">6</option></select></div></div><div class="rwin-reg-actions"><button type="submit" class="btn btn-outline" id="rwinAdminLineupCreate" disabled>UTWÓRZ ROBOCZY LINEUP</button></div></form>
+          <p id="rwinAdminLineupCounter" class="rwin-reg-small" aria-live="polite">Wczytuję robocze składy…</p>
           <div id="rwinAdminLineups"></div>
         </div>
         <div class="rwin-admin-box"><h3>PUBLIKACJA I POWIADOMIENIA</h3>
@@ -2169,7 +2170,7 @@
     }
 
     // =============================================================
-    // RWIN REGISTRATION UI v1.9.14 — SQL RPC integration
+    // RWIN REGISTRATION UI v1.9.19 — poprawki wielu lineupów i operacji SQL
     // Nazwy metod "bridge" poniżej NIE są nazwami RPC SQL. Dopiero po
     // otrzymaniu RWIN-zapisy-kontrakt.md można je połączyć ze zweryfikowanymi
     // RPC. Bez tego formularze nie wykonają zapisów i nie udają sukcesu.
@@ -2198,6 +2199,9 @@
     let raceAdminOverviewBusy = false;
     let raceAdminOverviewTicket = 0;
     let raceAdminConfigDirty = false;
+    // v1.9.19: admin writes are serialized; stale load responses never overwrite newer data.
+    let raceAdminWriteBusy = false;
+    let raceAdminLoadTicket = 0;
 
     function rwinRaceValidId(id) {
       return typeof id === 'string' && RWIN_RACE_IDS.includes(id);
@@ -2284,7 +2288,14 @@
       if(!raceAdminSnapshot?.event || raceAdminSnapshot.event.id!==raceAdminEventId)throw raceError('RWIN_VERSION_CONFLICT','Odśwież dane wydarzenia w panelu.');
       return raceAdminSnapshot;
     }
-    function rwinNormalizeLineups(snapshot){return structuredClone(snapshot.event.draft||[]);}
+    function rwinNormalizeLineups(snapshot){
+      // IMPORTANT: rwin_get_event() intentionally removes `draft` from `event`.
+      // It returns the admin draft separately as `draft`, which adminSnapshot maps to `lineups`.
+      // Reading `snapshot.event.draft` made every edit start with [] and overwrite older lineups.
+      if(!snapshot || !Array.isArray(snapshot.lineups))
+        throw raceError('INVALID_CONTRACT','Nie otrzymano roboczych lineupów z Supabase. Odśwież panel.');
+      return structuredClone(snapshot.lineups);
+    }
     async function rwinSaveDraft(eventId,draft){
       const snap=rwinSnapshot();
       if(eventId!==snap.event.id)throw raceError('RWIN_VERSION_CONFLICT','Zmieniono wydarzenie. Odśwież panel.');
@@ -2418,6 +2429,8 @@
           rwinRpc('rwin_admin_get_notifications',{p_event_id:eventId})
         ]);
         if(!Array.isArray(regs)||!Array.isArray(dms))throw raceError('INVALID_RESPONSE','Niepoprawny wynik RPC panelu.');
+        if(!Array.isArray(d.draft))
+          throw raceError('RWIN_ADMIN_REQUIRED','Supabase nie udostępnił roboczych lineupów. Sprawdź aktualność roli ZARZĄD i odśwież panel.');
         const e=d.event;
         return {event:e,version:e.version,revision:e.revision,registration_open:d.registration_open===true,
           entries:regs.map(r=>({...r,availability:rwinAvailabilityForUi(r.availability),
@@ -2442,7 +2455,12 @@
         return {confirmed:true};
       },
       async adminSaveLineup(eventId,newLineup){
-        const draft=rwinNormalizeLineups(rwinSnapshot());
+        const snapshot=rwinSnapshot(),draft=rwinNormalizeLineups(snapshot);
+        if(draft.length>=5)throw raceError('RWIN_LINEUP_LIMIT','Możesz utworzyć maksymalnie pięć lineupów w wydarzeniu.');
+        if(!/^RWIN 0[1-5]$/.test(newLineup.name)||draft.some(l=>l.name===newLineup.name))
+          throw raceError('RWIN_DUPLICATE_LINEUP_NAME','Wybierz wolny numer RWIN 01–05.');
+        if(!rwinOptionList(snapshot.event).some(o=>o.id===newLineup.option_id))
+          throw raceError('RWIN_INVALID_OPTION','Wybierz samochód skonfigurowany dla tego wyścigu.');
         draft.push({id:crypto.randomUUID(),name:newLineup.name,option_id:newLineup.option_id,capacity:newLineup.limit,status:'draft',members:[]});
         return rwinSaveDraft(eventId,draft);
       },
@@ -2474,9 +2492,26 @@
         lineup.status=status;
         return rwinSaveDraft(eventId,draft);
       },
-      async adminRemoveLineup(eventId,lineupId){
-        const draft=rwinNormalizeLineups(rwinSnapshot()).filter(x=>x.id!==lineupId);
+      async adminUpdateLineup(eventId,lineupId,optionId,capacity){
+        const snapshot=rwinSnapshot(),draft=rwinNormalizeLineups(snapshot);
+        const lineup=draft.find(l=>l.id===lineupId);
+        if(!lineup)throw raceError('RWIN_INVALID_LINEUP','Nie znaleziono lineupu.');
+        if(!rwinOptionList(snapshot.event).some(o=>o.id===optionId))
+          throw raceError('RWIN_INVALID_OPTION','Wybierz model samochodu dostępny w wydarzeniu.');
+        if(!Number.isInteger(capacity)||capacity<2||capacity>6)
+          throw raceError('RWIN_LINEUP_CAPACITY','Limit kierowców to 2–6.');
+        if(lineup.members.filter(m=>m.role!=='engineer').length>capacity)
+          throw raceError('RWIN_LINEUP_CAPACITY','Najpierw odepnij kierowców ponad nowy limit.');
+        lineup.option_id=optionId;
+        lineup.capacity=capacity;
+        lineup.status='draft'; // changing lineup requires re-approval before publication
         return rwinSaveDraft(eventId,draft);
+      },
+      async adminRemoveLineup(eventId,lineupId){
+        const draft=rwinNormalizeLineups(rwinSnapshot());
+        if(!draft.some(x=>x.id===lineupId))throw raceError('RWIN_INVALID_LINEUP','Lineup już nie istnieje. Odśwież panel.');
+        // Keep every other lineup; removing the final one intentionally saves [].
+        return rwinSaveDraft(eventId,draft.filter(x=>x.id!==lineupId));
       },
       async adminWithdraw(eventId,registrationId){
         const d=rwinRequireObject(await rwinRpc('rwin_admin_withdraw_registration',{p_event_id:eventId,p_registration_id:registrationId}));
@@ -2560,6 +2595,8 @@
         RWIN_ASSIGNMENT_NOT_FOUND:'Brak aktualnego przydziału do lineupu.',
         RWIN_DUPLICATE_ASSIGNMENT:'Kierowca może być przypisany tylko do jednego lineupu w tym wydarzeniu.',
         RWIN_LINEUP_CAPACITY:'Lineup ma już maksymalną liczbę kierowców.',
+        RWIN_DUPLICATE_LINEUP_NAME:'Ten numer RWIN jest już zajęty. Wybierz kolejny wolny lineup.',
+        RWIN_LINEUP_LIMIT:'Możesz utworzyć maksymalnie pięć lineupów dla jednego wyścigu.',
         RWIN_ASSIGNMENT_CONFLICT:'Przydział jest sprzeczny ze zgodą na rezerwę.',
         RWIN_REGISTRATION_NOT_ACTIVE:'Zgłoszenie nie jest już aktywne.',
         RWIN_REGISTRATION_NOT_FOUND:'Nie znaleziono zgłoszenia.',
@@ -2987,20 +3024,20 @@
       void raceLoadAdminOverview();
       if(raceAdminLoadState==='loading'&&!force)return;
       if(!force && raceAdminLoadState==='loaded' && Date.now()-raceAdminLoadAt<10000)return;
-      const epoch=raceUiEpoch;
+      const epoch=raceUiEpoch,request=++raceAdminLoadTicket;
       raceAdminLoadState='loading';
       $('rwinRaceAdminNotice').textContent='Pobieramy zgłoszenia, okno zapisów i lineupy z Supabase…';
       raceAdminDisableWrite(true);
       try{
         const snapshot=await raceBridgeCall('adminSnapshot',[selected],'admin');
-        if(epoch!==raceUiEpoch || !hasAdminAccess() || state.view!=='admin')return;
+        if(epoch!==raceUiEpoch || request!==raceAdminLoadTicket || selected!==raceAdminEventId || !hasAdminAccess() || state.view!=='admin')return;
         if(!snapshot||typeof snapshot!=='object'||!Array.isArray(snapshot.entries)||!Array.isArray(snapshot.lineups))
           throw raceError('INVALID_CONTRACT','Nieprawidłowy format danych panelu.');
         raceAdminSnapshot=snapshot;
         raceAdminLoadState='loaded';raceAdminLoadAt=Date.now();
         raceRenderAdmin();
       }catch(error){
-        if(epoch!==raceUiEpoch)return;
+        if(epoch!==raceUiEpoch || request!==raceAdminLoadTicket || selected!==raceAdminEventId)return;
         raceAdminSnapshot=null;raceAdminLoadState='error';
         $('rwinRaceAdminNotice').textContent=rwinRacePublicError(error);
         $('rwinRaceAdminNotice').dataset.state='error';
@@ -3016,8 +3053,26 @@
       racePopulateSelect(select,options.map(o=>({id:o.id,name:o.car_name})),'Wybierz model samochodu');
       if(options.some(o=>o.id===prior))select.value=prior;
     }
+    function rwinUpdateLineupNameChoices(){
+      const select=$('rwinAdminLineupName'),count=$('rwinAdminLineupCounter');
+      if(!select || !count)return;
+      const draft=Array.isArray(raceAdminSnapshot?.lineups)?raceAdminSnapshot.lineups:[];
+      const taken=new Set(draft.map(l=>l.name));
+      const previous=select.value;
+      let nextAvailable='';
+      for(const option of select.options){
+        const used=taken.has(option.value);
+        option.disabled=used;
+        if(!used && !nextAvailable)nextAvailable=option.value;
+      }
+      if(!previous || taken.has(previous))select.value=nextAvailable;
+      const total=draft.length;
+      count.textContent=`Robocze lineupy: ${total}/5 · ${nextAvailable?'Wolne numery są dostępne w polu „Nazwa lineupu”.':'Wszystkie numery RWIN 01–05 są zajęte. Możesz usunąć lub edytować istniejący skład.'}`;
+      $('rwinAdminLineupCreate').disabled=raceAdminWriteBusy || !nextAvailable || raceAdminLoadState!=='loaded';
+    }
     function raceAdminDisableWrite(disabled){
       for(const id of ['rwinAdminSaveWindow','rwinAdminLineupCreate','rwinAdminPublish'])$(id).disabled=disabled;
+      for(const button of $('rwinAdminLineups').querySelectorAll('button'))button.disabled=disabled;
     }
     function raceRenderAdmin(){
       if(!hasAdminAccess()||!adminPanelData||state.view!=='admin'){raceAdminSnapshot=null;return;}
@@ -3041,7 +3096,7 @@
       racePopulateSelect($('rwinAdminLineupClass'),classes,'Wybierz klasę');
       if(classes.some(o=>o.id===previousClass))$('rwinAdminLineupClass').value=previousClass;
       raceAdminFilterLineupCars();
-      raceAdminDisableWrite(false);
+      raceAdminDisableWrite(raceAdminWriteBusy);
       const entries=snap.entries;
       $('rwinAdminEntries').innerHTML=entries.length?`<table class="rwin-reg-table"><thead><tr><th>Kierowca</th><th>Status</th><th>Dostępność (PL)</th><th>Preferowany start</th><th>Uwagi</th><th>Rezerwa</th><th>Przydział i odpowiedź</th><th>Akcja</th></tr></thead><tbody>${entries.map(r=>`<tr><td>${esc(r.driver_name)}</td><td>${esc(raceStatusLabel(r.status))}</td><td>${esc(rwinAvailabilityText(r._availabilityRaw))}</td><td>${esc((()=>{const p=rwinReadStartPreference(r.note);return p.day&&p.hour?p.day+' · '+p.hour:'—';})())}</td><td style="white-space:pre-wrap;overflow-wrap:anywhere">${esc(rwinReadStartPreference(r.note).note||'—')}</td><td>${r.accept_reserve?'TAK':'NIE'}</td><td>${r.assignment?esc((r.assignment.details?.lineup_name||'RWIN')+' / '+raceStatusLabel(r.assignment.response)):'—'}</td><td><div class="rwin-reg-actions"><button class="btn btn-outline" type="button" data-rwin-admin-details="${esc(r.id)}">SZCZEGÓŁY</button>${r.status==='active'?`<button class="btn btn-outline" type="button" data-rwin-admin-withdraw="${esc(r.id)}">WYCOFAJ</button>`:''}</div></td></tr>`).join('')}</tbody></table>`:'<p class="rwin-reg-small">Brak zgłoszeń do tego wydarzenia.</p>';
       const assigned=new Set(snap.lineups.flatMap(l=>(l.members||[]).map(m=>m.registration_id)));
@@ -3049,18 +3104,27 @@
       $('rwinAdminLineups').innerHTML=snap.lineups.length?snap.lineups.map(lineup=>{
         const opt=rwinOptionList(event).find(o=>o.id===lineup.option_id);
         const choices=available.map(r=>`<option value="${esc(r.id)}">${esc(r.driver_name)} · ${esc(rwinAvailabilityText(r._availabilityRaw))} · tempo ${esc(rwinFormatPace(r._availabilityRaw?.race_pace_ms))}</option>`).join('');
-        return `<article class="rwin-reg-card"><span class="rwin-reg-status">${lineup.status==='ready'?'GOTOWY':'ROBOCZY'}</span><h3>${esc(lineup.name)} · ${esc(opt?rwinOptionLabel(opt):lineup.option_id)}</h3><p class="rwin-reg-small">Limit ${lineup.capacity} kierowców · przypisani ${(lineup.members||[]).filter(m=>m.role!=='engineer').length} · inżynierowie ${(lineup.members||[]).filter(m=>m.role==='engineer').length}</p>${(lineup.members||[]).map(m=>`<div class="rwin-reg-actions"><span class="rwin-reg-small">${esc(m.driver_name||entries.find(r=>r.id===m.registration_id)?.driver_name||'Kierowca')} · ${m.role==='reserve'?'REZERWOWY':m.role==='engineer'?'INŻYNIER':'KIEROWCA'}</span><button type="button" class="btn btn-outline" data-rwin-unassign="${esc(m.registration_id)}" data-rwin-unassign-lineup="${esc(lineup.id)}">USUŃ Z LINEUPU</button></div>`).join('')}<div class="rwin-reg-form-row"><div class="rwin-reg-field"><label>Kierowca ze zgłoszeń</label><select data-rwin-assign-entry><option value="">Wybierz</option>${choices}</select></div><div class="rwin-reg-field"><label>Przydział</label><select data-rwin-assign-role><option value="driver">Kierowca</option><option value="reserve">Rezerwowy</option><option value="engineer">Inżynier</option></select></div><div class="rwin-reg-field"><label>Akcja</label><button type="button" class="btn btn-outline" data-rwin-assign-lineup="${esc(lineup.id)}">PRZYPISZ</button></div></div><div class="rwin-reg-actions"><button type="button" class="btn ${lineup.status==='ready'?'btn-outline':'btn-primary'}" data-rwin-toggle-ready="${esc(lineup.id)}" data-rwin-next-ready="${lineup.status==='ready'?'draft':'ready'}">${lineup.status==='ready'?'WRÓĆ DO ROBOCZEGO':'OZNACZ JAKO GOTOWY'}</button><button type="button" class="btn btn-outline" data-rwin-remove-lineup="${esc(lineup.id)}">USUŃ LINEUP</button></div></article>`;
+        const editableOptions=rwinOptionList(event).map(o=>`<option value="${esc(o.id)}" ${o.id===lineup.option_id?'selected':''}>${esc(rwinOptionLabel(o))}</option>`).join('');
+        const editableLimits=[2,3,4,5,6].map(n=>`<option value="${n}" ${n===lineup.capacity?'selected':''}>${n}</option>`).join('');
+        return `<article class="rwin-reg-card"><span class="rwin-reg-status">${lineup.status==='ready'?'GOTOWY':'ROBOCZY'}</span><h3>${esc(lineup.name)} · ${esc(opt?rwinOptionLabel(opt):lineup.option_id)}</h3><p class="rwin-reg-small">Limit ${lineup.capacity} kierowców · przypisani ${(lineup.members||[]).filter(m=>m.role!=='engineer').length} · inżynierowie ${(lineup.members||[]).filter(m=>m.role==='engineer').length}</p>${(lineup.members||[]).map(m=>`<div class="rwin-reg-actions"><span class="rwin-reg-small">${esc(m.driver_name||entries.find(r=>r.id===m.registration_id)?.driver_name||'Kierowca')} · ${m.role==='reserve'?'REZERWOWY':m.role==='engineer'?'INŻYNIER':'KIEROWCA'}</span><button type="button" class="btn btn-outline" data-rwin-unassign="${esc(m.registration_id)}" data-rwin-unassign-lineup="${esc(lineup.id)}">USUŃ Z LINEUPU</button></div>`).join('')}<div class="rwin-reg-form-row"><div class="rwin-reg-field"><label>Kierowca ze zgłoszeń</label><select data-rwin-assign-entry><option value="">Wybierz</option>${choices}</select></div><div class="rwin-reg-field"><label>Przydział</label><select data-rwin-assign-role><option value="driver">Kierowca</option><option value="reserve">Rezerwowy</option><option value="engineer">Inżynier</option></select></div><div class="rwin-reg-field"><label>Akcja</label><button type="button" class="btn btn-outline" data-rwin-assign-lineup="${esc(lineup.id)}">PRZYPISZ</button></div></div><div class="rwin-reg-form-row rwin-lineup-edit"><div class="rwin-reg-field"><label>Samochód lineupu</label><select data-rwin-edit-option>${editableOptions}</select></div><div class="rwin-reg-field"><label>Limit kierowców</label><select data-rwin-edit-limit>${editableLimits}</select></div><div class="rwin-reg-field"><label>Edytuj istniejący lineup</label><button type="button" class="btn btn-outline" data-rwin-update-lineup="${esc(lineup.id)}">ZAPISZ ZMIANY</button></div></div><div class="rwin-reg-actions"><button type="button" class="btn ${lineup.status==='ready'?'btn-outline':'btn-primary'}" data-rwin-toggle-ready="${esc(lineup.id)}" data-rwin-next-ready="${lineup.status==='ready'?'draft':'ready'}">${lineup.status==='ready'?'WRÓĆ DO ROBOCZEGO':'OZNACZ JAKO GOTOWY'}</button><button type="button" class="btn btn-outline" data-rwin-remove-lineup="${esc(lineup.id)}">USUŃ LINEUP</button></div></article>`;
       }).join(''):'<p class="rwin-reg-small">Brak roboczych lineupów. Utwórz pierwszy powyżej.</p>';
       if(snap.publishedLineups.length){
         $('rwinAdminLineups').insertAdjacentHTML('beforeend',`<article class="rwin-reg-card"><h3>OSTATNIO OPUBLIKOWANE SKŁADY · REWIZJA ${event.revision}</h3>${snap.publishedLineups.map(l=>`<p class="rwin-reg-small">${esc(l.name)} · ${esc(l.car_name||'')} · ${(l.members||[]).map(m=>esc(m.driver_name)+' ('+(m.role==='reserve'?'rezerwa':m.role==='engineer'?'inżynier':'kierowca')+')').join(', ')}</p>`).join('')}<p class="rwin-reg-small">Zmiana roboczych przydziałów nie aktualizuje publikacji. Wymaga ponownego zatwierdzenia i publikacji.</p></article>`);
       }
-      $('rwinAdminPublish').disabled=!snap.can_publish;
+      $('rwinAdminPublish').disabled=!snap.can_publish || raceAdminWriteBusy;
+      rwinUpdateLineupNameChoices();
+      if(raceAdminWriteBusy)raceAdminDisableWrite(true);
       $('rwinAdminDmStatuses').innerHTML=snap.dm_delivery.length?`<table class="rwin-reg-table"><thead><tr><th>Kierowca</th><th>Rewizja</th><th>Rodzaj</th><th>PV</th><th>Próby</th></tr></thead><tbody>${snap.dm_delivery.map(x=>`<tr><td>${esc(x.driver_name||'')}</td><td>${Number(x.revision)||'—'}</td><td>${esc(x.kind||'')}</td><td>${esc(x.status||'pending')}</td><td>${Number(x.attempts)||0}</td></tr>`).join('')}</tbody></table>`:'<p class="rwin-reg-small">Brak powiadomień. Tylko publikacja lineupów uruchamia kolejkę PV po stronie bota.</p>';
     }
     async function raceAdminPerform(method,args,success){
       if(!hasAdminAccess() || !adminPanelData){showToast('Brak aktualnych uprawnień ZARZĄDU.');return;}
+      if(raceAdminWriteBusy){showToast('Poprzednia zmiana jest jeszcze zapisywana.');return;}
       const epoch=raceUiEpoch;
+      raceAdminWriteBusy=true;
       raceAdminDisableWrite(true);
+      $('rwinAdminRaceSelect').disabled=true;
+      $('rwinRaceAdminNotice').dataset.state='info';
+      $('rwinRaceAdminNotice').textContent='Zapisuję zmiany w Supabase…';
       try {
         const response=await raceBridgeCall(method,args,'admin');
         if(response?.confirmed!==true)throw raceError('UNCONFIRMED_WRITE','Baza nie potwierdziła zmiany.');
@@ -3070,8 +3134,16 @@
         raceAdminLoadState='idle';
         await raceLoadAdmin(true);
         void raceLoadAdminOverview(true);
-      }catch(error){if(epoch===raceUiEpoch)showToast(rwinRacePublicError(error));}
-      finally{if(epoch===raceUiEpoch && raceAdminLoadState==='loaded')raceRenderAdmin();}
+      }catch(error){
+        if(epoch===raceUiEpoch){
+          showToast(rwinRacePublicError(error));
+          if(raceAdminSnapshot && raceAdminLoadState==='loaded')raceRenderAdmin();
+        }
+      }finally{
+        raceAdminWriteBusy=false;
+        $('rwinAdminRaceSelect').disabled=false;
+        if(epoch===raceUiEpoch && raceAdminLoadState==='loaded')raceRenderAdmin();
+      }
     }
     function raceSetupUi(){
       $('rwinRaceClose').addEventListener('click',()=> $('rwinRaceSignupDialog').close());
@@ -3092,7 +3164,7 @@
       $('rwinAdminOverviewRefresh').addEventListener('click',()=>void raceLoadAdminOverview(true));
       $('rwinAdminOverview').addEventListener('click',event=>{
         const button=event.target.closest('[data-rwin-overview-event]');
-        if(!button||!hasAdminAccess()||!rwinRaceValidId(button.dataset.rwinOverviewEvent)||rwinEventArchived(EVENTS.find(e=>e.id===button.dataset.rwinOverviewEvent)))return;
+        if(!button||raceAdminWriteBusy||!hasAdminAccess()||!rwinRaceValidId(button.dataset.rwinOverviewEvent)||rwinEventArchived(EVENTS.find(e=>e.id===button.dataset.rwinOverviewEvent)))return;
         raceAdminConfigDirty=false;raceAdminEventId=button.dataset.rwinOverviewEvent;
         $('rwinAdminRaceSelect').value=raceAdminEventId;
         raceRenderAdminOverview();void raceLoadAdmin(true);
@@ -3124,6 +3196,7 @@
       });
       $('rwinAdminCreateLineup').addEventListener('submit',event=>{
         event.preventDefault();
+        if(raceAdminWriteBusy)return;
         const name=$('rwinAdminLineupName').value.trim(),option_id=$('rwinAdminLineupCar').value,limit=Number($('rwinAdminLineupLimit').value);
         if(!name||!option_id||!Number.isInteger(limit)||limit<2||limit>6){showToast('Wybierz nazwę RWIN 01–05, samochód i limit 2–6.');return;}
         if(raceAdminSnapshot?.lineups?.some(l=>l.name===name)){showToast('Ten numer lineupu jest już zajęty.');return;}
@@ -3146,6 +3219,7 @@
           void raceAdminPerform('adminWithdraw',[raceAdminEventId,button.dataset.rwinAdminWithdraw],'Zgłoszenie wycofane.');
       });
       $('rwinAdminLineups').addEventListener('click',event=>{
+        if(raceAdminWriteBusy)return;
         const ready=event.target.closest('[data-rwin-toggle-ready]');
         if(ready){void raceAdminPerform('adminSetLineupStatus',[raceAdminEventId,ready.dataset.rwinToggleReady,ready.dataset.rwinNextReady],ready.dataset.rwinNextReady==='ready'?'Lineup oznaczony jako GOTOWY.':'Lineup ponownie roboczy.');return;}
         const assign=event.target.closest('[data-rwin-assign-lineup]');
@@ -3154,11 +3228,24 @@
           if(!entry){showToast('Wybierz zgłoszenie kierowcy.');return;}
           void raceAdminPerform('adminAssign',[raceAdminEventId,assign.dataset.rwinAssignLineup,entry,role],'Kierowca przypisany do roboczego lineupu.');return;
         }
+        const edit=event.target.closest('[data-rwin-update-lineup]');
+        if(edit){
+          const article=edit.closest('.rwin-reg-card');
+          const optionId=article?.querySelector('[data-rwin-edit-option]')?.value;
+          const capacity=Number(article?.querySelector('[data-rwin-edit-limit]')?.value);
+          if(!optionId || !Number.isInteger(capacity)){showToast('Wybierz samochód i limit kierowców.');return;}
+          void raceAdminPerform('adminUpdateLineup',[raceAdminEventId,edit.dataset.rwinUpdateLineup,optionId,capacity],'Ustawienia lineupu zapisane w Supabase. Status: ROBOCZY.');
+          return;
+        }
         const unassign=event.target.closest('[data-rwin-unassign]');
         if(unassign){void raceAdminPerform('adminUnassign',[raceAdminEventId,unassign.dataset.rwinUnassignLineup,unassign.dataset.rwinUnassign],'Usunięto przydział roboczy.');return;}
         const remove=event.target.closest('[data-rwin-remove-lineup]');
-        if(remove&&window.confirm('Usunąć roboczy lineup? Opublikowana rewizja pozostanie do nowej publikacji.'))
-          void raceAdminPerform('adminRemoveLineup',[raceAdminEventId,remove.dataset.rwinRemoveLineup],'Usunięto roboczy lineup.');
+        if(remove){
+          const lineup=raceAdminSnapshot?.lineups?.find(l=>l.id===remove.dataset.rwinRemoveLineup);
+          if(!lineup)return;
+          if(window.confirm(`Usunąć ${lineup.name} z roboczych składów? Pozostałe lineupy zostaną zachowane. Opublikowana lista nie zmieni się do następnej publikacji.`))
+            void raceAdminPerform('adminRemoveLineup',[raceAdminEventId,lineup.id],`${lineup.name} usunięty. Pozostałe składy zachowane.`);
+        }
       });
       $('rwinAdminPublish').addEventListener('click',()=>{
         const revision=raceAdminSnapshot?.event?.revision||0;
