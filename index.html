@@ -769,6 +769,23 @@
 .rwin-reg-meta{color:#d4bcda;font-size:12px;line-height:1.8}
 .rwin-reg-meta strong{color:#fff}
 .rwin-reg-status{font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:#d890e7;font-weight:900}
+
+    /* Zestawienie okien i aktywnych zgłoszeń w Panelu ZARZĄDU. */
+    .rwin-admin-overview-head{display:flex;gap:14px;align-items:center;justify-content:space-between;flex-wrap:wrap;margin-bottom:15px}
+    .rwin-admin-overview-head h3{margin-bottom:4px}
+    .rwin-admin-overview-head p{margin:0}
+    .rwin-admin-overview-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+    .rwin-admin-overview-card{display:flex;flex-direction:column;align-items:stretch;gap:10px;text-align:left;background:#1f1724;border:1px solid #58405f;border-radius:5px;padding:16px;color:#f9f1fb;cursor:pointer;font:inherit;min-width:0}
+    .rwin-admin-overview-card:hover,.rwin-admin-overview-card:focus-visible{border-color:#c980d8;background:#292033;outline:none}
+    .rwin-admin-overview-card[aria-current="true"]{border-color:#c980d8}
+    .rwin-admin-overview-top{display:flex;justify-content:space-between;gap:8px;flex-wrap:wrap;align-items:center}
+    .rwin-admin-overview-title{font:italic 850 21px var(--font-display);text-transform:uppercase}
+    .rwin-admin-overview-status{color:#d6c4dc;border:1px solid #58405f;padding:4px 7px;font-size:10px;letter-spacing:.08em;font-weight:800}
+    .rwin-admin-overview-status[data-state="open"]{color:#e4b7ef;border-color:#c980d8;background:#35203a}
+    .rwin-admin-overview-count{font:italic 850 30px var(--font-display);color:#c980d8;line-height:1}
+    .rwin-admin-overview-muted{font-size:12px;line-height:1.7;color:#d6bddc}
+    .rwin-admin-overview-note{font-size:11px;letter-spacing:.05em;color:#ac8fb4}
+    @media(max-width:680px){.rwin-admin-overview-grid{grid-template-columns:1fr}}
 .rwin-admin-tools{margin-top:30px;border-top:1px solid #4a364e;padding-top:30px}
 .rwin-admin-tools .rwin-admin-box{background:#161019;border:1px solid #4a3650;margin:16px 0;padding:18px}
 .rwin-admin-tools h3{font:italic 850 26px var(--font-display);margin:4px 0 14px}
@@ -1097,6 +1114,10 @@
       <section id="rwinRaceAdminTools" class="rwin-admin-tools" aria-label="Zarządzanie zgłoszeniami i lineupami">
         <div class="eyebrow">RWIN RACING / RACE MANAGEMENT</div><h2 class="section-title">ZAPISY I <span class="text-purple">LINEUPY.</span></h2>
         <div id="rwinRaceAdminNotice" class="rwin-reg-message" role="status" aria-live="polite">Weryfikuję dostęp do operacji zapisów…</div>
+        <div class="rwin-admin-box rwin-admin-overview-box">
+          <div class="rwin-admin-overview-head"><div><h3>PRZEGLĄD ZAPISÓW</h3><p class="rwin-reg-small">Aktualne okna zapisów i liczba aktywnych zgłoszeń do każdego wydarzenia.</p></div><button type="button" class="btn btn-outline" id="rwinAdminOverviewRefresh">ODŚWIEŻ PODGLĄD ↻</button></div>
+          <div id="rwinAdminOverview" class="rwin-admin-overview-grid" aria-live="polite"><p class="rwin-reg-small">Pobieramy statusy z bazy RWIN…</p></div>
+        </div>
         <div class="rwin-admin-box"><h3>WYDARZENIE I OKNO ZAPISÓW</h3>
           <div class="rwin-reg-form-row rwin-admin-event-fields">
             <div class="rwin-reg-field"><label for="rwinAdminRaceSelect">Wydarzenie</label><select id="rwinAdminRaceSelect"></select></div>
@@ -1151,7 +1172,6 @@
       <div id="rwinRaceSignupNotice" class="rwin-reg-message" role="status" aria-live="polite">Odczytujemy dane wydarzenia z bazy RWIN…</div>
       <form id="rwinRaceSignupForm" novalidate>
         <div class="rwin-reg-fields">
-          <div class="rwin-reg-field wide"><input id="rwinRaceDriverName" type="text" aria-label="Imię i nazwisko potwierdzone przez bota RWIN" readonly placeholder="Oczekiwanie na profil bota RWIN" autocomplete="off"></div>
           <div class="rwin-reg-field wide"><label>Dostępność podczas wyścigu · strefa Europe/Warsaw</label><div class="rwin-reg-choice"><label><input type="radio" name="rwinAvailabilityMode" value="whole" checked> Cały wyścig</label><label><input type="radio" name="rwinAvailabilityMode" value="ranges"> Przedziały godzin</label></div></div>
           <div class="rwin-reg-field wide" id="rwinRaceAvailabilityRanges" hidden><label>Przedziały dostępności (czas polski)</label><div id="rwinRaceHours" class="rwin-reg-hours"></div><button type="button" id="rwinRaceAddHours" class="btn btn-outline" style="align-self:start">+ DODAJ PRZEDZIAŁ</button></div>
           <div class="rwin-reg-field"><label for="rwinRaceClass">Klasa samochodu</label><select id="rwinRaceClass" required><option value="">Oczekiwanie na opcje wydarzenia</option></select></div>
@@ -1162,7 +1182,6 @@
           <div class="rwin-reg-field wide"><label for="rwinRaceNote">Uwagi: (opcjonalnie)</label><textarea id="rwinRaceNote" maxlength="500" placeholder="Np. preferowana zmiana, ograniczenia czasowe"></textarea></div>
         </div>
         <div class="rwin-reg-actions"><button id="rwinRaceSubmit" type="submit" class="btn btn-primary" disabled>WYŚLIJ ZGŁOSZENIE ↗</button></div>
-        <p class="rwin-reg-small">Zgłoszenie istnieje dopiero po potwierdzeniu przez bazę Supabase. Tożsamość i uprawnienia są sprawdzane na serwerze.</p>
       </form>
     </div>
   </dialog>
@@ -1205,7 +1224,7 @@
     'use strict';
 
     /* =========================================================
-       RWIN RACING HUB v1.9.16 — JAVASCRIPT
+       RWIN RACING HUB v1.9.17 — JAVASCRIPT
        Jeden plik HTML: brak Reacta, npm i serwera.
        Logowanie OAuth działa przez Supabase po uzupełnieniu konfiguracji.
        Formularze zapisów nie zapisują fikcyjnych danych lokalnych; wymagają bezpiecznej bazy RWIN.
@@ -2155,6 +2174,10 @@
     let raceAdminLoadState = 'idle';
     let raceAdminLoadAt = 0;
     let racePendingResumeBusy = false;
+    let raceAdminOverviewState = null;
+    let raceAdminOverviewAt = 0;
+    let raceAdminOverviewBusy = false;
+    let raceAdminOverviewTicket = 0;
     let raceAdminConfigDirty = false;
 
     function rwinRaceValidId(id) {
@@ -2343,14 +2366,14 @@
       async submitEntry(payload){
         const d=rwinRequireObject(await rwinRpc('rwin_save_registration',{p_event_id:payload.event_id,p_data:payload}));
         if(d.event_id!==payload.event_id || typeof d.id!=='string')throw raceError('UNCONFIRMED_WRITE','Baza nie potwierdziła zgłoszenia.');
-        return {confirmed:true,entry_id:d.id};
+        return {confirmed:true,entry_id:d.id,driver_name:typeof d.driver_name==='string'?d.driver_name:''};
       },
       async updateEntry(entryId,payload){
         const d=await rwinGetEvent(payload.event_id);
         if(d.registration?.id!==entryId)throw raceError('RWIN_REGISTRATION_NOT_FOUND','Zgłoszenie nie należy do tego konta.');
         const updated=rwinRequireObject(await rwinRpc('rwin_save_registration',{p_event_id:payload.event_id,p_data:payload}));
         if(updated.id!==entryId)throw raceError('UNCONFIRMED_WRITE','Brak potwierdzenia edycji zgłoszenia.');
-        return {confirmed:true,entry_id:updated.id};
+        return {confirmed:true,entry_id:updated.id,driver_name:typeof updated.driver_name==='string'?updated.driver_name:''};
       },
       async withdrawEntry(entryId){
         const row=raceLoadedEntries?.find(e=>e.id===entryId);
@@ -2518,7 +2541,7 @@
     }
     function raceNotice(message,stateName='info') {
       const el=$('rwinRaceSignupNotice');
-      el.textContent=message; el.dataset.state=stateName;
+      el.textContent=message; el.dataset.state=stateName; el.hidden=!message;
     }
     function raceClearPrivateState() {
       ++raceUiEpoch;
@@ -2535,6 +2558,8 @@
       raceAdminLoadState='idle';
       raceAdminLoadAt=0;
       raceAdminConfigDirty=false;
+      raceAdminOverviewState=null;raceAdminOverviewAt=0;raceAdminOverviewBusy=false;++raceAdminOverviewTicket;
+      $('rwinAdminOverview')?.replaceChildren();
       rwinPublishRequestIds.clear();
       if ($('rwinRaceSignupDialog')?.open) $('rwinRaceSignupDialog').close();
       const my=$('myEntries'); if(my) my.replaceChildren();
@@ -2662,7 +2687,6 @@
       raceBusy=false;
       $('rwinRaceSignupHeading').textContent=existing?'EDYTUJ ZAPIS':'ZAPIS NA WYŚCIG';
       $('rwinRaceSignupEvent').textContent=event.title+' · '+eventRange(event)+' · '+event.track;
-      $('rwinRaceDriverName').value=ownRwinProfile?.name||'';
       racePopulateSelect($('rwinRaceStartDay'),rwinEventDayOptions(event),'Wybierz dzień');
       racePopulateSelect($('rwinRaceStartHour'),RWIN_SESSION_START_TIMES.map(t=>({id:t,name:t})),'Wybierz godzinę');
       rwinApplySignupNote(existing?.note||'');
@@ -2709,7 +2733,7 @@
         const isOpen=data.registration_open===true;
         const hasOptions=data.classes.length>0 && data.cars.length>0;
         raceUpdateSubmitState();
-        raceNotice(!isOpen?'Zapisy do tego wydarzenia są obecnie zamknięte.':!hasOptions?'ZARZĄD musi skonfigurować start, okno zapisów i dostępne klasy oraz samochody.':!ownRwinProfile?.name?'Bot nie zweryfikował jeszcze Twojego imienia i nazwiska.':'Wybierz dostępność i samochód. Zgłoszenie trafi do RWIN dopiero po potwierdzeniu przez bazę.',!isOpen?'error':'info');
+        raceNotice(!isOpen?'Zapisy do tego wydarzenia są obecnie zamknięte.':!hasOptions?'ZARZĄD musi skonfigurować start, okno zapisów i dostępne klasy oraz samochody.':!ownRwinProfile?.name?'Bot nie zweryfikował jeszcze Twojego imienia i nazwiska.':'',!isOpen?'error':'info');
       } catch(err){
         if(generation!==raceUiEpoch)return;
         $('rwinRaceSubmit').disabled=true;
@@ -2731,10 +2755,12 @@
         if(oldEpoch!==raceUiEpoch)return;
         // Nie wyświetlamy fałszywego sukcesu na podstawie braku wyjątku.
         if(response?.confirmed!==true || typeof response?.entry_id!=='string')throw raceError('UNCONFIRMED_WRITE','Serwer nie potwierdził zapisu.');
-        raceNotice('Zgłoszenie potwierdzone w bazie RWIN. Sprawdź Moje zapisy.');
+        const confirmedName=String(response.driver_name||'').trim();
+        if(!confirmedName)throw raceError('UNCONFIRMED_WRITE','Baza nie zwróciła danych kierowcy. Odśwież Moje zapisy.');
         $('rwinRaceSignupDialog').close();
         raceOwnedLoadState='idle';raceLoadedEntries=null;
         switchView('entries');
+        showToast((raceFormMode==='edit'?'Zaktualizowano zapis: ':'Zgłoszenie wysłane przez: ')+confirmedName);
         void raceLoadOwnedEntries(true);
       }catch(error){if(oldEpoch===raceUiEpoch)raceNotice(rwinRacePublicError(error),'error');}
       finally{raceBusy=false;if(oldEpoch===raceUiEpoch)raceUpdateSubmitState();}
@@ -2769,7 +2795,7 @@
         const preference=rwinReadStartPreference(row.note);
         const startPref=preference.day&&preference.hour?`${preference.day} · ${preference.hour}`:'—';
         const assignment=row.assignment?.published===true?row.assignment:null;
-        return `<article class="rwin-reg-card"><span class="rwin-reg-status">${esc(raceStatusLabel(row.status))}</span><h3>${esc(title)}</h3><div class="rwin-reg-meta">Aktualizacja: <strong>${raceSafeWhen(row.updated_at)}</strong><br>Dostępność (${RWIN_RACE_TIME_ZONE}): <strong>${availability||'Brak przedziałów'}</strong><br>Klasa / auto: <strong>${esc(row.class_name||row.class_id||'—')} / ${esc(row.car_name||row.car_id||'—')}</strong><br>Preferowany start: <strong>${esc(startPref)}</strong><br>Rezerwa — zgoda: <strong>${row.available_as_reserve?'TAK':'NIE'}</strong></div>${assignment?`<div class="rwin-reg-divider"></div><div class="rwin-reg-status">OGŁOSZONY LINEUP</div><p>${esc(assignment.name||'Skład RWIN')} · ${esc(assignment.car||'')} · ${assignment.role==='reserve'?'REZERWOWY':'KIEROWCA'}</p><p class="rwin-reg-small">Twoja odpowiedź: ${esc(raceStatusLabel(assignment.response))}</p><div class="rwin-reg-actions">${assignment.can_respond===true?`<button type="button" class="btn btn-primary" data-rwin-entry-action="accept" data-entry-id="${esc(row.id)}">POTWIERDZAM</button><button type="button" class="btn btn-outline" data-rwin-entry-action="decline" data-entry-id="${esc(row.id)}">ODRZUCAM</button>`:''}</div>`:''}<div class="rwin-reg-actions">${row.can_edit===true?`<button type="button" class="btn btn-outline" data-rwin-entry-action="edit" data-entry-id="${esc(row.id)}">EDYTUJ ZAPIS</button>`:''}${row.can_withdraw===true?`<button type="button" class="btn btn-outline" data-rwin-entry-action="withdraw" data-entry-id="${esc(row.id)}">WYCOFAJ</button>`:''}<button class="btn btn-outline" type="button" data-rwin-entry-action="event" data-entry-id="${esc(row.id)}">ZOBACZ WYDARZENIE</button></div></article>`;
+        return `<article class="rwin-reg-card"><span class="rwin-reg-status">${esc(raceStatusLabel(row.status))}</span><h3>${esc(title)}</h3><div class="rwin-reg-meta">Zgłaszający: <strong>${esc(row.driver_name||'—')}</strong><br>Aktualizacja: <strong>${raceSafeWhen(row.updated_at)}</strong><br>Dostępność (${RWIN_RACE_TIME_ZONE}): <strong>${availability||'Brak przedziałów'}</strong><br>Klasa / auto: <strong>${esc(row.class_name||row.class_id||'—')} / ${esc(row.car_name||row.car_id||'—')}</strong><br>Preferowany start: <strong>${esc(startPref)}</strong><br>Rezerwa — zgoda: <strong>${row.available_as_reserve?'TAK':'NIE'}</strong></div>${assignment?`<div class="rwin-reg-divider"></div><div class="rwin-reg-status">OGŁOSZONY LINEUP</div><p>${esc(assignment.name||'Skład RWIN')} · ${esc(assignment.car||'')} · ${assignment.role==='reserve'?'REZERWOWY':'KIEROWCA'}</p><p class="rwin-reg-small">Twoja odpowiedź: ${esc(raceStatusLabel(assignment.response))}</p><div class="rwin-reg-actions">${assignment.can_respond===true?`<button type="button" class="btn btn-primary" data-rwin-entry-action="accept" data-entry-id="${esc(row.id)}">POTWIERDZAM</button><button type="button" class="btn btn-outline" data-rwin-entry-action="decline" data-entry-id="${esc(row.id)}">ODRZUCAM</button>`:''}</div>`:''}<div class="rwin-reg-actions">${row.can_edit===true?`<button type="button" class="btn btn-outline" data-rwin-entry-action="edit" data-entry-id="${esc(row.id)}">EDYTUJ ZAPIS</button>`:''}${row.can_withdraw===true?`<button type="button" class="btn btn-outline" data-rwin-entry-action="withdraw" data-entry-id="${esc(row.id)}">WYCOFAJ</button>`:''}<button class="btn btn-outline" type="button" data-rwin-entry-action="event" data-entry-id="${esc(row.id)}">ZOBACZ WYDARZENIE</button></div></article>`;
       }).join('');
     }
     function raceRenderOwnedLineups(){
@@ -2844,10 +2870,70 @@
       renderCalendar();
       openEvent(id);
     }
+    // Panel ZARZĄDU: zestawienie ze świeżych wyników rwin_get_event i rwin_admin_get_registrations.
+    // Nie traktujemy braku odpowiedzi serwera jako "0 zgłoszeń".
+    function raceRenderAdminOverview(){
+      const el=$('rwinAdminOverview');
+      if(!el)return;
+      if(!hasAdminAccess() || !adminPanelData || state.view!=='admin'){
+        el.replaceChildren();return;
+      }
+      if(!Array.isArray(raceAdminOverviewState)){
+        el.innerHTML='<p class="rwin-reg-small">Pobieramy aktualne statusy zapisów z bazy RWIN…</p>';
+        return;
+      }
+      const now=Date.now();
+      el.innerHTML=raceAdminOverviewState.map(result=>{
+        const fallback=EVENTS.find(e=>e.id===result.id);
+        const title=esc(result.detail?.event?.title||fallback?.title||result.id);
+        if(result.error){
+          return `<button type="button" class="rwin-admin-overview-card" data-rwin-overview-event="${esc(result.id)}"><span class="rwin-admin-overview-title">${title}</span><span class="rwin-admin-overview-status">NIE UDAŁO SIĘ POBRAĆ</span><span class="rwin-admin-overview-muted">Nie można potwierdzić statusu ani liczby zgłoszeń. Odśwież podgląd.</span></button>`;
+        }
+        const event=result.detail.event;
+        const open=Date.parse(event.registration_opens_at||'');
+        const close=Date.parse(event.registration_closes_at||'');
+        const valid=Number.isFinite(open)&&Number.isFinite(close)&&close>open;
+        const opened=valid && now>=open && now<close && result.detail.registration_open===true;
+        const stateName=!valid?'unconfigured':opened?'open':now<open?'planned':'closed';
+        const label=stateName==='unconfigured'?'NIEUSTAWIONE':stateName==='open'?'OTWARTE':stateName==='planned'?'ZAPLANOWANE':'ZAMKNIĘTE';
+        const total=result.entries.filter(r=>r.status==='active').length;
+        return `<button type="button" class="rwin-admin-overview-card" data-rwin-overview-event="${esc(result.id)}" aria-current="${result.id===raceAdminEventId}">
+          <span class="rwin-admin-overview-top"><strong class="rwin-admin-overview-title">${title}</strong><span class="rwin-admin-overview-status" data-state="${stateName}">${label}</span></span>
+          <span class="rwin-admin-overview-muted">Otwarcie: <strong>${valid?esc(raceSafeWhen(event.registration_opens_at)):'Nieustalone'}</strong><br>Zamknięcie: <strong>${valid?esc(raceSafeWhen(event.registration_closes_at)):'Nieustalone'}</strong></span>
+          <span class="rwin-admin-overview-top"><strong class="rwin-admin-overview-count">${total}</strong><span class="rwin-admin-overview-note">AKTYWNYCH ZGŁOSZEŃ</span></span>
+        </button>`;
+      }).join('');
+    }
+    async function raceLoadAdminOverview(force=false){
+      if(!hasAdminAccess() || !adminPanelData || state.view!=='admin')return;
+      if(raceAdminOverviewBusy)return;
+      if(!force&&raceAdminOverviewState&&Date.now()-raceAdminOverviewAt<30000){raceRenderAdminOverview();return;}
+      const generation=raceUiEpoch,userId=authUser?.id,ticket=++raceAdminOverviewTicket;
+      raceAdminOverviewBusy=true;
+      if(!raceAdminOverviewState)raceRenderAdminOverview();
+      try{
+        const entries=await Promise.all(RWIN_RACE_IDS.map(async id=>{
+          try{
+            const [detail,registrations]=await Promise.all([
+              rwinGetEvent(id),rwinRpc('rwin_admin_get_registrations',{p_event_id:id})
+            ]);
+            if(!Array.isArray(registrations))throw raceError('INVALID_RESPONSE','Niepoprawna lista zgłoszeń.');
+            return {id,detail,entries:registrations};
+          }catch(error){return {id,error:true};}
+        }));
+        if(ticket!==raceAdminOverviewTicket||generation!==raceUiEpoch||authUser?.id!==userId||!hasAdminAccess()||state.view!=='admin')return;
+        raceAdminOverviewState=entries;
+        raceAdminOverviewAt=Date.now();
+        raceRenderAdminOverview();
+      }finally{
+        if(ticket===raceAdminOverviewTicket)raceAdminOverviewBusy=false;
+      }
+    }
     async function raceLoadAdmin(force=false){
       if(!hasAdminAccess() || !adminPanelData || state.view!=='admin'){raceAdminSnapshot=null;return;}
       const selected=rwinRaceValidId(raceAdminEventId)?raceAdminEventId:EVENTS[0].id;
       raceAdminEventId=selected;
+      void raceLoadAdminOverview();
       if(raceAdminLoadState==='loading'&&!force)return;
       if(!force && raceAdminLoadState==='loaded' && Date.now()-raceAdminLoadAt<10000)return;
       const epoch=raceUiEpoch;
@@ -2926,6 +3012,7 @@
         showToast(success);
         raceAdminLoadState='idle';
         await raceLoadAdmin(true);
+        void raceLoadAdminOverview(true);
       }catch(error){if(epoch===raceUiEpoch)showToast(rwinRacePublicError(error));}
       finally{if(epoch===raceUiEpoch && raceAdminLoadState==='loaded')raceRenderAdmin();}
     }
@@ -2941,8 +3028,16 @@
       $('rwinRaceStartHour').addEventListener('change',raceUpdateSubmitState);
       $('myEntries').addEventListener('click',event=>void raceOwnedEntryAction(event));
       $('rwinAdminRaceSelect').replaceChildren(...EVENTS.map(e=>new Option(e.title,e.id)));
-      $('rwinAdminRaceSelect').addEventListener('change',()=>{raceAdminConfigDirty=false;raceAdminEventId=$('rwinAdminRaceSelect').value;void raceLoadAdmin(true);});
-      $('rwinAdminReload').addEventListener('click',()=>{raceAdminConfigDirty=false;void raceLoadAdmin(true);});
+      $('rwinAdminRaceSelect').addEventListener('change',()=>{raceAdminConfigDirty=false;raceAdminEventId=$('rwinAdminRaceSelect').value;raceRenderAdminOverview();void raceLoadAdmin(true);});
+      $('rwinAdminReload').addEventListener('click',()=>{raceAdminConfigDirty=false;void raceLoadAdmin(true);void raceLoadAdminOverview(true);});
+      $('rwinAdminOverviewRefresh').addEventListener('click',()=>void raceLoadAdminOverview(true));
+      $('rwinAdminOverview').addEventListener('click',event=>{
+        const button=event.target.closest('[data-rwin-overview-event]');
+        if(!button||!hasAdminAccess()||!rwinRaceValidId(button.dataset.rwinOverviewEvent))return;
+        raceAdminConfigDirty=false;raceAdminEventId=button.dataset.rwinOverviewEvent;
+        $('rwinAdminRaceSelect').value=raceAdminEventId;
+        raceRenderAdminOverview();void raceLoadAdmin(true);
+      });
       ['rwinAdminOpenTime','rwinAdminCloseTime'].forEach(id=>$(id).addEventListener('input',()=>{raceAdminConfigDirty=true;}));
       document.querySelectorAll('[data-rwin-class]').forEach(input=>input.addEventListener('change',()=>{
         raceAdminConfigDirty=true;rwinPreviewAdminCars();
@@ -3017,8 +3112,11 @@
           $('rwinAdminEntries').replaceChildren();
           $('rwinAdminLineups').replaceChildren();
           $('rwinAdminDmStatuses').replaceChildren();
+          $('rwinAdminOverview').replaceChildren();
+          raceAdminOverviewState=null;raceAdminOverviewAt=0;++raceAdminOverviewTicket;raceAdminOverviewBusy=false;
         }
         if(hasAdminAccess() && state.view==='admin' && adminPanelData && raceBackendReady() && (!raceAdminLoadAt || Date.now()-raceAdminLoadAt>15000)) void raceLoadAdmin();
+        if(hasAdminAccess() && state.view==='admin' && adminPanelData && raceBackendReady() && (!raceAdminOverviewAt || Date.now()-raceAdminOverviewAt>30000)) void raceLoadAdminOverview();
         if(state.view==='entries'&&hasRegistrationAccess() && raceBackendReady() && (!raceOwnedLoadAt||Date.now()-raceOwnedLoadAt>45000))void raceLoadOwnedEntries();
         if(rwinRaceGetPending())void raceMaybeResumePending();
         if(hasRegistrationAccess()){
