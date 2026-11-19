@@ -4,9 +4,9 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="theme-color" content="#09090d" />
-  <meta name="description" content="RWIN Racing Hub — kalendarz Le Mans Ultimate, zapisy i endurance racing." />
-  <title>RWIN Racing | LMU Team</title>
-  <!-- RWIN Racing Hub 2026.11.18 | Control Homepage + Calendar CMS | requires calendar SQL migration -->
+  <meta name="description" content="RWIN Racing — oficjalna strona zespołu endurance simracing. Kalendarz wyścigów Le Mans Ultimate, wydarzenia, zapisy, kierowcy i społeczność." />
+  <title>RWIN Racing — Endurance Racing Team | Racing Hub</title>
+  <!-- RWIN Racing Hub | Official site -->
 
   <!-- Fonty z Google Fonts. Bez internetu przeglądarka użyje czcionek systemowych. -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -58,7 +58,7 @@
     .tag { display: inline-flex; align-items: center; gap: 6px; font-size: 10px; font-weight: 800; letter-spacing: .09em; text-transform: uppercase; padding: 6px 9px; border: 1px solid var(--line); color: #d6ceda; white-space: nowrap; }
     .tag.special { color: var(--purple); border-color: rgba(201,128,216,.32); background: rgba(201,128,216,.09); }
     .tag.weekly { color: var(--blue); border-color: rgba(167,173,255,.27); background: rgba(167,173,255,.07); }
-    .tag.demo { color: #d7bddb; font-size: 9px; padding: 4px 5px; }
+    .tag.event-tba { color: #d7bddb; font-size: 9px; padding: 4px 5px; }
     .btn { display: inline-flex; align-items: center; justify-content: center; gap: 9px; border: 1px solid var(--line); padding: 12px 16px; min-height: 42px; background: #211a25; color: var(--white); font-size: 11px; letter-spacing: .07em; font-weight: 800; text-transform: uppercase; transition: .2s ease; }
     .btn:hover { background: #38273e; border-color: var(--purple); transform: translateY(-1px); }
     .btn-primary { background: var(--purple); color: #120c16; border-color: var(--purple); }
@@ -92,9 +92,6 @@
     /* Nawigacja prywatna musi być ukryta przed potwierdzeniem Supabase. */
     [data-private-tab][hidden] { display: none !important; }
 
-    /* Pasek demo */
-    .demo-strip { display: flex; justify-content: space-between; gap: 20px; border: 1px solid var(--line); border-left: 3px solid var(--purple); padding: 10px 14px; background: #17121c; color: #c9b8cf; font-size: 11px; margin: 0 0 24px; }
-    .demo-strip strong { color: var(--white); }
     .content { padding-top: 30px; padding-bottom: 90px; min-height: 76vh; }
     .view { display: none; animation: enter .25s ease; }
     .view.active { display: block; }
@@ -234,7 +231,6 @@
     .identity-actions { display: flex; gap: 12px; align-items: center; justify-content: space-between; flex-wrap: wrap; margin-top: 14px; }
     .identity-actions p { color: var(--muted); font-size: 11px; line-height: 1.7; margin: 0; }
     .lineup-card.assigned { border-color: var(--purple); box-shadow: inset 0 0 0 1px rgba(201,128,216,.15); }
-    .demo-field-hint { color: #a89aaf; font-size: 11px; line-height: 1.7; margin-top: 5px; }
     .entry-item { display: flex; align-items: center; justify-content: space-between; gap: 18px; padding: 20px; border: 1px solid var(--line); background: var(--surface); margin: 10px 0; }
     .entry-item h3 { font: 800 26px var(--font-display); margin: 8px 0; }
     .entry-item p { color: var(--muted); font-size: 11px; margin: 0; }
@@ -415,7 +411,6 @@
       .account-button { font-size: 9px; letter-spacing: 0; padding: 8px 10px; min-height: 38px; }
       .discord-mark { width: 17px; height: 17px; }
       .menu-button { padding: 8px 11px; }
-      .demo-strip { font-size: 10px; flex-direction: column; gap: 4px; }
       .hero { min-height: 325px; }
       .hero-copy { padding: 34px 23px; }
       .hero-copy h1 { font-size: clamp(45px,12vw,65px); overflow-wrap: anywhere; }
@@ -497,7 +492,6 @@
     .race-info-note a {color:#d9a7e3;text-decoration:underline;}
     .race-dialog-footer {align-items:center;justify-content:space-between;margin-top:18px;border-top:1px solid #413046;padding-top:17px;}
     .race-dialog-footer .btn {flex:0 0 auto;min-width:155px;}
-    .race-demo-disclaimer {font-size:10px;color:#a497a9;line-height:1.65;max-width:470px;}
     @media(max-width:760px) {
       .race-dialog-layout {grid-template-columns:1fr;}
       .track-map-card {min-height:0;padding:12px;}
@@ -893,12 +887,6 @@
     .rwin-home-secondary-link{background:transparent;color:#f3e8f5;border-color:#57495e}.rwin-home-secondary-link:hover{border-color:var(--purple);background:#211727}
     .rwin-home-cta span{font-size:18px}.rwin-home-caption{margin-top:auto;padding-top:36px;font-size:9px;color:#776c7c;letter-spacing:.16em;display:flex;gap:14px;align-items:center;font-weight:800}
     .rwin-home-line{height:1px;width:25px;background:var(--purple)}
-    .rwin-home-art{position:relative;overflow:hidden;border-left:1px solid #32263a;background:radial-gradient(circle at 60% 42%,#39233e,transparent 50%),linear-gradient(132deg,#0e0c12,#19101e)}
-    .rwin-home-art:before{content:'';position:absolute;inset:0;background:repeating-linear-gradient(0deg,transparent 0 28px,rgba(201,128,216,.045) 29px 30px),repeating-linear-gradient(90deg,transparent 0 28px,rgba(201,128,216,.045) 29px 30px);mask-image:linear-gradient(to left,#000,transparent)}
-    .rwin-art-ring{position:absolute;border:1px solid rgba(201,128,216,.21);border-radius:50%;aspect-ratio:1;left:50%;top:50%;transform:translate(-50%,-50%)}.rwin-art-ring-a{width:84%}.rwin-art-ring-b{width:56%;border-style:dashed;border-color:rgba(201,128,216,.4)}
-    .rwin-art-track{position:absolute;inset:20% 12%;border:4px solid #c980d8;border-left-color:transparent;border-top-color:#8d599a;border-radius:45% 22% 38% 25% / 31% 39% 48% 25%;transform:rotate(-29deg);filter:drop-shadow(0 0 18px rgba(201,128,216,.19));display:flex;align-items:center;justify-content:center;gap:8px}
-    .rwin-art-track span{font:900 clamp(38px,4.4vw,80px)/1 var(--font-display);color:#f7e9f9;letter-spacing:-.1em;transform:rotate(29deg);text-shadow:0 0 25px #412848}
-    .rwin-art-coordinate{position:absolute;right:22px;top:26px;color:#c1b2c8;font-size:9px;line-height:1.9;letter-spacing:.16em;text-align:right}.rwin-art-number{position:absolute;bottom:26px;left:25px;color:#9a7ea2;font:800 24px var(--font-display)}
     .rwin-home-next{display:grid;grid-template-columns:250px 1fr;margin-top:34px;border:1px solid #3a2e40;background:#120f16}
     .rwin-next-side{background:#1e1724;border-right:1px solid #3e2d45;padding:29px 25px;display:flex;flex-direction:column;gap:22px}.rwin-next-side>span{font-weight:800;font-size:9px;letter-spacing:.17em;color:var(--purple)}
     .rwin-next-side strong{font:italic 900 49px/.81 var(--font-display)}.rwin-next-side small{font-size:11px;line-height:1.65;color:#a89ab0;margin-top:auto}
@@ -923,9 +911,85 @@
     .rwin-calendar-actions{border-top:1px solid #423548;padding-top:17px;display:flex;align-items:center;flex-wrap:wrap;gap:12px}.rwin-calendar-footnote{font-size:11px;color:#a194a6;max-width:340px;line-height:1.6}
     .rwin-event-custom-description{line-height:1.8;color:#d3c7d9;background:#201625;padding:17px;margin:16px 0}
     @media(max-width:1050px){.rwin-home-cover{grid-template-columns:1fr .77fr}.rwin-home-title{font-size:clamp(65px,8vw,100px)}.rwin-activity-grid{grid-template-columns:repeat(2,1fr)}}
-    @media(max-width:760px){.rwin-home-header{flex-wrap:wrap;gap:9px}.rwin-home-cover{grid-template-columns:1fr}.rwin-home-copy{padding:47px 0 35px}.rwin-home-art{min-height:260px;border-left:0;border-top:1px solid #32263a}.rwin-art-track span{font-size:58px}.rwin-home-title{font-size:clamp(61px,12vw,105px)}.rwin-home-next{grid-template-columns:1fr}.rwin-next-side{border-right:0;border-bottom:1px solid #382c40;gap:7px;padding:20px;}.rwin-next-side strong{font-size:35px}.rwin-next-side small{margin-top:0}.rwin-next-main{padding:25px 20px}.rwin-home-story{grid-template-columns:1fr;gap:28px;margin:64px 0 45px;padding-bottom:45px}.rwin-activity-head{display:block}.rwin-activity-head h2{margin-top:12px}.rwin-calendar-manager{padding:20px 15px}.rwin-calendar-manager-head{display:block}.rwin-calendar-manager-head button{margin-top:10px}}
+    @media(max-width:760px){.rwin-home-header{flex-wrap:wrap;gap:9px}.rwin-home-cover{grid-template-columns:1fr}.rwin-home-copy{padding:47px 0 35px}.rwin-home-title{font-size:clamp(61px,12vw,105px)}.rwin-home-next{grid-template-columns:1fr}.rwin-next-side{border-right:0;border-bottom:1px solid #382c40;gap:7px;padding:20px;}.rwin-next-side strong{font-size:35px}.rwin-next-side small{margin-top:0}.rwin-next-main{padding:25px 20px}.rwin-home-story{grid-template-columns:1fr;gap:28px;margin:64px 0 45px;padding-bottom:45px}.rwin-activity-head{display:block}.rwin-activity-head h2{margin-top:12px}.rwin-calendar-manager{padding:20px 15px}.rwin-calendar-manager-head{display:block}.rwin-calendar-manager-head button{margin-top:10px}}
     @media(max-width:480px){.rwin-home-title{font-size:clamp(55px,13vw,75px);letter-spacing:-.05em}.rwin-home-cta{width:100%}.rwin-home-main-link,.rwin-home-secondary-link{width:100%;justify-content:space-between}.rwin-home-lead{font-size:13px}.rwin-next-bottom{align-items:flex-start;flex-direction:column}.rwin-next-main h2{font-size:42px}.rwin-activity-grid{grid-template-columns:1fr}.rwin-activity-item{min-height:210px}.rwin-only-soon{min-height:55vh}.rwin-home-indicator{font-size:8px}}
     @media(prefers-reduced-motion:reduce){.rwin-home-main-link,.rwin-activity-item{transition:none}}
+
+
+    /* ================================================================
+       RWIN 2026.11.19 — simplified homepage & official social footer
+       ================================================================ */
+    .rwin-social-footer {
+      width:100%; border-top:1px solid #302638;
+      background:#07070a; color:#f8f4f9;
+      padding:clamp(58px,7vw,92px) 20px clamp(54px,6vw,82px);
+      text-align:center;
+    }
+    .rwin-social-footer-inner { max-width:900px; margin:0 auto; display:flex; flex-direction:column; align-items:center; }
+    .rwin-footer-brand { display:inline-flex; justify-content:center; align-items:center; width:112px; height:112px; margin-bottom:18px; border:0; background:transparent; padding:0; cursor:pointer; transition:transform .2s ease; }
+    .rwin-footer-brand:hover { transform:scale(1.045); }
+    .rwin-footer-brand img { width:108px; height:108px; object-fit:contain; filter:drop-shadow(0 0 14px rgba(201,128,216,.11)); }
+    .rwin-footer-name { font:800 clamp(22px,3vw,36px)/1.2 var(--font-ui); letter-spacing:.045em; text-transform:uppercase; text-wrap:balance; }
+    .rwin-footer-socials { display:flex; gap:12px; margin-top:31px; justify-content:center; align-items:center; }
+    .rwin-footer-socials a { width:55px; height:55px; display:inline-flex; align-items:center; justify-content:center; border:1px solid #3b3040; color:#ded5e2; background:#0b0a0e; transition:background .2s,border-color .2s,color .2s,transform .2s; }
+    .rwin-footer-socials a:hover,.rwin-footer-socials a:focus-visible { border-color:var(--purple); background:#231626; color:var(--purple); transform:translateY(-3px); }
+    .rwin-footer-socials svg { display:block; }
+    /* Home: next race now flows directly into the footer, without filler sections. */
+    #view-dashboard { padding-bottom:clamp(42px,5vw,76px); }
+    @media(max-width:480px){
+      .rwin-social-footer {padding:54px 16px 58px;}
+      .rwin-footer-brand { width:96px; height:96px; margin-bottom:15px; }
+      .rwin-footer-brand img { width:94px; height:94px; }
+      .rwin-footer-name {font-size:clamp(19px,5.2vw,26px);letter-spacing:.02em;}
+      .rwin-footer-socials {margin-top:25px;gap:12px;}
+      .rwin-footer-socials a {width:51px;height:51px;}
+    }
+    @media(prefers-reduced-motion:reduce){.rwin-footer-brand,.rwin-footer-socials a{transition:none;}}
+  
+    /* OFFICIAL RWIN RACING — brand visual used instead of the removed circular RWIN artwork. */
+    .rwin-home-identity {
+      position:relative; min-height:480px; overflow:hidden;
+      border-left:1px solid #392a41;
+      background:linear-gradient(135deg,#15101b 0%,#23152b 70%,#16101b 100%);
+      display:flex;align-items:center;justify-content:flex-end;
+    }
+    .rwin-home-identity::before {
+      content:""; position:absolute; z-index:0;
+      width:75%; height:84%; left:-11%; top:8%;
+      background:url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAWgAAAFNCAYAAAAthPVQAAA2cUlEQVR42u2debRlWV3fP/u+V3M1PQ801d3V1V3d1cxgoLEjioJCDAIrIkhccVqYpVkmosagiIhKiNEYdBkMi0SIMk+GBBFJMAQwasskMjVzi9BNMzXdQNPdVe/u/LH3We/UqbP3/u1zzn1137vfz1p31as7nHl/92//9m//fu76Z9+AEEKI5WOmSyCEEBJoIYQQEmghhJBACyGEkEALIYQEWgghhARaCCGEBFoIISTQQgghJNBCCCGBFkIIIYEWQgghgRZCCAm0EEIICbQQQkighRBCSKCFEEICLYQQQgIthBBCAi2EEBJoIYQQEmghhJBACyGEkEALIYSQQAshhARaCCGEBFoIISTQQgghJNBCCCGBFkIIIYEWQgghgRZCCAm0EEIICbQQQkighRBCSKCFEEJIoIUQQgIthBBCAi2EEBJoIYQQEmghhJBACyGEkEALIYSQQAshhARaCCGEBFoIISTQQgghJNBCCCEk0EIIIYEWQgghgRZCCAm0EEIICbQQQggJtBBCSKCFEEJIoIUQQgIthBBCAi2EEBJoIYQQEmghhBASaCGEkEALIYSQQAshhARaCCGEBFoIIYQEWgghJNBCCCEk0EIIIYEWQgghgRZCCAm0EEIICbQQQggJtBBCSKCFEEJIoIUQQgIthBBCAi2EEEICLYQQEmghhBASaCGEkEALIYSQQAshhARaCCGEBFoIIYQEWgghJNBCCCEk0EIIIYEWQgghgRZCCCGBFkIICbQQQggJtBBCSKCFEEJIoIUQQkighRBCAi2EEEICLYQQEmghhBASaCGEkEALIYSQQAshhJBACyHENmRdl0BsMa7wuV/g9n3F9/0SXie/gO17PZIS6J0sNgeA/cDu+N689dDPWq+1+H3XaRTt7/vWdtdaI5x55zeu83ezzXnrX9ez7+bz9v6al2ttt33crvPZHDgObLR+1/0+reNo9tl83n7ftc5h1tlP9/i614eea+g651vqCOaJe+oT+3edYyZxPu3r0d2X7xFF17mOvvPaaH13reccNlrXb9Y5Rt/z7LieZ7H53ol4f+/u/L3R8xxK4CXQS48HrgQeC3wHcHkU67UewbFYRq7neylx7gqrT+yrZC2lBKPveH2nobqe3/jO8XmjxeZG3ANfOG4S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') center / contain no-repeat;
+      opacity:.19; transform:rotate(-9deg);pointer-events:none;
+    }
+    .rwin-home-identity-details {
+      position:relative;z-index:1; margin:36px 0;
+      padding:12px 25px; border-left:1px solid rgba(201,128,216,.27);
+      width:52%; min-width:205px;
+      display:flex;flex-direction:column;justify-content:center;gap:23px;
+    }
+    .rwin-home-identity-details span { display:block; color:#a798ad;
+      font-size:9px;font-weight:800;letter-spacing:.19em;margin-bottom:8px; }
+    .rwin-home-identity-details strong { display:block;
+      font:800 clamp(18px,2vw,27px)/1.08 var(--font-display);
+      letter-spacing:.01em;text-transform:uppercase; }
+    /* The calendar uses the older RWIN brand-watermark panel, including its original metadata. */
+    #view-calendar > .hero { grid-template-columns:minmax(0,1fr) 280px; }
+    @media (max-width:970px) {
+      .rwin-home-identity-details {width:57%;min-width:165px;padding:12px 16px;}
+      .rwin-home-identity::before {width:85%;left:-22%;opacity:.14;}
+    }
+    @media (max-width:760px) {
+      .rwin-home-identity {min-height:235px;border-left:0;border-top:1px solid #392a41;}
+      .rwin-home-identity::before {height:90%;width:65%;left:-5%;top:6%;opacity:.17;}
+      .rwin-home-identity-details {width:48%;min-width:0;margin:18px 0;gap:12px;}
+      .rwin-home-identity-details strong {font-size:clamp(17px,4.4vw,22px);}
+    }
+    @media (max-width:420px) {
+      .rwin-home-identity {min-height:212px;}
+      .rwin-home-identity-details {width:54%;padding:10px 12px;}
+      .rwin-home-identity-details span {font-size:8px;}
+    }
+    @media (max-width:880px) {
+      #view-calendar > .hero {grid-template-columns:1fr;}
+    }
 
   </style>
 </head>
@@ -1003,36 +1067,24 @@
           </div>
           <div class="rwin-home-caption"><span class="rwin-home-line"></span> RWIN RACING / RACING TOGETHER SINCE 2026</div>
         </div>
-        <div class="rwin-home-art" aria-hidden="true">
-          <div class="rwin-art-ring rwin-art-ring-a"></div><div class="rwin-art-ring rwin-art-ring-b"></div>
-          <div class="rwin-art-track"><span>R</span><span>W</span><span>I</span><span>N</span></div>
-          <div class="rwin-art-coordinate">TEAM / 026<br>SIM RACING DIVISION</div>
-          <div class="rwin-art-number">#RWIN</div>
+        <div class="rwin-home-identity" aria-label="RWIN Racing — zespół endurance" role="group">
+          <div class="rwin-home-identity-details">
+            <div><span>PLATFORM</span><strong>LE MANS ULTIMATE</strong></div>
+            <div><span>TEAM</span><strong>RWIN RACING</strong></div>
+            <div><span>RACING</span><strong class="text-purple">ENDURANCE</strong></div>
+          </div>
         </div>
       </section>
       <section class="rwin-home-next" aria-label="Najbliższe wydarzenie RWIN">
         <div class="rwin-next-side"><span>02 / RACE CONTROL</span><strong>NEXT<br>ON GRID<span class="text-purple">.</span></strong><small>Najbliższe wydarzenie z kalendarza RWIN.</small></div>
         <div class="rwin-next-main">
           <div class="rwin-next-top"><span class="rwin-next-live"><span class="rwin-live-pip"></span> <span id="nextRaceKind">SPECIAL EVENT</span></span><span id="nextRaceDate">—</span></div>
-          <h2 id="nextRaceName">KOLEJNY WYŚCIG <span>SOON</span></h2>
+          <h2 id="nextRaceName">SPRAWDŹ KALENDARZ</h2>
           <p id="nextRaceTrack">Sprawdź kalendarz wydarzeń</p>
           <div class="rwin-next-bottom"><div><small>ODLICZANIE</small><strong id="dashboardCountdown">—</strong><span id="nextRaceCaveat">Czekamy na kolejne wydarzenie</span></div><button type="button" class="rwin-next-link" data-view="calendar">ZOBACZ KALENDARZ <span aria-hidden="true">↗</span></button></div>
         </div>
       </section>
-      <section class="rwin-home-story" aria-label="O zespole RWIN">
-        <div class="rwin-story-heading"><span>03 / THE TEAM</span><h2>WIĘCEJ NIŻ<br><em>ŚCIGANIE.</em></h2></div>
-        <div class="rwin-story-body"><p>RWIN powstał z pasji do simracingu i zespołowej rywalizacji. Rozwijamy kierowców, budujemy składy do wyścigów i działamy razem — na torze oraz poza nim.</p><p>Nie musisz być zawodnikiem RWIN, żeby być częścią naszej społeczności. Zapraszamy również fanów, nowych kierowców i wszystkich, którzy chcą rozwijać się w wyścigach wirtualnych.</p><button type="button" class="rwin-story-link" data-view="about">POZNAJ RWIN <span aria-hidden="true">↗</span></button></div>
-      </section>
-      <section class="rwin-home-activity" aria-label="Czym zajmuje się RWIN Racing">
-        <div class="rwin-activity-head"><span>04 / WHAT WE DO</span><h2>NASZA DZIAŁALNOŚĆ</h2></div>
-        <div class="rwin-activity-grid">
-          <article class="rwin-activity-item"><span class="rwin-activity-num">01</span><div class="rwin-activity-glyph">↗</div><h3>ENDURANCE RACING</h3><p>Startujemy w wyścigach długodystansowych, gdzie strategia, regularność i współpraca decydują o wyniku.</p></article>
-          <article class="rwin-activity-item"><span class="rwin-activity-num">02</span><div class="rwin-activity-glyph">◎</div><h3>CHAMPIONSHIPS</h3><p>Bierzemy udział w mistrzostwach oraz wydarzeniach specjalnych, reprezentując RWIN na torze.</p></article>
-          <article class="rwin-activity-item"><span class="rwin-activity-num">03</span><div class="rwin-activity-glyph">⌁</div><h3>TEAM PRACTICE</h3><p>Organizujemy treningi i wspólne sesje, aby rozwijać tempo, komunikację i przygotowanie zespołu.</p></article>
-          <article class="rwin-activity-item"><span class="rwin-activity-num">04</span><div class="rwin-activity-glyph">+</div><h3>SIMRACING COMMUNITY</h3><p>Tworzymy miejsce dla kierowców i fanów — również tych, którzy nie należą do naszego zespołu.</p></article>
-        </div>
-      </section>
-      <div class="rwin-home-outro"><span>RWIN RACING <em>/</em> ALWAYS MOVING FORWARD</span><a href="https://discord.gg/M3RVHEVMDc" target="_blank" rel="noopener noreferrer">JOIN OUR COMMUNITY ↗</a></div>
+
     </section>
 
     <!-- ====================== KALENDARZ ====================== -->
@@ -1135,7 +1187,7 @@
         <div class="entry-stat"><div class="eyebrow">03 / PRZYPISANY LINEUP</div><strong id="entryLineup" class="entry-name lineup-assignment">BRAK PRZYPISANIA</strong></div>
       </div>
       <div class="identity-actions"><p id="entriesIdentityNote" aria-live="polite" hidden></p><button type="button" id="retryRwinProfile" class="btn btn-outline" hidden>PONÓW POBIERANIE ↻</button></div>
-      <div class="section-heading"><div><div class="eyebrow">RWIN RACING / ENDURANCE CREWS</div><h2 class="section-title">LINE<span class="text-purple">UP.</span></h2></div><span class="tag special">SKŁADY DO UZUPEŁNIENIA</span></div>
+      <div class="section-heading"><div><div class="eyebrow">RWIN RACING / ENDURANCE CREWS</div><h2 class="section-title">LINE<span class="text-purple">UP.</span></h2></div><span class="tag special">SKŁADY RWIN</span></div>
       <div id="lineupGrid" class="lineup-grid" aria-label="Lineupy RWIN Racing"></div>
       <div class="section-heading"><div><div class="eyebrow">RACE ENTRIES / YOUR GRID</div><h2 class="section-title">MOJE <span class="text-purple">ZGŁOSZENIA.</span></h2></div><button type="button" class="btn btn-primary" data-view="calendar">DODAJ ZAPIS ↗</button></div>
       <div id="myEntries"></div>
@@ -1153,7 +1205,7 @@
           <div class="about-story">
             <span class="overline">NASZA HISTORIA / OD 2026</span>
             <h2>KIM <span class="text-purple">JESTEŚMY?</span></h2>
-            <p><strong>RWIN Racing to polski zespół simracingowy</strong>, którego historia rozpoczęła się na początku stycznia 2026 roku. Wszystko zaczęło się od dwóch przyjaciół, którzy założyli serwer Discord z prostym zamiarem — wspólnie się ścigać, rozwijać swoje umiejętności i czerpać przyjemność z simracingu.</p>
+            <p><strong>RWIN Racing to międzynarodowy zespół simracingowy założony w Polsce</strong>, którego historia rozpoczęła się na początku stycznia 2026 roku. Wszystko zaczęło się od dwóch przyjaciół, którzy założyli serwer Discord z prostym zamiarem — wspólnie się ścigać, rozwijać swoje umiejętności i czerpać przyjemność z simracingu.</p>
             <p>Początkowo nie planowaliśmy tworzenia zespołu simracingowego. Z czasem jednak wspólna pasja do wyścigów zaczęła przeradzać się w coś znacznie większego.</p>
             <p>Na początku września 2026 roku narodziła się oficjalna nazwa <strong>RWIN Racing</strong> oraz powstało nasze logo. W ciągu zaledwie miesiąca zespół znacząco się rozrósł, a my zdobyliśmy cenne doświadczenie w jego organizacji, prowadzeniu i przygotowywaniu wspólnych startów.</p>
             <p>Dziś RWIN Racing to przede wszystkim ludzie, których łączy pasja do motorsportu, rywalizacji i ciągłego rozwoju.</p>
@@ -1290,7 +1342,20 @@
     </section>
   </main>
 
-  <footer class="container footer"><span>© 2026 RWIN RACING · FAN-MADE TEAM HUB</span><span>LE MANS ULTIMATE · PROTOTYP OFFLINE HTML</span><span class="text-purple">DESIGNED TO RACE ●</span></footer>
+  <!-- RWIN RACING / official social footer -->
+  <footer class="rwin-social-footer" aria-label="RWIN Racing — media społecznościowe">
+    <div class="rwin-social-footer-inner">
+      <button type="button" class="rwin-footer-brand" data-view="dashboard" aria-label="RWIN Racing — strona główna">
+        <img src="data:image/png;base64,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" alt="Logo RWIN Racing" width="108" height="108" loading="lazy" />
+      </button>
+      <div class="rwin-footer-name">RWIN ENDURANCE RACING TEAM</div>
+      <nav class="rwin-footer-socials" aria-label="RWIN Racing — nasze media społecznościowe">
+        <a href="https://www.tiktok.com/@rwinracingteam?lang=pl-PL" target="_blank" rel="noopener noreferrer" aria-label="TikTok RWIN Racing Team" title="TikTok"><svg viewBox="0 0 24 24" width="22" height="22" fill="currentColor" aria-hidden="true" focusable="false"><path d="M16.67 2h-3.12v12.13a3.5 3.5 0 1 1-3.5-3.5c.34 0 .67.05.98.14V7.61a6.64 6.64 0 1 0 5.64 6.52V8.54a8.15 8.15 0 0 0 4.78 1.55V6.94A4.93 4.93 0 0 1 16.67 2Z"/></svg></a>
+        <a href="https://www.youtube.com/@RwinRacingTeam" target="_blank" rel="noopener noreferrer" aria-label="YouTube RWIN Racing Team" title="YouTube"><svg viewBox="0 0 24 24" width="23" height="23" fill="currentColor" aria-hidden="true" focusable="false"><path fill-rule="evenodd" d="M21.67 7.28a2.7 2.7 0 0 0-1.9-1.9C18.1 4.94 12 4.94 12 4.94s-6.1 0-7.77.44a2.7 2.7 0 0 0-1.9 1.9C1.89 8.95 1.89 12 1.89 12s0 3.05.44 4.72a2.7 2.7 0 0 0 1.9 1.9c1.67.44 7.77.44 7.77.44s6.1 0 7.77-.44a2.7 2.7 0 0 0 1.9-1.9c.44-1.67.44-4.72.44-4.72s0-3.05-.44-4.72ZM9.85 15.2V8.8L15.5 12l-5.65 3.2Z"/></svg></a>
+        <a href="https://discord.gg/M3RVHEVMDc" target="_blank" rel="noopener noreferrer" aria-label="Discord RWIN Racing" title="Discord"><svg viewBox="0 0 24 24" width="24" height="24" fill="currentColor" aria-hidden="true" focusable="false"><path d="M19.73 5.58a18.1 18.1 0 0 0-4.49-1.39l-.55 1.11a16.8 16.8 0 0 0-5.38 0l-.55-1.11a18.1 18.1 0 0 0-4.49 1.39C1.41 9.8.64 13.9 1.03 17.93a18.3 18.3 0 0 0 5.52 2.78l1.18-1.93c-.64-.23-1.25-.51-1.83-.84l.44-.34a12.8 12.8 0 0 0 11.32 0l.44.34c-.58.33-1.19.61-1.83.84l1.18 1.93a18.3 18.3 0 0 0 5.52-2.78c.46-4.67-.78-8.73-3.24-12.35ZM8.5 15.46c-1.06 0-1.92-.96-1.92-2.13 0-1.18.85-2.14 1.92-2.14 1.07 0 1.94.97 1.92 2.14 0 1.17-.85 2.13-1.92 2.13Zm7 0c-1.06 0-1.92-.96-1.92-2.13 0-1.18.85-2.14 1.92-2.14s1.94.97 1.92 2.14c0 1.17-.85 2.13-1.92 2.13Z"/></svg></a>
+      </nav>
+    </div>
+  </footer>
 
   <!-- ===================== MODAL SZCZEGÓŁÓW ===================== -->
   <dialog id="eventDialog" class="race-dialog" aria-labelledby="eventDialogTitle" aria-modal="true">
@@ -1337,7 +1402,7 @@
         <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M19.73 5.58a18.1 18.1 0 0 0-4.49-1.39l-.55 1.11a16.8 16.8 0 0 0-5.38 0l-.55-1.11a18.1 18.1 0 0 0-4.49 1.39C1.41 9.8.64 13.9 1.03 17.93a18.3 18.3 0 0 0 5.52 2.78l1.18-1.93c-.64-.23-1.25-.51-1.83-.84l.44-.34a12.8 12.8 0 0 0 11.32 0l.44.34c-.58.33-1.19.61-1.83.84l1.18 1.93a18.3 18.3 0 0 0 5.52-2.78c.46-4.67-.78-8.73-3.24-12.35ZM8.5 15.46c-1.06 0-1.92-.96-1.92-2.13 0-1.18.85-2.14 1.92-2.14 1.07 0 1.94.97 1.92 2.14 0 1.17-.85 2.13-1.92 2.13Zm7 0c-1.06 0-1.92-.96-1.92-2.13 0-1.18.85-2.14 1.92-2.14s1.94.97 1.92 2.14c0 1.17-.85 2.13-1.92 2.13Z"/></svg>
         Zaloguj przez Discord
       </button>
-      <p class="login-notice" id="loginAvailability">Zalogowanie zostanie aktywowane po uzupełnieniu ustawień Supabase i Discord.</p>
+      <p class="login-notice" id="loginAvailability">Bezpieczna autoryzacja konta Discord.</p>
       <div id="authSignedInSummary" hidden></div>
       <button class="btn btn-outline" type="button" id="discordSignOut" hidden>WYLOGUJ Z DISCORDA</button>
       <div class="login-oauth-info" id="loginOAuthMessage" role="status" aria-live="polite" hidden></div>
@@ -1348,7 +1413,7 @@
   </dialog>
 
 
-  <!-- Profil kierowcy (opisy i inne dane będą dodawane w kolejnych wersjach) -->
+  <!-- Profil kierowcy RWIN Racing -->
   <dialog id="driverDialog" aria-labelledby="driverDialogTitle" aria-modal="true">
     <div class="dialog-top"><div><div class="eyebrow">RWIN RACING / DRIVER PROFILE</div><h2 id="driverDialogTitle">KIEROWCA</h2></div><button type="button" class="icon-button" data-close="driverDialog" aria-label="Zamknij profil">✕</button></div>
     <div class="dialog-content" id="driverDialogContent"></div>
@@ -1440,10 +1505,10 @@
       'PANEL':'PANEL',
       'NARZĘDZIA':'TOOLS',
       'WKRÓTCE.':'COMING SOON.',
-      'Prywatna przestrzeń zarządzania zespołem RWIN Racing. Dostęp wyłącznie dla zweryfikowanych członków z rolą ↣｜ZARZĄD. Narzędzia administracyjne zostaną dodane w kolejnych aktualizacjach.':'Private management area for RWIN Racing. Access is restricted to verified members with the MANAGEMENT Discord role. Administrative tools will be added in future updates.',
-      'Zarządzanie listą i profilami kierowców — w przygotowaniu.':'Driver roster and profile management — coming soon.',
-      'Zarządzanie zgłoszeniami na wyścigi — w przygotowaniu.':'Race entry management — coming soon.',
-      'Przypisywanie kierowców do składów — w przygotowaniu.':'Driver lineup assignments — coming soon.',
+      
+      
+      
+      
       'Kierowcy':'Drivers',
       'Zapisy':'Entries',
       'Lineupy':'Lineups',
@@ -1453,15 +1518,15 @@
       'Dołącz na Discord':'Join our Discord','Kalendarz':'Calendar','NASTĘPNY WYŚCIG':'NEXT RACE',
       'DO POCZĄTKU WEEKENDU':'WEEKEND STARTS IN','Godzina startu nie została jeszcze podana':'Race start time has not been announced',
       'Wydarzenia sezonu 2026':'2026 season events','Wkrótce w kalendarzu':'Coming to the calendar',
-      '03 / MOJE ZAPISY':'03 / MY ENTRIES','Zapisane lokalnie (demo)':'Stored locally (demo)',
+      '03 / MOJE ZAPISY':'03 / MY ENTRIES',
       'Najbliższe wydarzenie':'Upcoming event','NASZA':'OUR','DZIAŁALNOŚĆ.':'ACTIVITY.',
       'Więcej o RWIN Racing już wkrótce.':'More about RWIN Racing coming soon.',
       'Przygotowujemy opis naszej działalności, celów i startów w Le Mans Ultimate. W tym miejscu pojawi się pełna prezentacja zespołu.':'We are preparing an introduction to our team, goals and racing activities in Le Mans Ultimate. A full team overview will appear here.',
       'WKRÓTCE':'COMING SOON','CENTRUM':'TEAM','ZESPOŁU.':'CENTER.',
       'Aktualności kierowców, rekordy osobiste i życie zespołu — docelowo w jednym miejscu.':'Driver updates, personal bests and team life — all in one place in the future.',
-      'PODGLĄD SEKCJI':'SECTION PREVIEW','PRZYKŁADOWY WPIS · DEMO':'SAMPLE POST · DEMO',
+      
       'Nowy rekord osobisty na Le Mans':'New personal best at Le Mans',
-      'Przykład przyszłej aktualności. Wynik nie został jeszcze dodany ani potwierdzony.':'Example of a future update. This result has not been added or verified.',
+      
       'Kolejne aktualności już wkrótce':'More updates coming soon',
       'Tutaj pojawią się informacje o wyścigach, wynikach, lineupach i osiągnięciach kierowców.':'This space will feature race news, results, lineups and driver achievements.',
       'KALENDARZ LMU':'LMU CALENDAR','MOJE ZAPISY':'MY ENTRIES','MOJE ZAPISY →':'MY ENTRIES →','STRATEGIA':'STRATEGY','STRATEGIA — SOON':'STRATEGY — SOON',
@@ -1481,17 +1546,17 @@
       'WYBRANY':'SELECTED','DZIEŃ.':'DAY.','02 / RACE DATABASE • CAŁY SEZON 2026':'02 / RACE DATABASE • FULL 2026 SEASON',
       'WYŚCIGI.':'RACES.','Pełna lista wydarzeń — niezależnie od miesiąca, który oglądasz wyżej.':'All scheduled events, regardless of the selected month.',
       '— WYDARZENIA':'— EVENTS','MOJE':'MY','ZAPISY.':'ENTRIES.',
-      'Dane konta Discord, kierowcy i przypisania do lineupu w jednym miejscu. To na razie prototyp — prawdziwe konto zostanie rozpoznane po uruchomieniu logowania Discord, a lineup zatwierdzi manager RWIN.':'Discord account, driver identity and lineup in one place. This is a prototype — the real Discord account and manager-approved lineups will be connected later.',
+      
       '01 / ZALOGOWANE KONTO DISCORD':'01 / DISCORD ACCOUNT','NIEPOŁĄCZONE':'NOT CONNECTED','BRAK LOGOWANIA':'NOT LOGGED IN',
       'Docelowo nick będzie automatycznie pobierany z Discorda.':'Eventually the username will be retrieved from Discord automatically.',
       '02 / IMIĘ I NAZWISKO':'02 / FULL NAME','NIE USTAWIONO':'NOT SET','Dane kierowcy RWIN Racing':'RWIN Racing driver profile',
       '03 / PRZYPISANY LINEUP':'03 / ASSIGNED LINEUP','BRAK PRZYPISANIA':'UNASSIGNED',
-      'Docelowo przypisuje manager; w demie wybór testowy':'Manager-assigned later; demo selection for now',
-      'Discord OAuth jeszcze nie jest podłączony. Dane demo zostają tylko na tym urządzeniu.':'Discord OAuth is not connected. Demo data is saved on this device only.',
-      'EDYTUJ DANE TESTOWE ↗':'EDIT DEMO DETAILS ↗','SKŁADY DO UZUPEŁNIENIA':'LINEUPS TO BE COMPLETED',
+      
+      
+      'SKŁADY DO UZUPEŁNIENIA':'LINEUPS TO BE COMPLETED',
       'ZGŁOSZENIA.':'REGISTRATIONS.','DODAJ ZAPIS ↗':'ADD ENTRY ↗',
       'NASZA HISTORIA / OD 2026':'OUR STORY / SINCE 2026','KIM':'WHO','JESTEŚMY?':'WE ARE?',
-      'RWIN Racing to polski zespół simracingowy':'RWIN Racing is a Polish sim racing team',
+      'RWIN Racing to międzynarodowy zespół simracingowy założony w Polsce':'RWIN Racing is an international sim racing team founded in Poland',
       ', którego historia rozpoczęła się na początku stycznia 2026 roku. Wszystko zaczęło się od dwóch przyjaciół, którzy założyli serwer Discord z prostym zamiarem — wspólnie się ścigać, rozwijać swoje umiejętności i czerpać przyjemność z simracingu.':', whose story began in early January 2026. It started with two friends who launched a Discord server for one simple reason — to race together, improve their skills and enjoy sim racing.',
       'Początkowo nie planowaliśmy tworzenia zespołu simracingowego. Z czasem jednak wspólna pasja do wyścigów zaczęła przeradzać się w coś znacznie większego.':'At first we had no plans to build a sim racing team. Over time, our shared passion for racing grew into something much bigger.',
       'Na początku września 2026 roku narodziła się oficjalna nazwa':'In early September 2026, the official name',
@@ -1506,8 +1571,8 @@
       'KIEROWCÓW RWIN RACING':'RWIN RACING DRIVERS','ZNAJDŹ KIEROWCĘ':'FIND A DRIVER','WYŚWIETLANI:':'SHOWN:',
       'Brak kierowcy o podanej nazwie.':'No drivers match your search.',
       'Strategia endurance, stinty, kierowcy, paliwo i telemetria LMU pojawią się w kolejnych etapach. Najpierw dopracowujemy stronę i system zapisów.':'Endurance strategies, stints, drivers, fuel and LMU telemetry are planned for future updates. The website and registration system come first.',
-      'LE MANS ULTIMATE · PROTOTYP OFFLINE HTML':'LE MANS ULTIMATE · OFFLINE HTML PROTOTYPE',
-      'WYDARZENIE':'EVENT','Zapis na razie testowy — nie zgłasza do LMU.':'Demo registration only — this does not register you in LMU.',
+      
+      'WYDARZENIE':'EVENT',
       'ZAPISZ SIĘ ↗':'SIGN UP ↗','ZALOGUJ':'LOG','SIĘ.':'IN.',
       'Zaloguj się przez Discord, aby uzyskać dostęp do swoich zapisów, lineupu i nadchodzących wydarzeń RWIN Racing.':'Sign in with Discord to see your race entries, lineup and upcoming RWIN Racing events.',
       'Zaloguj przez Discord':'Sign in with Discord',
@@ -1518,16 +1583,16 @@
       'Nie jesteś jeszcze członkiem?':'Not a member yet?',
       'Dołącz do naszego Discorda ↗':'Join our Discord ↗',
       'KONTO KIEROWCY':'DRIVER ACCOUNT',
-      'Tryb demonstracyjny.':'Demo mode.',
-      'To nie jest logowanie do Discorda — poniższy nick i lineup wpisujesz tylko po to, żeby przetestować wygląd strony. Po podłączeniu Discord OAuth nick przyjdzie z Discorda, a przypisanie do lineupu ustali manager.':'This is not Discord sign-in — the username and lineup below are for testing the website. Later the nickname will come from Discord and a manager will assign your lineup.',
-      'NAZWA KONTA DISCORD (TYLKO DEMO)':'DISCORD USERNAME (DEMO ONLY)',
-      'Nie łączy się z Discordem — wpisz testową nazwę.':'No Discord connection — enter a test username.',
+      
+      
+      
+      
       'IMIĘ I NAZWISKO KIEROWCY':'DRIVER FULL NAME',
-      'PRZYPISANIE DO LINEUPU (DEMO)':'LINEUP ASSIGNMENT (DEMO)',
-      'Brak przypisania':'Unassigned','W finalnej wersji lineup przypisuje manager, a nie sam kierowca.':'In the final version, a manager will assign lineups.',
-      'WYCZYŚĆ DEMO':'CLEAR DEMO','ZAPISZ DANE DEMO ↗':'SAVE DEMO DETAILS ↗',
+      
+      'Brak przypisania':'Unassigned',
+      
       'KIEROWCA':'DRIVER','ZOBACZ PROFIL ↗':'VIEW PROFILE ↗',
-      'Pełny opis kierowcy, statystyki i osiągnięcia zostaną dodane później.':'A full driver biography, stats and achievements will be added later.',
+      'Kierowca zespołu RWIN Racing.':'A full driver biography, stats and achievements will be added later.',
       'Brak wyścigów w tym dniu. Wybierz oznaczoną datę albo sprawdź pełną bazę poniżej.':'No races on this day. Select a marked date or browse the full database below.',
       'SZCZEGÓŁY ↗':'DETAILS ↗','SZCZEGÓŁY / ANULUJ ↗':'DETAILS / CANCEL ↗',
       'SPECJALNY':'SPECIAL','NOWE DLC · TBA':'NEW DLC · TBA',
@@ -1547,19 +1612,19 @@
       'TERMIN WEEKENDU':'RACE WEEKEND','START WYŚCIGU':'RACE START','03 / PROGNOZA POGODY':'03 / WEATHER FORECAST',
       'Szczegóły i ustawienia sesji możesz także sprawdzić w':'Session details and settings are also available at',
       '. Część danych będzie automatyczna dopiero po integracji LMU.':'. Some data will update automatically only after LMU integration.',
-      'ZAPIS TESTOWY AKTYWNY':'DEMO ENTRY ACTIVE','ANULUJ ZAPIS ↗':'CANCEL ENTRY ↗',
+      'ANULUJ ZAPIS ↗':'CANCEL ENTRY ↗',
       'Brak danych z LMU':'No LMU weather data',
       'Warunki z RaceControl nie są jeszcze synchronizowane.':'RaceControl conditions are not yet synchronized.',
       'To pole będzie pokazywać pogodę ustawioną dla sesji w LMU, gdy podłączymy źródło danych. Nie wyświetlamy pogody z miasta zamiast warunków wyścigu.':'This field will display LMU session weather when data integration is available. City forecasts are not a substitute for race conditions.',
       'Temperatura':'Temperature','Deszcz':'Rain','Wiatr':'Wind','Tor':'Track',
       'Warunki sesji LMU / dane wprowadzone z RaceControl':'LMU session conditions / supplied from RaceControl',
       'Skład kierowców do uzupełnienia. Prawdziwe przypisania wykona manager RWIN.':'Driver lineup not added yet. Real assignments will be managed by RWIN staff.',
-      'TWÓJ LINEUP · DEMO':'YOUR LINEUP · DEMO','NIE MASZ JESZCZE ZAPISÓW.':'YOU HAVE NO ENTRIES YET.',
+      'NIE MASZ JESZCZE ZAPISÓW.':'YOU HAVE NO ENTRIES YET.',
       'Przejdź do kalendarza i wybierz jeden z wydarzeń RWIN.':'Go to the calendar and select a RWIN event.',
       'PRZEJDŹ DO KALENDARZA ↗':'GO TO CALENDAR ↗',
       'Nie podano godziny startu':'No race start time provided',
-      'Zapisano testowy profil kierowcy i lineup.':'Demo driver profile and lineup saved.',
-      'Wyczyszczono lokalne konto i zapisy demo.':'Demo account and entries cleared.',
+      
+      
       'Brak kolejnego wyścigu w kalendarzu':'No upcoming races scheduled',
       'Następny wyścig pojawi się tutaj':'The next race will appear here',
       'DO WEEKENDU WYŚCIGOWEGO':'UNTIL RACE WEEKEND',
@@ -1570,14 +1635,14 @@
       'Zamknij':'Close','Zamknij profil':'Close profile',
       'Poprzedni miesiąc':'Previous month','Następny miesiąc':'Next month',
       'Przejdź do bieżącego miesiąca':'Go to current month',
-      'Brak przypisania':'Not assigned','NAZWA TESTOWA · DISCORD NIEPOŁĄCZONY':'DEMO NAME · DISCORD NOT CONNECTED',
-      'TWÓJ LINEUP · DEMO':'YOUR LINEUP · DEMO',
+      'Brak przypisania':'Not assigned',
+      
       'Skład kierowców do uzupełnienia. Prawdziwe przypisania wykona manager RWIN.':'Driver list not yet assigned. Real lineups will be managed by RWIN staff.',
-      'Najpierw wpisz imię i nazwisko kierowcy w profilu demo.':'First enter the driver name in the demo profile.',
-      'Anulowano lokalny zapis demonstracyjny.':'Local demo entry cancelled.',
-      'Wyczyszczono lokalne konto i zapisy demo.':'Local demo account and entries cleared.',
+      
+      
+      
       'RWIN RACING / KIEROWCA':'RWIN RACING / DRIVER',
-      'Testowe przypisanie:':'Demo assignment:',
+      
       'Koniec':'End', 'KONIEC':'END',
       'TRENING':'PRACTICE',
       'ŁADOWANIE...':'LOADING...',
@@ -1597,16 +1662,16 @@
 
     Object.assign(I18N, {
       'WYLOGUJ':'SIGN OUT',
-      'Konto Discord jest połączone z RWIN Racing. Imię i nazwisko potwierdza bot RWIN na podstawie Twojego profilu serwerowego; lineup przypisze manager po uruchomieniu systemu składów.':'Your Discord account is connected to RWIN Racing. Driver names and lineup assignments will be available after the driver database and manager panel are launched.',
+      
       'Dane zatwierdzi manager RWIN Racing':'Details will be approved by the RWIN manager',
       'Lineup przypisuje manager RWIN Racing':'Lineup assigned by RWIN manager',
-      'Dane zespołowe i zgłoszenia zostaną udostępnione po uruchomieniu systemu zapisów RWIN.':'Team information and entries will be available once the RWIN registration system is launched.',
-      'Zapisy zostaną włączone po uruchomieniu bazy RWIN.':'Registration will be enabled once the RWIN database launches.',
+      
+      
       'ZAPISY WKRÓTCE.':'REGISTRATION COMING SOON.',
-      'System oficjalnych zapisów udostępnimy po podłączeniu bazy danych. Obecnie żadne zgłoszenie nie jest zapisywane na tym urządzeniu.':'Official race registration will be available once the database is connected. No registration is currently stored on this device.',
+      
       'Przypisania wykona manager.':'Assignments will be handled by the manager.',
-      'Skład zostanie dodany po uruchomieniu systemu RWIN. Przypisania wykona manager.':'The lineup will appear once the RWIN system launches. Assignments will be handled by the manager.',
-      'Discord połączony. Dane kierowcy, skład i zgłoszenia pojawią się po uruchomieniu bazy RWIN.':'Discord connected. Driver information, lineups and entries will appear after the RWIN database launches.',
+      
+      
       'Zaloguj się przez Discord. Przypisanie do zespołu i zapisy zostaną udostępnione później.':'Sign in with Discord. Team assignments and registration will be available later.',
       'ZALOGUJ SIĘ':'SIGN IN',
       'DO UZUPEŁNIENIA':'TO BE COMPLETED',
@@ -1642,8 +1707,6 @@
       if (!translated) {
         const countMatch = normalized.match(/^(\d+) (WYDARZENIE|WYDARZENIA)$/);
         if (countMatch) translated = countMatch[1] + ' EVENTS';
-        const entryMatch = normalized.match(/^(\d+) lokalny zapis$/);
-        if (entryMatch) translated = entryMatch[1] + ' local demo entry';
       }
       if (translated) return plain.replace(normalized,translated);
       // Również dla dynamicznych fraz łączonych z nazwą wyścigu i danymi kierowcy.
@@ -1652,13 +1715,26 @@
         for (const [pl,en] of [
           ['do początku weekendu (godzina startu nieznana)','until race weekend begins (start time unknown)'],
           ['do podanej godziny startu','until the confirmed race start'],
-          ['lokalny zapis','local demo entry'],
-          ['Testowe przypisanie:','Demo assignment:'],
           ['Skład kierowców do uzupełnienia. Prawdziwe przypisania wykona manager RWIN.','Driver lineup to be completed. Real assignments will be managed by RWIN staff.']
         ]) result = result.replaceAll(pl,en);
       }
       return result;
     }
+    // Oficjalne komunikaty, bez pozostałości wersji demonstracyjnej.
+    Object.assign(I18N, {
+      'BRAK NADCHODZĄCYCH WYDARZEŃ':'NO UPCOMING EVENTS',
+      'SPRAWDŹ KALENDARZ':'VIEW CALENDAR',
+      'Brak nadchodzących wydarzeń':'No upcoming events',
+      'Brak zaplanowanych Weekly Races.':'No Weekly Races are currently scheduled.',
+      'SKŁADY RWIN':'RWIN LINEUPS',
+      'Bezpieczna autoryzacja konta Discord.':'Secure Discord account authorization.',
+      'Kierowca zespołu RWIN Racing.':'RWIN Racing team driver.',
+      'Brak wyników. Zmień filtr lub wpisz inną nazwę toru.':'No matching events. Change the filter or search term.',
+      'ZAPISY OTWARTE':'REGISTRATION OPEN',
+      'ZAPISY ZAMKNIĘTE':'REGISTRATION CLOSED',
+      'SZCZEGÓŁY':'DETAILS'
+    });
+
     function translateAll(root = document.body) {
       const walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT, null);
       let node;
@@ -1979,8 +2055,9 @@
         .sort((a,b)=>a.ms-b.ms)[0];
       if (!next) {
         if ($('dashboardCountdown')) $('dashboardCountdown').textContent = currentLanguage==='en' ? 'NO EVENT' : 'BRAK WYDARZEŃ';
-        el.textContent = 'BRAK';
-        $('calCountdownLabel').textContent = 'Brak kolejnego wydarzenia w kalendarzu';
+        el.textContent = '—';
+        $('calCountdownLabel').textContent = currentLanguage==='en' ? 'No upcoming events' : 'Brak nadchodzących wydarzeń';
+        if ($('nextRaceCaveat')) $('nextRaceCaveat').textContent = currentLanguage==='en' ? 'Check the calendar' : 'Sprawdź kalendarz';
         return;
       }
       const total = Math.max(0,Math.floor((next.ms-now)/1000));
@@ -1997,12 +2074,8 @@
     const MONTHS_SHORT_EN = ['JAN','FEB','MAR','APR','MAY','JUN','JUL','AUG','SEP','OCT','NOV','DEC'];
     const WEEKDAYS_EN = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
     const WEEKDAYS = ['niedziela','poniedziałek','wtorek','środa','czwartek','piątek','sobota'];
-    const STORAGE_KEY = 'rwin_racing_hub_special_v04';
     const $ = (id) => document.getElementById(id);
 
-    // Dane testowe nie są już wczytywane ani przechowywane.
-    // Wspólne zgłoszenia i lineupy będą pobierane z chronionej bazy RWIN.
-    const demo = { discordName: '', fullName: '', lineup: '', entries: [] };
     // Dzień w Polsce, niezależnie od strefy czasowej urządzenia kierowcy.
     function todayInWarsaw() {
       const parts = new Intl.DateTimeFormat('en-GB', {
@@ -2198,7 +2271,7 @@
       const events = filteredEvents();
       $('resultCount').textContent = `${events.length} ${events.length === 1 ? 'WYDARZENIE' : 'WYDARZENIA'}`;
       if (!events.length) {
-        $('eventList').innerHTML = state.filter === 'weekly' ? '<div class="no-events">Weekly Races nie są jeszcze dodane. Aktualnie w kalendarzu są cztery Special Events przekazane przez RWIN.</div>' : '<div class="no-events">Brak wyników. Zmień filtr lub wpisz inną nazwę toru.</div>';
+        $('eventList').innerHTML = state.filter === 'weekly' ? (currentLanguage === 'en' ? '<div class="no-events">No Weekly Races are currently scheduled.</div>' : '<div class="no-events">Brak zaplanowanych Weekly Races.</div>') : (currentLanguage === 'en' ? '<div class="no-events">No matching events. Change the filter or search term.</div>' : '<div class="no-events">Brak wyników. Zmień filtr lub wpisz inną nazwę toru.</div>');
         return;
       }
       $('eventList').innerHTML = events.map(e => `
@@ -2206,17 +2279,12 @@
           ${dayTile(e.date)}
           <span class="event-row-copy">
             <span class="tag ${e.type}" style="border:0;background:none;padding:0">● ${typeName(e.type)}</span>
-            <h3>${esc(e.title)} ${e.trackTBA ? '<span class="tag demo">NOWE DLC · TBA</span>' : ''}</h3>
+            <h3>${esc(e.title)} ${e.trackTBA ? '<span class="tag event-tba">NOWE DLC · TBA</span>' : ''}</h3>
             <p>${esc(eventRange(e))} · ${esc(e.track)} · ${esc(e.duration)}</p>
           </span>
-          <span class="event-row-meta"><span>${rwinEventArchived(e)?'ZAKOŃCZONE':'SPECJALNY'}</span><span>${rwinEventArchived(e)?'ARCHIWUM':'ZGŁOSZENIA ONLINE'}</span></span>
+          <span class="event-row-meta"><span>${rwinEventArchived(e)?'ZAKOŃCZONE':typeName(e.type)}</span><span>${rwinEventArchived(e)?'ARCHIWUM':!rwinCalendarReady?'SZCZEGÓŁY':e.registrationOpen?'ZAPISY OTWARTE':'ZAPISY ZAMKNIĘTE'}</span></span>
           <span class="arrow">↗</span>
         </button>`).join('');
-    }
-
-    function getEntryCount(eventId) {
-      // Rejestracja online jeszcze nie została uruchomiona.
-      return 0; // Brak zgłoszeń do czasu uruchomienia wspólnej bazy.
     }
 
     function updateCounters() {
@@ -2230,10 +2298,10 @@
       const todayISO = todayInWarsaw();
       const next = sorted.find(e=>(e.endDate || e.date)>=todayISO);
       if (!next) {
-        $('nextRaceName').textContent = currentLanguage==='en' ? 'NEW EVENTS SOON' : 'NOWE WYDARZENIA WKRÓTCE';
-        $('nextRaceTrack').textContent = currentLanguage==='en' ? 'Check the calendar for updates' : 'Śledź aktualizacje w kalendarzu';
+        $('nextRaceName').textContent = currentLanguage==='en' ? 'NO UPCOMING EVENTS' : 'BRAK NADCHODZĄCYCH WYDARZEŃ';
+        $('nextRaceTrack').textContent = currentLanguage==='en' ? 'See the race calendar for scheduled events' : 'Sprawdź kalendarz wydarzeń RWIN';
         $('nextRaceDate').textContent = '—';
-        $('nextRaceKind').textContent = 'RWIN / 2026';
+        $('nextRaceKind').textContent = 'RWIN RACING';
         return;
       }
       $('nextRaceName').innerHTML = `${esc(next.title.replace(/\s(6H|8H)$/,''))} <span>${esc(next.duration)}</span>`;
@@ -2256,7 +2324,7 @@
       const sessionDays=rwinEventDayOptions(event).map(day=>`<span>${esc(day.name.split(' · ')[0])}</span>`).join('');
       const trackNote = event.trackTBA ? 'Tor do ogłoszenia' : event.track;
       $('eventDialogBody').innerHTML = `
-        <div class="race-dialog-banner"><span class="race-dialog-badge">${esc(typeName(event.type))}</span><span class="tag demo">RWIN RACING • EVENT INFO</span></div>
+        <div class="race-dialog-banner"><span class="race-dialog-badge">${esc(typeName(event.type))}</span><span class="tag event-tba">RWIN RACING • EVENT INFO</span></div>
         ${event.description?`<p class="rwin-event-custom-description">${esc(event.description)}</p>`:''}
         <div class="race-dialog-layout">
           <div class="track-map-card">
@@ -3861,7 +3929,7 @@
       openedDriverIndex = index;
       openedDriverName = name;
       $('driverDialogTitle').textContent = name;
-      $('driverDialogContent').innerHTML = `<div class="driver-profile-hero">${photo}<div class="driver-profile-info"><span class="driver-profile-mini">RWIN RACING / KIEROWCA ${String(index+1).padStart(2,'0')}</span><h3>${esc(name)}</h3><span class="tag special">TEAM RWIN</span><p>Pełny opis kierowcy, statystyki i osiągnięcia zostaną dodane później.</p></div></div>`;
+      $('driverDialogContent').innerHTML = `<div class="driver-profile-hero">${photo}<div class="driver-profile-info"><span class="driver-profile-mini">RWIN RACING / KIEROWCA ${String(index+1).padStart(2,'0')}</span><h3>${esc(name)}</h3><span class="tag special">TEAM RWIN</span><p>Kierowca zespołu RWIN Racing.</p></div></div>`;
       if (!$('driverDialog').open) $('driverDialog').showModal();
       translateAll();
     }
@@ -4444,14 +4512,14 @@
       }
     }
 
-    function resetLocalDemoOnIdentityChange(nextId) {
+    function recordAuthIdentityChange(nextId) {
       lastAuthUserId = nextId;
     }
 
     function setAuthenticatedUser(user) {
       const nextUserId = user?.id || null;
       const previousUserId = authUser?.id || null;
-      resetLocalDemoOnIdentityChange(nextUserId);
+      recordAuthIdentityChange(nextUserId);
       if (nextUserId !== previousUserId) {
         invalidateMembership(nextUserId ? 'checking' : 'signed_out');
         if (!nextUserId) membershipRequestedEntries = state.view === 'access' && membershipRequestedEntries;
