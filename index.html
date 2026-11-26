@@ -45,6 +45,19 @@ main.wrap{flex:1;margin:0 auto;width:min(1300px,92%)}
 .roster-heading{display:flex;align-items:center;justify-content:space-between;gap:22px}.searchbox{display:flex;align-items:center;gap:10px;width:min(330px,45%);padding:0 12px;min-height:45px;border:1px solid var(--line);background:var(--surface);color:var(--muted)}.searchbox:focus-within{border-color:var(--purple)}.searchbox input{font:inherit;color:var(--white);background:transparent;border:0;outline:none;min-width:0;width:100%;height:42px}.searchbox input::-webkit-search-cancel-button{display:none}.searchbox button{font-size:22px;min-width:30px}
 footer{background:var(--surface);border-top:1px solid var(--line);border-bottom:0}.foot{padding:26px 0;border:0}.foot .identity{font-size:20px;color:var(--white)}.foot .identity svg{width:34px}.socials{display:flex;gap:8px;flex-wrap:wrap}.socials a{display:inline-flex;align-items:center;gap:8px;border:1px solid var(--line);padding:9px 13px;color:var(--white);font-size:13px}.socials a:hover{color:var(--purple);background:var(--surface-alt);border-color:var(--purple-dark)}.socials .icon{width:16px;height:16px}
 @media(max-width:700px){.mast,.event-block{grid-template-columns:1fr}.mast{gap:16px}.event-photo{grid-row:1;min-height:0;aspect-ratio:2/1}.event-photo:after{background:linear-gradient(0deg,#111015a8,transparent 38%)}.event-copy{padding:24px}.roster-heading,.foot{flex-direction:column;align-items:flex-start;gap:12px}.roster-heading .searchbox{width:100%}.roster-heading h1{margin-bottom:0}.socials{gap:6px}.socials a{padding:8px 10px}}
+
+#detail{width:min(980px,96vw);max-height:92dvh;padding:0;overflow:auto;background:#141018}
+#detail::backdrop{background:#08070ce8}
+#detail .close{position:absolute;right:20px;top:22px;width:40px;height:40px;float:none;border:1px solid var(--line);background:var(--surface-alt)}
+.race-head{padding:22px 76px 22px 22px;border-bottom:1px solid var(--line);background:linear-gradient(110deg,#29192d,#151119)}
+.race-head small,.race-box h3{letter-spacing:.12em;text-transform:uppercase;font-weight:700}
+.race-head small{font-size:10px;color:var(--muted)}
+#dialogTitle{font:italic 800 clamp(32px,5vw,52px)/1 var(--font-display);text-transform:uppercase;margin:8px 0 0}
+.race-content{padding:20px}.race-layout{display:grid;grid-template-columns:minmax(0,1.55fr) minmax(0,1fr);gap:16px;margin:16px 0}.race-side{display:grid;align-content:start;gap:14px}
+.race-box{padding:18px;border:1px solid #453347;background:var(--surface-alt);min-width:0}.race-box h3{font:700 14px var(--font-ui);letter-spacing:.08em;margin:0 0 14px;color:#d8c8dc}
+.race-map{margin:0}.race-map-frame{aspect-ratio:1.58;display:grid;place-items:center;background:#09080c;border:1px solid #49354e;text-align:center;color:var(--muted);padding:10px}.race-map-frame img{width:100%;height:100%;min-height:0;object-fit:contain}.race-map figcaption,.race-note{margin:10px 0 0;color:var(--muted);font-size:12px}
+#detail .race-facts{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:0}.race-facts dt{font-size:10px;text-transform:uppercase;letter-spacing:.06em}.race-facts dd{margin:4px 0;font-size:14px}.race-facts ul{padding:0;list-style:none;margin:0}.race-facts li{margin:3px 0}.race-footer{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;border-top:1px solid var(--line);padding-top:16px}.race-footer .btn{color:#160e19;background:var(--purple);text-decoration:none}.race-footer .race-note{margin:0}
+@media(max-width:700px){.race-layout{grid-template-columns:1fr}.race-content,.race-box{padding:12px}.race-head{padding-left:14px}#detail .close{right:12px}}
 </style></head><body>
 <!-- LOGO: wspólny kontur znaku. Warianty kolorystyczne dziedziczą kolor miejsca użycia. -->
 <svg xmlns="http://www.w3.org/2000/svg" width="0" height="0" style="position:absolute" aria-hidden="true"><defs>
@@ -271,17 +284,30 @@ function secondary(p){
  return `<section class="page"><div class="kicker">RWIN Racing</div><h1>${title}</h1>${content}</section>`;
 }
 function showDetails(id){
- const e=EVENTS.find(x=>x.id===id);if(!e)return;
+ const e=EVENTS.find(item=>item.id===id);
+ if(!e)return;
  activeEvent=id;
- const dates=[];
- for(let d=asDate(e.start);d<=asDate(e.end);d.setUTCDate(d.getUTCDate()+1)){
-   const key=d.toISOString().slice(0,10);
-   const slots=times(e).filter(s=>dateKey(new Date(s))===key);
-   dates.push(`<li>${fmt(key,{weekday:'long',day:'numeric',month:'long'})} · ${slots.length?slots.map(sessionTime).join(', '):t('godziny do potwierdzenia','times to be confirmed')}</li>`);
+ const track=eventTrack(e), slots=times(e), days=[];
+ for(let day=asDate(e.start);day<=asDate(e.end);day.setUTCDate(day.getUTCDate()+1)){
+   days.push(fmt(day.toISOString().slice(0,10),{weekday:'long',day:'numeric',month:'short'}));
  }
- $('#detailBody').innerHTML=`<span class="tag">${categories()[e.category]}</span><h2 id="dialogTitle">${label(e.name)}</h2>
- <dl><dt>${t('Tor','Circuit')}</dt><dd>${label(eventTrack(e).name)}</dd><dt>${t('Termin','Dates')}</dt><dd>${range(e)}</dd><dt>${t('Czas wyścigu','Race duration')}</dt><dd>${escapeHTML(e.duration)}</dd></dl>
- <p>${label(e.description)}</p><h3>${t('Sesje','Sessions')}</h3><p class="note">${t('Czas lokalny','Time zone')} · Europe/Warsaw</p><ul>${dates.join('')}</ul><p class="note">${t('Sprawdzono','Verified')} ${full(e.checked)} · <a href="${escapeHTML(e.source)}" target="_blank" rel="noopener noreferrer">${escapeHTML(e.publisher)} ↗</a></p>`;
+ const field=(title,value)=>`<div><dt>${title}</dt><dd>${value}</dd></div>`;
+ const list=items=>`<ul>${items.map(item=>`<li>${escapeHTML(item)}</li>`).join('')}</ul>`;
+ $('#detailBody').innerHTML=`<div class="race-head"><small>RWIN Racing / ${t('Szczegóły wydarzenia','Event details')}</small><h2 id="dialogTitle">${label(e.name)}</h2></div>
+ <div class="race-content"><span class="tag">${categories()[e.category]}</span><div class="race-layout">
+ <figure class="race-box race-map"><h3>01 / ${t('Mapa toru','Circuit map')}</h3><div class="race-map-frame"><span>${t('Mapa toru wkrótce','Circuit map coming soon')}</span></div><figcaption>${label(track.name)}${e.trackId==='silverstone'?' · DLC':''}</figcaption></figure>
+ <div class="race-side"><section class="race-box"><h3>02 / ${t('Informacje o wyścigu','Race information')}</h3><dl class="race-facts">
+ ${field(t('Tor','Circuit'),label(track.name))}${field(t('Długość wyścigu','Race duration'),escapeHTML(e.duration))}
+ ${field(t('Termin weekendu','Race weekend'),range(e))}${field(t('Godziny startów','Start times'),slots.length?list(slots.map(s=>fmt(dateKey(new Date(s)),{day:'numeric',month:'short'})+' · '+sessionTime(s))):t('Do potwierdzenia','To be confirmed'))}
+ ${field(t('Dni wyścigu','Race days'),list(days))}</dl><p class="race-note">${label(e.description)}</p></section>
+ <section class="race-box"><h3>03 / ${t('Pogoda i warunki','Weather and conditions')}</h3><p class="race-note">${label(e.weather)||t('Brak aktualnych danych o pogodzie','No current weather data')}</p></section></div></div>
+ <div class="race-footer"><a class="btn" href="#entries">${t('Zapisz się','Sign up')} ↗</a><p class="race-note">${t('Sprawdzono','Verified')} ${full(e.checked)} · <a href="${escapeHTML(e.source)}" target="_blank" rel="noopener noreferrer">${escapeHTML(e.publisher)} ↗</a></p></div></div>`;
+ if(e.trackId && e.trackId!=='tba'){
+   const frame=$('.race-map-frame'), img=new Image();
+   img.alt=t('Nitka toru ','Circuit layout · ')+local(track.name);
+   img.onload=()=>frame.replaceChildren(img);
+   img.src='circut/'+encodeURIComponent(e.trackId)+'.png';
+ }
  $('.close').setAttribute('aria-label',t('Zamknij','Close'));
  if(!$('#detail').open)$('#detail').showModal();
 }
