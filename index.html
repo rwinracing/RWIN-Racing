@@ -77,6 +77,11 @@ const TRACKS = {
   monza: {name:'Autodromo Nazionale Monza', photo:'tory/monza.webp'},
   'spa-francorchamps': {name:'Circuit de Spa-Francorchamps', photo:'tory/spa-francorchamps.webp'},
   bahrain: {name:'Bahrain International Circuit', photo:'tory/bahrain.webp'},
+  'daytona': {name:'Daytona International Speedway', photo:'tory/daytona.png'},
+  'road-atlanta': {name:'Michelin Raceway Road Atlanta', photo:'tory/road-atlanta.png'},
+  'le-mans': {name:'Circuit de la Sarthe', photo:'tory/le-mans.png'},
+  'interlagos': {name:'Autódromo José Carlos Pace', photo:'tory/interlagos.png'},
+  'cota': {name:'Circuit of the Americas', photo:'tory/cota.png'},
   tba: {name:{pl:'Tor do ogłoszenia',en:'Circuit to be announced'}, photo:null}
 };
 function eventTrack(e){return TRACKS[e.trackId] || {name:e.track || e.trackId, photo:null}}
@@ -85,6 +90,20 @@ const official = {
   publisher: 'Le Mans Ultimate', checked: '2026-11-26', category: 'special',
   sessions: [], description: {pl:'Klasy samochodów: Hypercar i LMGT3.', en:'Car classes: Hypercar and LMGT3.'}
 };
+const season13 = {
+  source:'https://lemansultimate.com/season-13-online-championships-are-live/',
+  publisher:'Le Mans Ultimate', checked:'2026-11-26', category:'championship'
+};
+const gmrFinals = {
+  ...season13, source:'https://lemansultimate.com/genesis-uses-le-mans-ultimate-for-esports-series-pro-sim-racing-drive-up-for-grabs/',
+  sessions:[], description:{pl:'Runda dla kierowców zakwalifikowanych do finałowej fazy GMR Esports Series.',en:'Round for drivers who qualified for the final phase of the GMR Esports Series.'}
+};
+// Godziny rozpoczęcia sesji według harmonogramu LMU, zapisane w UTC.
+function utcSlots(days, hours){
+  return days.flatMap(day=>hours.map(hour=>day+'T'+hour+':00:00Z'));
+}
+const daytime=['08','11','14','16','18','20','22'];
+const overnight=['00','03'];
 const EVENTS = [
   {...official, id:'bahrain-2026', name:'8 Hours Bahrain', trackId:'bahrain',
     start:'2026-11-13', end:'2026-11-15', duration:'8 h'},
@@ -94,7 +113,38 @@ const EVENTS = [
     start:'2026-12-04', end:'2026-12-06', duration:'6 h'},
   {...official, id:'december-2026', name:{pl:'6 godzin • tor do ogłoszenia',en:'6 Hours • venue TBA'},
     trackId:'tba', start:'2026-12-18', end:'2026-12-20', duration:'6 h',
-    description:{pl:'Klasy samochodów: Hypercar, WEC LMP2 i LMGT3.',en:'Car classes: Hypercar, WEC LMP2 and LMGT3.'}}
+    description:{pl:'Klasy samochodów: Hypercar, WEC LMP2 i LMGT3.',en:'Car classes: Hypercar, WEC LMP2 and LMGT3.'}},
+  {...season13, id:'gmr-qualifying-le-mans', name:'GMR Esports Series Qualifiers', trackId:'le-mans',
+    start:'2026-11-25', end:'2026-11-28', duration:'85 min',
+    description:{pl:'Genesis GMR-001. Stałe ustawienia, minimum Bronze 3 SR.',en:'Genesis GMR-001. Fixed setup, Bronze 3 SR or higher.'},
+    sessions:utcSlots(['2026-11-25','2026-11-28'],['03','08','11','14','18','20'])},
+  {...season13, id:'lmgt3-daytona', name:'LMGT3 Sprint Trophy', trackId:'daytona',
+    start:'2026-11-24', end:'2026-11-30', duration:'80 min',
+    description:{pl:'LMGT3 · RaceControl Pro/Pro+ · minimum Silver 1 SR.',en:'LMGT3 · RaceControl Pro/Pro+ · Silver 1 SR or higher.'},
+    sessions:[...utcSlots(['2026-11-24','2026-11-27','2026-11-29'],daytime),
+              ...utcSlots(['2026-11-25','2026-11-28','2026-11-30'],overnight)]},
+  {...season13, id:'prototype-silverstone', name:'Prototype Challenge', trackId:'silverstone',
+    start:'2026-11-25', end:'2026-12-01', duration:'100 min',
+    description:{pl:'ELMS LMP2 / LMP3 · RaceControl Pro/Pro+ · minimum Gold 1 SR.',en:'ELMS LMP2 / LMP3 · RaceControl Pro/Pro+ · Gold 1 SR or higher.'},
+    sessions:[...utcSlots(['2026-11-25','2026-11-30'],daytime),
+              ...utcSlots(['2026-11-26','2026-12-01'],overnight)]},
+  {...season13, id:'americas-road-atlanta', name:'Americas Endurance Series', trackId:'road-atlanta',
+    start:'2026-11-26', end:'2026-11-30', duration:'120 min',
+    description:{pl:'Hypercar / LMGT3 · RaceControl Pro/Pro+ · minimum Platinum 1 SR.',en:'Hypercar / LMGT3 · RaceControl Pro/Pro+ · Platinum 1 SR or higher.'},
+    sessions:[...utcSlots(['2026-11-26','2026-11-29'],daytime),
+              ...utcSlots(['2026-11-27','2026-11-30'],overnight)]},
+  {...season13, id:'team-daytona', name:'6 Hours of Daytona', trackId:'daytona',
+    start:'2026-11-28', end:'2026-11-28', duration:'6 h',
+    description:{pl:'Runda zespołowych mistrzostw WEC. Hypercar i LMGT3. RaceControl Pro/Pro+.',en:'WEC Team Championship round. Hypercar and LMGT3. RaceControl Pro/Pro+.'},
+    sessions:utcSlots(['2026-11-28'],['03','12','19'])},
+  {...gmrFinals, id:'gmr-spa-francorchamps', name:'GMR Esports Series · Spa-Francorchamps', trackId:'spa-francorchamps',
+    start:'2026-12-11', end:'2026-12-11', duration:'45 min'},
+  {...gmrFinals, id:'gmr-interlagos', name:'GMR Esports Series · Interlagos', trackId:'interlagos',
+    start:'2026-12-12', end:'2026-12-12', duration:'45 min'},
+  {...gmrFinals, id:'gmr-cota', name:'GMR Esports Series · COTA', trackId:'cota',
+    start:'2026-12-18', end:'2026-12-18', duration:'45 min'},
+  {...gmrFinals, id:'gmr-le-mans', name:'GMR Esports Series · Le Mans', trackId:'le-mans',
+    start:'2026-12-19', end:'2026-12-19', duration:'120 min'}
 ];
 // SKŁAD. Przykładowy format wpisu: {name: 'Imię i nazwisko', avatar: 'assets/avatar.png'}.
 const DRIVERS = [];
@@ -155,7 +205,7 @@ function sessionTime(iso){
   return new Intl.DateTimeFormat(locale(),{timeZone:zone,hour:'2-digit',minute:'2-digit',hourCycle:'h23',timeZoneName:'shortOffset'}).format(new Date(iso));
 }
 const navLabels=()=>({home:t('Strona główna','Home'),calendar:t('Kalendarz','Calendar'),entries:t('Moje zapisy','My entries'),strategy:t('Strategia','Strategy'),about:'About us',drivers:t('Kierowcy','Drivers')});
-const categories=()=>({all:t('Wszystkie','All'),special:'Special Events',weekly:'Weekly Races',training:t('Treningi zespołu','Team practice')});
+const categories=()=>({all:t('Wszystkie','All'),special:'Special Events',weekly:'Weekly Races',championship:t('Mistrzostwa','Championships'),training:t('Treningi zespołu','Team practice')});
 let month=today().slice(0,7), filter='all', activeEvent=null, toastTimer;
 function page(){const hash=location.hash.slice(1);return Object.hasOwn(navLabels(),hash)?hash:'home'}
 function setSub(open){$('#submenu').hidden=!open;$('#subToggle').setAttribute('aria-expanded',String(open))}
@@ -220,7 +270,7 @@ function calendar(){
  let cells='<div class="blank"></div>'.repeat(offset);
  for(let day=1;day<=last;day++){
    const key=month+'-'+String(day).padStart(2,'0');
-   const marks=shown.filter(e=>e.start<=key&&e.end>=key).map(e=>`<button data-event="${escapeHTML(e.id)}" aria-label="${label(e.name)} · ${full(key)}">${label(e.name)}</button>`).join('');
+   const marks=shown.filter(e=>e.start<=key&&e.end>=key&&(!e.sessions.length||e.sessions.some(slot=>dateKey(new Date(slot))===key))).map(e=>`<button data-event="${escapeHTML(e.id)}" aria-label="${label(e.name)} · ${full(key)}">${label(e.name)}</button>`).join('');
    cells+=`<div class="day ${key===today()?'today':''}"><span class="num" ${key===today()?'aria-current="date"':''}>${day}</span>${marks}</div>`;
  }
  cells+='<div class="blank"></div>'.repeat((7-(offset+last)%7)%7);
@@ -277,6 +327,7 @@ function showDetails(id){
  for(let d=asDate(e.start);d<=asDate(e.end);d.setUTCDate(d.getUTCDate()+1)){
    const key=d.toISOString().slice(0,10);
    const slots=times(e).filter(s=>dateKey(new Date(s))===key);
+   if(e.sessions.length&&!slots.length)continue;
    dates.push(`<li>${fmt(key,{weekday:'long',day:'numeric',month:'long'})} · ${slots.length?slots.map(sessionTime).join(', '):t('godziny do potwierdzenia','times to be confirmed')}</li>`);
  }
  $('#detailBody').innerHTML=`<span class="tag">${categories()[e.category]}</span><h2 id="dialogTitle">${label(e.name)}</h2>
