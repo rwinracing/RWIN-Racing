@@ -226,6 +226,21 @@ footer{background:var(--surface);border-top:1px solid var(--line);border-bottom:
 .gd-mark{width:74%;height:46%;margin-top:22%;color:#100e12;transform:rotate(-5deg)}
 @media(max-width:780px){.gd{grid-template-columns:1fr}.gd-poster{order:-1;min-height:150px}.gd-num{top:auto;bottom:16%;font-size:84px}.gd-mark{width:38%;height:62%;margin:0 0 0 38%}.gd-poster-bottom{display:none}.gd-poster-top span:last-child{display:none}.gd-split{grid-template-columns:1fr}.gd-stats b{font-size:30px}.gd-stats div{padding:12px}}
 @media(max-width:480px){.gd-stats{grid-template-columns:1fr}.gd-stats div+div{border-left:0;border-top:1px solid var(--line)}.gd-lights i{width:36px;height:36px}}
+:root{--hy:#e5484d;--lmp2:#3e8bff;--gt3:#30a46c}
+.class-tiles{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:10px}
+.class-tile{position:relative;display:flex;align-items:center;justify-content:center;min-height:64px;padding:12px;border:1px solid var(--line);border-radius:4px;background:#1c1820;color:var(--muted);font:italic 800 24px/1 var(--font-display);letter-spacing:.02em;text-transform:uppercase;transition:background .15s,border-color .15s,color .15s,transform .1s}
+.class-tile:hover{border-color:#5a4d60;color:var(--white)}.class-tile:active{transform:scale(.98)}
+.class-tile i{position:absolute;top:6px;right:8px;font:700 12px var(--font-ui);font-style:normal;opacity:0}
+.class-tile[aria-pressed=true]{color:#fff;border-color:transparent}.class-tile[aria-pressed=true] i{opacity:1}
+.class-tile[data-class=hypercar][aria-pressed=true]{background:var(--hy);box-shadow:0 6px 20px #e5484d40}
+.class-tile[data-class=lmp2][aria-pressed=true]{background:var(--lmp2);box-shadow:0 6px 20px #3e8bff40}
+.class-tile[data-class=lmgt3][aria-pressed=true]{background:var(--gt3);box-shadow:0 6px 20px #30a46c40}
+#signup h3.gap-top{margin-top:24px}
+.class-chip[data-class=hypercar]{border-color:#e5484d80;background:#e5484d24;color:#ffb3b5}.class-chip[data-class=lmp2]{border-color:#3e8bff80;background:#3e8bff24;color:#b4d1ff}.class-chip[data-class=lmgt3]{border-color:#30a46c80;background:#30a46c24;color:#a9e3c4}
+.entry-classes{margin-bottom:4px}.closed-note{color:var(--muted)!important}
+.day.past .num{color:var(--dimmed)}.day button.past{background:#ffffff0a;color:var(--dimmed)}
+.racecard.past{border-left-color:#4a4350;opacity:.8}.racecard.past .date,.racecard.past .tag{color:var(--dimmed)}
+@media(max-width:620px){.day button.past{border-left-color:var(--dimmed)}.day button.past:after{background:var(--dimmed)}.class-tile{font-size:20px;min-height:56px}}
 #guide progress{width:100%;height:5px;accent-color:var(--purple);margin:20px 0 10px}#verification{margin:16px auto 0}#verification h2{font-size:28px}#verification .actions{margin-top:12px}</style><link rel="icon" type="image/png" sizes="64x64" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAYAAACqaXHeAAAEpElEQVR42u1aXYhVVRT+1rk3o5EGlcSXMiEbyocY0IEZxCCICAIV9M2oh14sFGOgQnwYIcgIneZhIOhBop+3XooeAjFBJFIf7KmCfqRCQTBJmaFx5p7z+bK2LLb33jk/+9wz0v7gcOacOftnrf2tv70vEBERERERERERERHxf4TU2TnJVoOyUUSy5kYnpenVJSnLLYLUNbCIkOQ4gCEAbED+30XkL51PoozgILTe0vvLbBZzJE+R3NWPlRJY+EREMpJbAPwAYDWADEDSAAPsmNMA3lYm1sMEZ28k2yQv6Cp0GmRApuMv6fP7tTpmQ/2PVoDwviKWSKYkn/GVkIQSXkRSknsB7AfQAdACVlSoTwC8FdwHGLvfDOAigOGQyg1FUJX1CoDNIrLgIlUSMNafBLBGnZ44h1PDVYUF6wA8bt+1q3papf4HAHbou3bNq5mpIpISDH5IF6m6CRjqjwH4yqx8nRngek/BeUOsM4EbAEZE5B9nAiF8wLB2ntZdWwDYCOAJAK8A2FNACal+cwbA8wCk0TohUOSZIHleQ126TCh0IfklPwzKfVb43DUx9T1DAM4C2NqHCamG5NMAXtC29/fqq9If0PsIyVua8GTeyqf67hrJTaYwqrf81HS4lfOSLu3t1SaZdGMZybbeT/TIPt3zrtrSYDvpQVSansISHf9pkrdN6ktTAxyzygqaCbpQaJ43ABgHMApgkwmN/WL6YwAe0ed5AJc1lU4ALAH4UTPMSyLSsam353/OAxgzeUILwDcAdmpfWdAq0GqU5G6SX5K8XmNR8zPJKVXyXVs2ZnBcv1vQ+2WS65UhSV2V3zjJ77s4niVTiva7FpS6HW3X6dLOt+urJF81JuCc4VH9/6L2OVaL3RvhXzN25yaeFShR+z13Q2rsmiRnvWjwrskHXu9n95VpT3LS23QoWp9TlTelE7chq4giThpHPKXvPql75Z81dE0LCu+E/Jfkc6bvNw2T8rJoUe+fah8zJP8g+XCvsFnJ26uWHyX5d870s9cWVccJT3KVofChEkpwTJgmeYzkRPBkx8T5hOR3Fba7XJv91nY90zpYgQlH/H5D2/17ntaLwLX5sJdzMuMcKDiO9UPvBHV+xu73BRD+827ZXA8lzHirO3glmETjKZI3exQbeWl/juTqfsIbc3NKmG2MCS57IjlE8qeSTi81GdnGvM7JZm6NKcGsQtk9/kwVMGc8c6vMoWZFJewu7BiN8G+UtPvMtNlZdhU8JXxb0ifcLjQHQ71tJOdVkKJ27yZ5uKozUjNM1H+cMguSFTDBRbMf0M4z2BqSv5a0e7fyHy/n8Us44yGSnxVMwfMrwdDtC9MoK3A54U8bJxpqzzExfx81wttzv17zcknVTT21vtcfGeEnK9bsvymDgtfgnk/YroouimskR61SxRxwjAP4WndPEnO8lffQ4SqAvSLyi79TFLooM7tBE3o+sAPAk8vsJqcAHgTwJ4AX9ZxQxDvgaBmBmHPLzH03LyKL7sSl5r3Be37yQnJtnzm79xmAVQDmROS/uiY2yK3xpGrKKyEPNwbyI6QAhzNNzjMiIiIiIiIiIiIiYmXgDtu939Y2aKLcAAAAAElFTkSuQmCC"><link rel="apple-touch-icon" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAALQAAAC0CAYAAAA9zQYyAAAPsElEQVR42u2dfbBdZXWHn7XPvQEFEYxAUqhgrZ9DEIPKR2faFFu1M4gVAWFGkU5MAgV0oOBMawFb6Uz/ARVEiOJosR20044jiFGCkrQjOmgVEIQE+bC2UqsSCOqQ3HPO6h97veH19FzuOfeej73P+T0zZ24SQmafd//22utd7/oAIYQQQgghhBBCCCGEEEIIIYQQQgghhBBCCCGEEEIIIYQQQgghhBBCCCGEEEIIIYQQQgghhBBCCCGEEEIIIYQQQgghhJhqTEsA7t7QWgxveYE2gJm5lmP4Yi60CqNb6zAestDDWmAza7v7G4Hjw5JI4IMhreUPgc+XBtp250bEzNoS9ODFfDLwWeC50uDQuDd+Xgc8YGZfi3tgQGFmLQl6aWI2M/OwFP8BHAXsAhrS3sDp3J84sAm4Erg9jEpjUKK2Kd4E7gVcDbw7W3gxPPcjibkI3bWALwEbzWyTu88AraVuHG0KxTxrZnPu/gHg8lhYiXm0tEJ7BdAEzjSzG8MFWVI0ZGYK/eY5d18F/FksrDaB43FDyIzJZ9x9FvhXM/tVcglloXsLz70yXnWHK6pRmTh10uI3gVOAnwLtxYh6mm5mEWGitSHmOYmZKh3uNYHjgFNig1jIQs9vnWfMrOnu64FrptHdqomlblFGmzYANy4mVm1TFG9eDtwKrJarUWlRG/ArYBXwaL+bxGLS483xcznwBYm5Fu5HC3gOcG4IuZCFzsRMGW/eBKxRiK5Wm8THgBOA7XFs3p52C52+24nA70vMtbLSbeC3gLX9RjpsUk8Czazl7kcA34pXmClFtHZW+mdhjLb36ksXE+pqpDyNC4F9lFlYW1/6QODUEHJjWl2OApgFPolOA+suagNe4+7PB9rZvmg6XI4sRHcccIf85olxP15tZt9P93cqLHQ8vebuq4F/lGWeGH6dZetNj8thZh5HptcDv6NN4ES5kLumStDu3nD3Ze5+MfAqWWcmKY96b+C8qRF0+FUt4MXA31MepEjMk3UU/qpe93zFhPjNBwEfz0rm5WpMFk9PjYUO63wD5TGpyTpP9KkvE1uxkvo7uPtb0NH2pDPXcYI4WXHoLN68EvgBsG/mb4nu9zkVp9ZtnXYBbzCzb/QSh56pcUrogZRV2/tLr4tK/skrsKl4pOPnk+xyWFjnQ4D/BC6Vq7FgTsQhwDszMe/Db1ZgV1XYaZPfUMWK6HyzvSKEsQs4CfhDyvZnL+iowK4KzTC41wAXRNFsa2IFHa6HLHOPr+1uvqe7H01Zv3dq5rpVpaKnFRb6YjP7SKoLlYUW83VZtWTx3P3VwNnAmZQ9/sbthqSzhG3AMWa2U3dQ9Nretsh+f4S7f8Wfoe3joRk/z8lDtEL0I+yZ+PX+7r7B3R8PUbVGLOZWPEj3uPtBcW3yJMTS3BJ3f4O77xiDpU4P0LlqSC8Gstl292WZqB8LF6A9QjFvd/cDFmOdpX7RLa98t7svi8bkn49oUmsEMWcHHgdONrMdmssiBm2pG+5+oLt/OaxnawTW+Rq5GmLYaQb7uvu2IYq6FW7NdfEQNbQRFMPOarxwSFGP5Jv/wt1f2NH1CrXTFYOmHa//GykPOop+ilZ77Di6g7LlxI7IqJPfLEZipS/K3INBMBc/z9IBihj1BtHcfbm7Pzig2HRyXba6+wvdfUZ+c73F0fVT8cp6c/cLOqzrUk4Db3f3FyzVb2ZahwZ1me3tY8h68x7bABe9JusPYyLrfDFqd38IeIoyp3ox1S+eFRd82Mwe7zWTTvnQ88QzRyWAea5n+TyV6ekm7wC8n43RqL5jVvp2B+U8lH5zqHMxXwR8OM/6k4V+dgvXiEGO3fKA/5iyiqM5ooe6AHYDb4xPs4sFbsf9uANouvtW4JfPcn1O2ZTyETPbMo/Ii0EMs+zCN4FjF7F27fhcbGZXZj1VNOt7nhv4G097/NlRcfPPBw4LMa0BljE5vd/+Pb7PNmBjTPz6bree2QOy0KuAu/pst5YKB+4Djqas5PZBP2w2aUJ2972BFcBZlB13Tg5Bz3Qp8RmVH219xP49uyZf4N+c73tBmYPxAPBp4OdmtisNi1/sDMBM0K/LHiLrozbwIcrqmPtCzO1hLnQtfeO0KNFC92XAOWGJV3SIot0hKpugdlntLg+MZbNKHgauAG7KHvxFWezYUBfAx4D1We0fPdQHnmBmtw9yWP2ktDGwTMhHUXbqfxtlf45OC9yY8OH089VWJsGsjM/vAVvd/Srgy2b2dCT19xslsRgvvbMPV2MG+BRwZxpSP6zFmKlhuK0dr73XUhZ4vpOyQyXZZss0WHOPyHMX5g/is8XdN5rZ53JXYpH/PgsUukI5TWFDHv6bekFng4Bm3f3jwGnAfh29JTQddv7RDrnbtQZY4+4vBT5rZo+6+6yZzS1isM+zibkBfCfEbMPYBNYuOSlOp2ZDzG8HtgLvCTE3M2uhY9Pe7ncRYmsDfwvc6u4vDzdiUPV7Kdb8a+BDIWIbRdJRUYMedh6LfSrwTzwT0HdZ5CW5IwVl6OylwE3u/t5kFAYg6hZlC9zTzeymYW4CayPoWIR2VP6eT9kyd6/sVVY3i9waw1H7QsyGpX4Z8FHgY8maLkHUaRO4xcxuHqWYK+tDZ/7yCuCLwOuzzU2jhmMViuy6qzZrPOU3t4Cz3R3gz0PU/W7gko9+G/DutImvZCPpUfrMXcQ8V8MhQK3Ml3wauAV4YsAJ8oOe7diMDkrXRtSjH0udJyqdZ2Y/G8UmsNKCTidZ7n4YcFOIuRmLXTf3IrlFfwGspjwhOy6sV5FtaKvETFzXhgjr9SPq9AC/H3gkuYxMea5w6t7zN5E3u8vrR8oTvi2SoDoLTvd3980DyCkexXfYGFGmIrv+dI+uyP5u+vsfHHfFdlG1QxN3Px14XzzxdUsgSke8twFvN7PNkRhfRC5xw8yeAE4BNmcWsaqWej1wXXInOiy1ZZZ5BngEuGHc7QeKKm0CgSMjmvH8GhbwJjFvDjE/GYnre1JYY29QmNmTNRP1xsxHto5TwCTmt5jZw+PONy8qtAmcCf9rNhbLahbJSGI+1cx2hnCb3RLv47/tDL+6DqJel4na3X2WsmKlTVmQcKKZ3Se/OXyyaGRyY0cr1bqQmq981d3369WHTH/H3feL/7cOPvWnIvVgtbvvjD+7WhXbz9zU2Y4Nxu4airnt7g/3I+Yuon5eDUSd7s1F7v7ybNNYqU5HxZiPteciWfwd2eaibmN7Dbgi3Iy+XrmZ+/FUuB+3Vtj9SA0b1wEHUSaHvTf2Pu2qNIexMReuHk15eLKyhvPzWvG50MyuWcoRb1YJ8jzgn4E395g4P66H+IeUyfo/HmTFdq0tdFiyc0PMczUT81xYrCtCzLNLyVfosNSnAV+pqKVOY+J+F/iGu68ys2aV/OdiTPHmWXe/jDI5v1Wzk8B0vduAz8T3aQ3iAe8Q9VcrKur0fX+bMktvVUSpGlPncqTXk7u/KaxQu2bx5uQGbI+46/ZFVnv04n7sG+7Hn1R0jnm6pkdjLe6tgvtRjDje3Iyko0srmKBDj7HmbZRx1+3DiLtmlvqXsVm+uaIJTclSHw58KXM/ZibeQmfl84cC/wK8tmbWOVVW3085LuHBYef5Zim0r6As+7eKVuonS/0j4CQzu2fUOdDjsNDpC14ZYp6rmauR5k2vDzHPDPuGZX7pQ8B5XQpeq2apDwNuznzqmYkUdDytzUg6OqGi4aiF/OYGZR+Ku0bpJ8ZD0zKza4mk+4qL+kXALe5+ZBXcj2Gmg741SwVt1+gkMB3DX5W3wh3jOm7oOKGs6nr9KMYtMzGiznoeL6tB/u+z3ZyP5v2RK2Ac1oeY6yDqI0ctahtmd6NwLf4BOL2ioaeF6gAfB44A/ifv1jROUcerfANwLf8/pbNqG8X/iojQ3aNy1YohNzf5dA3FnOoAn4yw2f9WQczhUzdDGBvJmrdU2Kc+NDaKR43qRNGG2BT7eODrYaXr0hwxheeeAN5hZl8b9MHJgC31e4BP1MBS/xg4Cbh72MbBhpR0dCjwLeDgmlVrpxtwopndUrXEm3lEvW6eipIquh+vB346zKqWYkhJR+upXwZdCs9tAr5eZTF3uB+fjPWmBu7HutBHUfmJV9mUpA/WsPIkRV82RfWM1WXEWBb9WBtJ+HMVjxr9ZeXDeVnlyftqHJ7bFPnItRucnon6goqvf1rrv8rK76xSLkckHc25+0pg7TwTnqruM28GTjOzp6q4CexxfHGDMjvvvgpXvaTOp3/n7h8Il66ojKC7dDpaVaNu+bmveXWIeaaOVctxzW5m/w2cCNwbom5VsEAgifryEHVrkIdWxYCSjtZSr6SjfF7eOVmXzCY1JUs7fTQTdaOiVS+5qP86NDTeQtvUEcjdz3D3J2u2CWzG5+xJK8HPBs0f5u7fr7BP3c40c8mg0gtsibm6qyPePFujEF3K9rubsnni7ipVLQ84l/rwzBWcq2Cpm2epuZeY2eXZHB0ficsRT1A7IhsX16zTURLz/ZStuHaNo+XrKNJOQ9TJ/bgna27uFXU/PuTul4zc/YjXwnNq2OmoFT9/4O4vqWN4bgnux4vd/Vp3f7qiKby5+3HpgMZi9NXpZ00Nxdxy9+9lYp6K1lX5Q+vuZ8U9a1fw3uXXdFmkHTeG5kOnEcTAMZRjd1fWKOko+Y9nmNnnFjHCbBJE3YjzgjMpsyCLbByeVSyU2gZWmdn9/dYnFotw4DdSnsvXJeko9dH4SPSRaEyTmFNIL8Q8Y2Y3AGdQjsdLUwbaFfKpk6ivd/cVQ+n5kflil0UpVbNmx9pXIjrv5V7ufr2778jWqlWx/c6d7n7wQF3ELE/g/TWrCdwzVqEKJVRVTCSLXx/v7g92GIEqlHel+/ft6OXSk6itx2T9FcC/AS+pyQTavITqj4C7gGJcvSKqWvOZ1sTdDwDOpDzxXdXhrhVj7AeSwqx3An9qZo8t5FPbAl8YII1Xe11NmsOka3wCeJuZbalpwtEo2xq349fLKUvm3kXZEengjnVtZ+OVRy3qbwNvDVHPO2bZFhDzPpQDcI7JOm7WoV3XDsoOR1vG2cWnZtZ6Ty5L/P4IyrrFM0InB3QZsDlKUS8LS30y8JPY7Hqvgk6uxvnAVTW7P7+gHNqztepVJxUVtuUlUu7+ovjP64BDgFcCx47xMm81szfN99ZdyIc+Ftib+hS4FsBPzOwBWebBHMh0isbd9wdeM6bcHQd2mtl3K9XBf5R+oRiI1d7TmqLqRsJ6PB2s1T2QmEfSSVb3VwghhBBCCCGEEEIIIYQQQgghhBBCCCGEEEIIIYQQQgghhBBCCCGEEEIIIYQQQgghhBBCCCGEEEIIIYQQQgghhBBCCCGqx/8BcbtRGDz/J/4AAAAASUVORK5CYII="></head><body>
 
 <!-- LOGO: wspólny kontur znaku. Warianty kolorystyczne dziedziczą kolor miejsca użycia. -->
@@ -472,6 +487,13 @@ const CLASS_NAMES={hypercar:'Hypercar',lmp2:'LMP2',lmgt3:'LMGT3'};
 
 const classList=e=>Array.isArray(e.classes)?e.classes.map(c=>CLASS_NAMES[c]||c):[];
 
+const classChips=ids=>ids.map(c=>`<span class="class-chip" data-class="${escapeHTML(c)}">${escapeHTML(CLASS_NAMES[c]||c)}</span>`).join('');
+
+// Zapisy zamknięte: po terminie signupCloses albo po ostatnim dniu eventu
+const signupsClosed=e=>e.end<today()||(!!e.signupCloses&&Date.now()>=Date.parse(e.signupCloses));
+
+const closesText=e=>e.signupCloses?new Intl.DateTimeFormat(locale(),{timeZone:zone,weekday:'short',day:'numeric',month:'short',hour:'2-digit',minute:'2-digit',hourCycle:'h23'}).format(new Date(e.signupCloses)):t('do końca eventu','until the event ends');
+
 let month=today().slice(0,7), filter='all', activeEvent=null, toastTimer;
 
 function page(){const hash=location.hash.slice(1);return Object.hasOwn(navLabels(),hash)?hash:'home'}
@@ -510,7 +532,7 @@ function card(e,session){
 
  const days=start.slice(-2)+(sameMonth&&!session&&start!==e.end?'–'+e.end.slice(-2):'');
 
- return `<article class="racecard"><div class="date">${days}<small>${fmt(start,{month:'short',year:'numeric'}).toUpperCase()}</small></div>
+ return `<article class="racecard${e.end<today()?' past':''}"><div class="date">${days}<small>${fmt(start,{month:'short',year:'numeric'}).toUpperCase()}</small></div>
 
  <div class="raceinfo"><span class="tag">${categories()[e.category]}</span><h3>${label(e.name)}</h3><div class="meta">${label(eventTrack(e).name)} · ${escapeHTML(e.duration)}${classList(e).length?' · '+escapeHTML(classList(e).join(' / ')):''}</div>
 
@@ -617,9 +639,9 @@ function calendar(){
 
    const key=month+'-'+String(day).padStart(2,'0');
 
-   const marks=shown.filter(e=>e.start<=key&&e.end>=key).map(e=>`<button data-event="${escapeHTML(e.id)}" aria-label="${label(e.name)} · ${full(key)}">${label(e.name)}</button>`).join('');
+   const marks=shown.filter(e=>e.start<=key&&e.end>=key).map(e=>`<button ${key<today()?'class="past" ':''}data-event="${escapeHTML(e.id)}" aria-label="${label(e.name)} · ${full(key)}">${label(e.name)}</button>`).join('');
 
-   cells+=`<div class="day ${key===today()?'today':''}"><span class="num" ${key===today()?'aria-current="date"':''}>${day}</span>${marks}</div>`;
+   cells+=`<div class="day ${key===today()?'today':key<today()?'past':''}"><span class="num" ${key===today()?'aria-current="date"':''}>${day}</span>${marks}</div>`;
 
  }
 
@@ -792,7 +814,7 @@ function showDetails(id){
 
  ${field(t('Termin weekendu','Race weekend'),range(e))}${field(t('Godziny startów','Start times'),slots.length?startTimes(slots):t('Do ogłoszenia','To be announced'))}
 
- ${classList(e).length?field(t('Klasy','Classes'),classList(e).map(c=>`<span class="class-chip">${escapeHTML(c)}</span>`).join('')):field(t('Dni wyścigu','Race days'),list(days))}</dl><p class="race-note">${label(e.description)}</p></section>
+ ${classList(e).length?field(t('Klasy','Classes'),classChips(e.classes)):field(t('Dni wyścigu','Race days'),list(days))}${field(t('Zapisy do','Sign-ups until'),escapeHTML(closesText(e)))}</dl><p class="race-note">${label(e.description)}</p></section>
 
  <section class="race-box"><h3>03 / ${t('Pogoda i warunki','Weather and conditions')}</h3><p class="race-note">${label(e.weather)||t('Brak aktualnych danych o pogodzie','No current weather data')}</p></section></div></div>
 
@@ -1228,15 +1250,15 @@ function eventDays(e){
 const eventClasses=e=>Array.isArray(e.classes)&&e.classes.length?e.classes:['hypercar','lmp2','lmgt3'];
 
 function signupSummary(e,r){
- if(e.category==='training')return `${t('Klasa','Class')}: <b>${escapeHTML(CLASS_NAMES[r.class]||r.class||'—')}</b>`;
- const parts=[];
+ const parts=[`<div class="entry-classes">${classChips(r.classes?.length?r.classes:r.class?[r.class]:[])}</div>`];
+ if(e.category==='training')return parts.join('');
  if(r.slots?.length)parts.push([...groupSlots(r.slots)].map(([k,v])=>`<b>${fmt(k,{weekday:'short',day:'numeric',month:'short'})}</b> ${v.map(x=>x.time).join(' · ')}`).join('<br>'));
  else if(r.days?.length)parts.push(`${t('Dni','Days')}: `+r.days.map(k=>`<b>${fmt(k,{weekday:'short',day:'numeric',month:'short'})}</b>`).join(', '));
  return parts.join('');
 }
 
 const signupErrors=()=>({NOT_DRIVER:t('Zapisy są tylko dla kierowców RWIN (rola kierowcy + przedstawienie).','Sign-ups are for RWIN drivers only.'),
- EVENT_CLOSED:t('Ten event już się zakończył.','This event has already finished.'),
+ EVENT_CLOSED:t('Zapisy na ten event są już zamknięte.','Sign-ups for this event are closed.'),
  EVENT_NOT_FOUND:t('Tego eventu nie ma już w kalendarzu.','This event is no longer in the calendar.'),
  INVALID_SIGNUP:t('Sprawdź swój wybór i spróbuj ponownie.','Check your selection and try again.')});
 
@@ -1250,7 +1272,7 @@ async function loadMySignups(){
 }
 
 function signupAction(e){
- if(e.end<today())return `<span class="race-note">${t('Zapisy zamknięte','Sign-ups closed')}</span>`;
+ if(signupsClosed(e))return `<span class="race-note closed-note">🔒 ${t('Zapisy zamknięte','Sign-ups closed')}</span>`;
  if(isDriver()){
    if(mySignupsState==='idle')queueMicrotask(loadMySignups);
    const mine=mySignups?.has(e.id);
@@ -1267,7 +1289,8 @@ async function openSignup(id){
  if(mySignupsState!=='ready')await loadMySignups();
  const e=EVENTS.find(x=>x.id===id);if(!e)return;
  const mine=mySignups?.get(id);
- signupDraft={id,slots:new Set(mine?.slots||[]),days:new Set(mine?.days||[]),cls:mine?.class||null,notes:mine?.notes||'',mine:!!mine,busy:false,msg:'',armed:false};
+ const allowed=eventClasses(e);
+ signupDraft={id,slots:new Set(mine?.slots||[]),days:new Set(mine?.days||[]),classes:new Set((mine?.classes?.length?mine.classes:mine?.class?[mine.class]:allowed.length===1?allowed:[]).filter(c=>allowed.includes(c))),notes:mine?.notes||'',mine:!!mine,busy:false,msg:'',armed:false};
  paintSignup();
  if(!$('#signup').open)$('#signup').showModal();
 }
@@ -1277,23 +1300,25 @@ function paintSignup(focusSel){
  if(!e){if($('#signup').open)$('#signup').close();return}
  const training=e.category==='training', sessions=e.sessions||[];
  let pick;
+const tiles=`<h3>${t('Klasa','Class')}</h3><p class="race-note">${t('Wybierz klasy, którymi chcesz jechać. Możesz zaznaczyć kilka.','Pick the classes you want to race. You can select more than one.')}</p>
+ <div class="class-tiles">${eventClasses(e).map(c=>`<button class="class-tile" data-class="${c}" data-pick-class="${c}" aria-pressed="${d.classes.has(c)}"><span>${CLASS_NAMES[c]||c}</span><i aria-hidden="true">✓</i></button>`).join('')}</div>`;
  if(training){
-   pick=`<h3>${t('Wybierz klasę','Choose your class')}</h3><div class="pick-row">${eventClasses(e).map(c=>`<button class="pick" data-pick-class="${c}" aria-pressed="${d.cls===c}">${CLASS_NAMES[c]||c}</button>`).join('')}</div>`;
+   pick=tiles;
  }else if(sessions.length){
-   pick=`<h3>${t('Kiedy możesz jechać?','When can you race?')}</h3><p class="race-note">${t('Zaznacz godziny startów, w które możesz. „Cały dzień” zaznacza wszystkie starty danego dnia.','Select the start times you can make. “All day” selects every start that day.')}</p>
+   pick=tiles+`<h3 class="gap-top">${t('Kiedy możesz jechać?','When can you race?')}</h3><p class="race-note">${t('Zaznacz godziny startów, w które możesz. „Cały dzień” zaznacza wszystkie starty danego dnia.','Select the start times you can make. “All day” selects every start that day.')}</p>
    <div class="slot-grid">${[...groupSlots(sessions)].map(([k,v])=>{const all=v.every(x=>d.slots.has(x.iso));
      return `<div class="slot-row"><div class="slot-day"><b>${fmt(k,{weekday:'long',day:'numeric',month:'short'})}</b><button class="slot-all" data-slot-day="${k}" aria-pressed="${all}">${all?t('Odznacz dzień','Clear day'):t('Cały dzień','All day')}</button></div>
      <div class="pick-row">${v.map(x=>`<button class="pick" data-slot="${escapeHTML(x.iso)}" aria-pressed="${d.slots.has(x.iso)}">${x.time}</button>`).join('')}</div></div>`}).join('')}</div>`;
  }else{
-   pick=`<h3>${t('W które dni możesz?','Which days can you make?')}</h3><p class="race-note">${t('Godziny startów zostaną ogłoszone. Zaznacz dni, w które możesz jechać.','Start times will be announced. Select the days you can race.')}</p>
+   pick=tiles+`<h3 class="gap-top">${t('W które dni możesz?','Which days can you make?')}</h3><p class="race-note">${t('Godziny startów zostaną ogłoszone. Zaznacz dni, w które możesz jechać.','Start times will be announced. Select the days you can race.')}</p>
    <div class="pick-row">${eventDays(e).map(k=>`<button class="pick" data-pick-day="${k}" aria-pressed="${d.days.has(k)}">${fmt(k,{weekday:'short',day:'numeric',month:'short'})}</button>`).join('')}</div>`;
  }
  const notes=training?'':`<label class="signup-notes"><span>${t('Uwagi (opcjonalnie)','Notes (optional)')}</span><textarea id="signupNotes" maxlength="500" rows="3" placeholder="${t('np. mogę max 2 stinty, wolę jechać nocą','e.g. max 2 stints, prefer night')}">${escapeHTML(d.notes)}</textarea><small id="notesCount">${d.notes.length} / 500</small></label>`;
  $('#signupBody').innerHTML=`<div class="race-head"><small>RWIN Racing / ${t('Zapis na event','Event sign-up')}</small><h2 id="signupTitle">${label(e.name)}</h2>
- <p class="signup-sub">${label(eventTrack(e).name)} · ${range(e)}${classList(e).length&&!training?' · '+escapeHTML(classList(e).join(' / ')):''}</p></div>
- <div class="race-content">${pick}${notes}
+ <p class="signup-sub">${label(eventTrack(e).name)} · ${range(e)} · 🔒 ${t('Zapisy do','Sign-ups until')} ${escapeHTML(closesText(e))}</p></div>
+ <div class="race-content">${signupsClosed(e)?`<p class="signup-msg">🔒 ${t('Zapisy na ten event są już zamknięte.','Sign-ups for this event are closed.')}</p>`:pick+notes}
  ${d.msg?`<p class="signup-msg" role="alert">${escapeHTML(d.msg)}</p>`:''}
- <div class="signup-actions"><button class="btn" data-signup-save ${d.busy?'disabled':''}>${d.busy?t('Zapisuję…','Saving…'):d.mine?t('Zapisz zmiany','Save changes'):t('Zapisz się','Sign up')}</button>
+ <div class="signup-actions" ${signupsClosed(e)?'hidden':''}><button class="btn" data-signup-save ${d.busy?'disabled':''}>${d.busy?t('Zapisuję…','Saving…'):d.mine?t('Zapisz zmiany','Save changes'):t('Zapisz się','Sign up')}</button>
  ${d.mine?`<button class="btn outline danger" data-signup-leave ${d.busy?'disabled':''}>${d.armed?t('Na pewno wypisać?','Really leave?'):t('Wypisz się','Leave')}</button>`:''}</div></div>`;
  $('#signup .close').setAttribute('aria-label',t('Zamknij','Close'));
  if(focusSel)$('#signup').querySelector(focusSel)?.focus();
@@ -1302,13 +1327,13 @@ function paintSignup(focusSel){
 async function saveSignup(){
  const d=signupDraft, e=EVENTS.find(x=>x.id===d.id);if(!e||d.busy)return;
  const training=e.category==='training';
- if(training&&!d.cls){d.msg=t('Wybierz klasę.','Choose a class.');return paintSignup()}
+ if(!d.classes.size){d.msg=t('Wybierz przynajmniej jedną klasę.','Choose at least one class.');return paintSignup()}
  const slots=[...d.slots].filter(s=>(e.sessions||[]).includes(s));
  const days=(e.sessions||[]).length?[...new Set(slots.map(s=>dateKey(new Date(s))))]:[...d.days];
  if(!training&&!slots.length&&!days.length){d.msg=t('Zaznacz przynajmniej jeden termin.','Select at least one option.');return paintSignup()}
  d.busy=true;d.msg='';paintSignup();
  try{
-   await rpc('signup',{p_event:d.id,p_slots:training?[]:slots,p_days:training?[]:days,p_class:training?d.cls:null,p_notes:training?'':d.notes});
+   await rpc('signup',{p_event:d.id,p_slots:training?[]:slots,p_days:training?[]:days,p_classes:[...d.classes],p_notes:training?'':d.notes});
    mySignupsState='idle';await loadMySignups();syncPublic();
    if($('#signup').open)$('#signup').close();
    showToast(d.mine?t('Zapisano zmiany.','Changes saved.'):t('Jesteś zapisany! 🏁','You are signed up! 🏁'));
@@ -1339,7 +1364,7 @@ function entriesPage(){
    return `<article class="racecard entry-card"><div class="date">${days}<small>${fmt(e.start,{month:'short',year:'numeric'}).toUpperCase()}</small></div>
    <div class="raceinfo"><span class="tag">${categories()[e.category]||''}</span><h3>${label(e.name)}</h3><div class="meta">${label(eventTrack(e).name)} · ${escapeHTML(e.duration||'')}</div>
    <div class="entry-pick">${signupSummary(e,r)}</div>${r.notes?`<div class="note">${t('Uwagi','Notes')}: ${escapeHTML(r.notes)}</div>`:''}</div>
-   <div class="entry-actions">${e.end>=today()?`<button class="btn outline" data-signup="${escapeHTML(e.id)}">${t('Edytuj','Edit')}</button><button class="smalllink" data-unsign="${escapeHTML(e.id)}">${t('Wypisz się','Leave')}</button>`:`<span class="race-note">${t('Zakończony','Finished')}</span>`}</div></article>`;
+   <div class="entry-actions">${!signupsClosed(e)?`<button class="btn outline" data-signup="${escapeHTML(e.id)}">${t('Edytuj','Edit')}</button><button class="smalllink" data-unsign="${escapeHTML(e.id)}">${t('Wypisz się','Leave')}</button>`:`<span class="race-note">${e.end<today()?t('Zakończony','Finished'):'🔒 '+t('Zapisy zamknięte','Sign-ups closed')}</span>`}</div></article>`;
  }).join('')+'</section>';
 }
 
@@ -1447,7 +1472,7 @@ document.addEventListener('click',e=>{
  else if(b.dataset.slotDay&&signupDraft){const e2=EVENTS.find(x=>x.id===signupDraft.id), day=(e2.sessions||[]).filter(s=>dateKey(new Date(s))===b.dataset.slotDay), all=day.every(s=>signupDraft.slots.has(s));
    day.forEach(s=>all?signupDraft.slots.delete(s):signupDraft.slots.add(s));signupDraft.msg='';paintSignup(`[data-slot-day="${b.dataset.slotDay}"]`)}
  else if(b.dataset.pickDay&&signupDraft){const s=signupDraft.days;s.has(b.dataset.pickDay)?s.delete(b.dataset.pickDay):s.add(b.dataset.pickDay);signupDraft.msg='';paintSignup(`[data-pick-day="${b.dataset.pickDay}"]`)}
- else if(b.dataset.pickClass&&signupDraft){signupDraft.cls=b.dataset.pickClass;signupDraft.msg='';paintSignup(`[data-pick-class="${b.dataset.pickClass}"]`)}
+ else if(b.dataset.pickClass&&signupDraft){const c=signupDraft.classes;c.has(b.dataset.pickClass)?c.delete(b.dataset.pickClass):c.add(b.dataset.pickClass);signupDraft.msg='';paintSignup(`[data-pick-class="${b.dataset.pickClass}"]`)}
  else if(b.hasAttribute('data-signup-save'))saveSignup();
  else if(b.hasAttribute('data-signup-leave')&&signupDraft){if(!signupDraft.armed){signupDraft.armed=true;paintSignup('[data-signup-leave]');setTimeout(()=>{if(signupDraft?.armed){signupDraft.armed=false;if($('#signup').open)paintSignup()}},4000)}else leaveSignup(signupDraft.id,true)}
  else if(b.dataset.unsign){if(b.dataset.armed){leaveSignup(b.dataset.unsign)}else{b.dataset.armed='1';b.textContent=t('Na pewno?','Sure?');setTimeout(()=>{if(b.isConnected){delete b.dataset.armed;b.textContent=t('Wypisz się','Leave')}},4000)}}
