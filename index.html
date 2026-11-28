@@ -188,33 +188,45 @@ footer{background:var(--surface);border-top:1px solid var(--line);border-bottom:
 .btn[disabled]{opacity:.6;cursor:wait}
 .entry-card .entry-pick{margin-top:8px;font-size:14px;color:#cdc7d0;line-height:1.7}.entry-card .entry-pick b{color:var(--white);font-weight:600}.entry-actions{display:flex;flex-direction:column;align-items:flex-end;gap:8px}
 .race-content>.signups{margin:0 0 16px;padding:14px 0 0}
-.guide-page{padding-top:40px}.guide-top{display:flex;justify-content:space-between;align-items:flex-end;gap:30px;flex-wrap:wrap}.guide-top h1{margin:12px 0 10px}.guide-top .intro{margin:0;max-width:60ch}
-.guide-score{display:flex;align-items:baseline;flex-wrap:wrap;gap:6px 14px}.guide-score strong{font:italic 800 46px/1 var(--font-display);color:var(--purple)}.guide-score span{color:var(--muted)}
-.guide-bars{display:grid;grid-template-columns:repeat(8,1fr);gap:6px;margin:24px 0 26px}.guide-bars i{height:5px;background:var(--line-soft);border-radius:2px;transition:background .3s}.guide-bars i.on{background:var(--purple)}.guide-bars i.cur:not(.on){background:var(--purple-dark)}
-.guide-layout{display:grid;grid-template-columns:300px minmax(0,1fr);gap:20px;align-items:start}
-.guide-nav{position:sticky;top:16px;background:var(--surface);border:1px solid var(--line);border-radius:4px;padding:8px}
-.guide-sec+.guide-sec{border-top:1px solid var(--line);margin-top:8px;padding-top:8px}
-.guide-sec-h{display:flex;align-items:center;gap:10px;padding:10px 10px 8px}.guide-sec-h svg{width:18px;height:18px;color:var(--purple)}.guide-sec-h b{flex:1;font-size:14px}.guide-sec-h span{font-size:12px;color:var(--muted);font-variant-numeric:tabular-nums}
-.guide-item{display:flex;align-items:center;gap:12px;width:100%;padding:9px 10px;border-radius:3px;text-align:left;font-size:13.5px;color:var(--muted)}.guide-item:hover{background:var(--surface-hover);color:var(--white)}
-.guide-item[aria-current]{background:var(--surface-hover);color:var(--white);box-shadow:inset 3px 0 var(--purple)}
-.guide-num{display:grid;place-items:center;flex:none;width:22px;height:22px;border:1px solid var(--line);border-radius:50%;font-size:11px;font-weight:700}.guide-num svg{width:13px;height:13px}
-.guide-item[aria-current] .guide-num{border-color:var(--purple);color:var(--purple)}.guide-item:has(.guide-num svg) .guide-num{background:var(--purple);border-color:var(--purple);color:var(--background)}
-.guide-step{background:radial-gradient(ellipse at 100% 0,#c980d81c,transparent 55%),var(--surface);border:1px solid var(--line);border-left:3px solid var(--purple);border-radius:4px;padding:clamp(20px,3vw,34px)}
-.guide-step-top{display:flex;justify-content:space-between;gap:10px;font:700 11px/1.4 var(--font-ui);letter-spacing:.14em;text-transform:uppercase;color:var(--purple)}.guide-step-top span+span{color:var(--muted)}
-.guide-step h2{font:italic 800 clamp(34px,4vw,52px)/1 var(--font-display);margin:12px 0 10px;outline:none}.guide-lead{color:#cdc7d0;max-width:70ch;margin:0 0 22px}
-.guide-cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px;margin-bottom:18px}.guide-card{padding:16px;border:1px solid #453347;background:var(--surface-alt);border-radius:3px}
-.guide-card-h{display:flex;align-items:center;gap:8px;font:700 11px/1.4 var(--font-ui);letter-spacing:.14em;text-transform:uppercase;color:var(--purple)}.guide-card-h svg{width:16px;height:16px}.guide-card p{margin:10px 0 0;font-size:14.5px;color:#e4dde7}
-.guide-table{border:1px solid var(--line);border-radius:3px;overflow:hidden}.guide-table h3{margin:0;padding:14px 16px;font-size:15px;border-bottom:1px solid var(--line);background:var(--surface-alt);text-transform:none;font-family:var(--font-ui)}
-.guide-list{display:grid;border:1px solid var(--line);border-radius:3px;overflow:hidden;margin:4px 0 16px}.guide-table .guide-list{border:0;margin:0;border-radius:0}
-.guide-list div{display:flex;justify-content:space-between;align-items:center;gap:16px;padding:13px 16px}.guide-list div+div{border-top:1px solid var(--line-soft)}.guide-list span{font-weight:600;display:flex;align-items:center;gap:10px}.guide-list span:before{content:"";width:6px;height:6px;flex:none;background:var(--purple);border-radius:1px}.guide-list small{color:var(--muted);font-size:13px;text-align:right}
-.guide-foot{display:flex;justify-content:space-between;gap:10px;margin-top:26px;padding-top:18px;border-top:1px solid var(--line)}
-.guide-done{display:flex;align-items:center;gap:10px;color:var(--purple);font-weight:700}.guide-done svg{width:22px;height:22px}
 .fov{display:grid;grid-template-columns:repeat(3,minmax(0,1fr)) minmax(160px,1fr);gap:12px;align-items:end;padding:16px;border:1px solid #453347;background:var(--surface-alt);border-radius:3px}
 .fov label{display:grid;gap:6px;font-size:12px;color:var(--muted)}.fov input,.fov select{font:inherit;font-size:15px;color:var(--white);background:var(--surface);border:1px solid var(--line);border-radius:3px;height:42px;padding:0 10px}.fov input:focus,.fov select:focus{outline:none;border-color:var(--purple)}
 .fov-out{display:grid;gap:2px;justify-items:end}.fov-out span{font-size:12px;color:var(--muted)}.fov-out b{font:italic 800 44px/1 var(--font-display);color:var(--purple)}
-@media(max-width:900px){.guide-layout{grid-template-columns:1fr}.guide-nav{position:static;order:2}.fov{grid-template-columns:1fr 1fr}.fov-out{justify-items:start}}
-@media(max-width:620px){.slot-row{grid-template-columns:1fr}.slot-day{flex-direction:row;justify-content:space-between;align-items:center}.entry-actions{flex-direction:row;width:100%;justify-content:flex-start}.guide-list div{flex-direction:column;align-items:flex-start;gap:4px}.guide-list small{text-align:left;padding-left:16px}.guide-score strong{font-size:36px}}
-#guide progress{width:100%;height:5px;accent-color:var(--purple);margin:20px 0 10px}#guide .close{position:relative;z-index:1}#verification{margin:16px auto 0}#verification h2{font-size:28px}#verification .actions{margin-top:12px}</style><link rel="icon" type="image/png" sizes="64x64" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAYAAACqaXHeAAAEpElEQVR42u1aXYhVVRT+1rk3o5EGlcSXMiEbyocY0IEZxCCICAIV9M2oh14sFGOgQnwYIcgIneZhIOhBop+3XooeAjFBJFIf7KmCfqRCQTBJmaFx5p7z+bK2LLb33jk/+9wz0v7gcOacOftnrf2tv70vEBERERERERERERHxf4TU2TnJVoOyUUSy5kYnpenVJSnLLYLUNbCIkOQ4gCEAbED+30XkL51PoozgILTe0vvLbBZzJE+R3NWPlRJY+EREMpJbAPwAYDWADEDSAAPsmNMA3lYm1sMEZ28k2yQv6Cp0GmRApuMv6fP7tTpmQ/2PVoDwviKWSKYkn/GVkIQSXkRSknsB7AfQAdACVlSoTwC8FdwHGLvfDOAigOGQyg1FUJX1CoDNIrLgIlUSMNafBLBGnZ44h1PDVYUF6wA8bt+1q3papf4HAHbou3bNq5mpIpISDH5IF6m6CRjqjwH4yqx8nRngek/BeUOsM4EbAEZE5B9nAiF8wLB2ntZdWwDYCOAJAK8A2FNACal+cwbA8wCk0TohUOSZIHleQ126TCh0IfklPwzKfVb43DUx9T1DAM4C2NqHCamG5NMAXtC29/fqq9If0PsIyVua8GTeyqf67hrJTaYwqrf81HS4lfOSLu3t1SaZdGMZybbeT/TIPt3zrtrSYDvpQVSansISHf9pkrdN6ktTAxyzygqaCbpQaJ43ABgHMApgkwmN/WL6YwAe0ed5AJc1lU4ALAH4UTPMSyLSsam353/OAxgzeUILwDcAdmpfWdAq0GqU5G6SX5K8XmNR8zPJKVXyXVs2ZnBcv1vQ+2WS65UhSV2V3zjJ77s4niVTiva7FpS6HW3X6dLOt+urJF81JuCc4VH9/6L2OVaL3RvhXzN25yaeFShR+z13Q2rsmiRnvWjwrskHXu9n95VpT3LS23QoWp9TlTelE7chq4giThpHPKXvPql75Z81dE0LCu+E/Jfkc6bvNw2T8rJoUe+fah8zJP8g+XCvsFnJ26uWHyX5d870s9cWVccJT3KVofChEkpwTJgmeYzkRPBkx8T5hOR3Fba7XJv91nY90zpYgQlH/H5D2/17ntaLwLX5sJdzMuMcKDiO9UPvBHV+xu73BRD+827ZXA8lzHirO3glmETjKZI3exQbeWl/juTqfsIbc3NKmG2MCS57IjlE8qeSTi81GdnGvM7JZm6NKcGsQtk9/kwVMGc8c6vMoWZFJewu7BiN8G+UtPvMtNlZdhU8JXxb0ifcLjQHQ71tJOdVkKJ27yZ5uKozUjNM1H+cMguSFTDBRbMf0M4z2BqSv5a0e7fyHy/n8Us44yGSnxVMwfMrwdDtC9MoK3A54U8bJxpqzzExfx81wttzv17zcknVTT21vtcfGeEnK9bsvymDgtfgnk/YroouimskR61SxRxwjAP4WndPEnO8lffQ4SqAvSLyi79TFLooM7tBE3o+sAPAk8vsJqcAHgTwJ4AX9ZxQxDvgaBmBmHPLzH03LyKL7sSl5r3Be37yQnJtnzm79xmAVQDmROS/uiY2yK3xpGrKKyEPNwbyI6QAhzNNzjMiIiIiIiIiIiIiYmXgDtu939Y2aKLcAAAAAElFTkSuQmCC"><link rel="apple-touch-icon" href="data:image/png;base64,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"></head><body>
+@media(max-width:900px){.fov{grid-template-columns:1fr 1fr}.fov-out{justify-items:start}}
+@media(max-width:620px){.slot-row{grid-template-columns:1fr}.slot-day{flex-direction:row;justify-content:space-between;align-items:center}.entry-actions{flex-direction:row;width:100%;justify-content:flex-start}}
+#guide{width:min(1120px,96vw);max-width:none;max-height:94dvh;padding:0;overflow:auto;background:var(--background);border:1px solid var(--line);border-top:3px solid var(--purple)}#guide::backdrop{background:#08070cee}
+#guide .close{position:absolute;right:16px;top:16px;z-index:3;width:40px;height:40px;float:none;padding:0;background:#120d16cc;border-color:#ffffff30;color:#fff}
+.gd{display:grid;grid-template-columns:minmax(0,1.3fr) minmax(280px,.7fr);min-height:min(720px,88dvh)}
+.gd-main{display:flex;flex-direction:column;padding:clamp(22px,3.6vw,46px)}
+.gd-sectors{display:grid;grid-template-columns:repeat(6,1fr);gap:5px;margin-bottom:28px}
+.gd-sector{display:grid;gap:7px;padding:0;text-align:left;font:700 10px/1 var(--font-ui);letter-spacing:.16em;color:var(--dimmed)}
+.gd-sector i{display:block;height:7px;background:var(--line-soft);transform:skewX(-24deg);transition:background .3s,box-shadow .3s}
+.gd-sector.done{color:var(--purple)}.gd-sector.done i{background:var(--purple)}.gd-sector.cur{color:var(--white)}.gd-sector.cur i{background:var(--white);box-shadow:0 0 14px #ffffff55}
+.gd-sector:disabled{cursor:default}.gd-sector:not(:disabled):hover i{box-shadow:0 0 0 1px var(--purple)}
+.gd-kicker{display:flex;justify-content:space-between;gap:10px;font:600 11px/1.4 var(--font-ui);letter-spacing:.16em;text-transform:uppercase;color:var(--purple)}.gd-kicker span+span{color:var(--muted)}
+#guideTitle{font:italic 800 clamp(46px,6.2vw,84px)/.9 var(--font-display);letter-spacing:-.03em;text-transform:uppercase;margin:14px 0 16px;outline:none}
+.gd-lead{max-width:58ch;margin:0 0 24px;color:#c7c1cc}.gd-body{flex:1}
+.gd-stats{display:grid;grid-template-columns:repeat(3,1fr);margin-bottom:20px;border:1px solid var(--line);background:var(--surface)}.gd-stats div{padding:16px 18px}.gd-stats div+div{border-left:1px solid var(--line)}
+.gd-stats b{display:block;font:italic 800 40px/1 var(--font-display);color:var(--purple)}.gd-stats span{display:block;margin-top:6px;font-size:13px;color:var(--muted)}
+.gd-checks{display:grid;gap:11px;margin:0;padding:0;list-style:none}.gd-checks li{display:grid;grid-template-columns:20px 1fr;column-gap:8px}
+.gd-checks li:before{content:"";width:12px;height:12px;margin-top:5px;background:linear-gradient(135deg,var(--purple) 50%,transparent 50%);border:1px solid var(--purple)}
+.gd-checks b{font-weight:600}.gd-checks span{grid-column:2;font-size:13.5px;color:var(--muted)}
+.gd-template{margin-bottom:18px;padding:16px 18px;border-left:3px solid var(--purple);background:var(--surface)}.gd-template span{font:600 10px var(--font-ui);letter-spacing:.16em;text-transform:uppercase;color:var(--purple)}.gd-template p{margin:8px 0 0;font-size:15px}.gd-template b{color:var(--purple)}
+.gd-split{display:grid;grid-template-columns:1fr 1fr;gap:14px}.gd-split>div{padding:18px;border:1px solid var(--line);background:var(--surface)}
+.gd-split h3,.gd-h3{margin:0 0 14px;font:700 11px/1.3 var(--font-ui);letter-spacing:.16em;text-transform:uppercase;color:#d8c8dc}.gd-h3{margin:22px 0 12px}
+.gd-keys{display:flex;flex-wrap:wrap;gap:8px}.gd-keys kbd{padding:7px 11px;border:1px solid var(--line);border-bottom-width:3px;border-radius:4px;background:var(--surface);color:var(--white);font:600 12.5px var(--font-ui)}
+.gd-lights{display:flex;gap:14px;margin:4px 0 26px}.gd-lights i{width:46px;height:46px;border-radius:50%;background:#2a1d2d;box-shadow:inset 0 0 0 3px #3a2a3e}
+@keyframes gdL0{0%,6%{background:#2a1d2d;box-shadow:inset 0 0 0 3px #3a2a3e}7%,62%{background:#ff3046;box-shadow:0 0 20px #ff304699,inset 0 0 0 3px #ff8a95}63%,100%{background:#2a1d2d;box-shadow:inset 0 0 0 3px #3a2a3e}}.gd-lights i:nth-child(1){animation:gdL0 4.5s infinite}@keyframes gdL1{0%,14%{background:#2a1d2d;box-shadow:inset 0 0 0 3px #3a2a3e}15%,62%{background:#ff3046;box-shadow:0 0 20px #ff304699,inset 0 0 0 3px #ff8a95}63%,100%{background:#2a1d2d;box-shadow:inset 0 0 0 3px #3a2a3e}}.gd-lights i:nth-child(2){animation:gdL1 4.5s infinite}@keyframes gdL2{0%,22%{background:#2a1d2d;box-shadow:inset 0 0 0 3px #3a2a3e}23%,62%{background:#ff3046;box-shadow:0 0 20px #ff304699,inset 0 0 0 3px #ff8a95}63%,100%{background:#2a1d2d;box-shadow:inset 0 0 0 3px #3a2a3e}}.gd-lights i:nth-child(3){animation:gdL2 4.5s infinite}@keyframes gdL3{0%,30%{background:#2a1d2d;box-shadow:inset 0 0 0 3px #3a2a3e}31%,62%{background:#ff3046;box-shadow:0 0 20px #ff304699,inset 0 0 0 3px #ff8a95}63%,100%{background:#2a1d2d;box-shadow:inset 0 0 0 3px #3a2a3e}}.gd-lights i:nth-child(4){animation:gdL3 4.5s infinite}@keyframes gdL4{0%,38%{background:#2a1d2d;box-shadow:inset 0 0 0 3px #3a2a3e}39%,62%{background:#ff3046;box-shadow:0 0 20px #ff304699,inset 0 0 0 3px #ff8a95}63%,100%{background:#2a1d2d;box-shadow:inset 0 0 0 3px #3a2a3e}}.gd-lights i:nth-child(5){animation:gdL4 4.5s infinite}
+@media(prefers-reduced-motion:reduce){.gd-lights i{animation:none!important}}
+.gd-go{min-height:54px;padding:12px 30px;font-size:16px}.gd-done{color:var(--purple);font-weight:700}
+.gd-foot{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-top:30px;padding-top:18px;border-top:1px solid var(--line)}.gd-foot-r{display:flex;align-items:center;gap:18px}
+.gd-poster{position:relative;isolation:isolate;overflow:hidden;display:grid;place-items:center;color:#171019;background:linear-gradient(125deg,transparent 0 59%,#df9be466 59% 67%,transparent 67%),repeating-linear-gradient(126deg,transparent 0 29px,#341c4015 30px 31px,transparent 32px 47px),radial-gradient(ellipse at 72% 25%,#e4a2e9,transparent 70%),linear-gradient(125deg,#a965bc,#d28adc 62%,#b272c1)}
+.gd-poster .crop{position:absolute;inset:16px;border:1px solid #38163e44;pointer-events:none}
+.gd-poster-top,.gd-poster-bottom{position:absolute;left:8%;right:8%;display:flex;justify-content:space-between;align-items:center;font:700 10px/1.2 var(--font-ui);letter-spacing:.13em}.gd-poster-top{top:7%}.gd-poster-bottom{bottom:7%}
+.gd-num{position:absolute;top:12%;left:8%;font:italic 800 clamp(96px,12vw,180px)/.8 var(--font-display);color:transparent;-webkit-text-stroke:2px #17101980}
+.gd-mark{width:74%;height:46%;margin-top:22%;color:#100e12;transform:rotate(-5deg)}
+@media(max-width:780px){.gd{grid-template-columns:1fr}.gd-poster{order:-1;min-height:150px}.gd-num{top:auto;bottom:16%;font-size:84px}.gd-mark{width:38%;height:62%;margin:0 0 0 38%}.gd-poster-bottom{display:none}.gd-poster-top span:last-child{display:none}.gd-split{grid-template-columns:1fr}.gd-stats b{font-size:30px}.gd-stats div{padding:12px}}
+@media(max-width:480px){.gd-stats{grid-template-columns:1fr}.gd-stats div+div{border-left:0;border-top:1px solid var(--line)}.gd-lights i{width:36px;height:36px}}
+#guide progress{width:100%;height:5px;accent-color:var(--purple);margin:20px 0 10px}#verification{margin:16px auto 0}#verification h2{font-size:28px}#verification .actions{margin-top:12px}</style><link rel="icon" type="image/png" sizes="64x64" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAYAAACqaXHeAAAEpElEQVR42u1aXYhVVRT+1rk3o5EGlcSXMiEbyocY0IEZxCCICAIV9M2oh14sFGOgQnwYIcgIneZhIOhBop+3XooeAjFBJFIf7KmCfqRCQTBJmaFx5p7z+bK2LLb33jk/+9wz0v7gcOacOftnrf2tv70vEBERERERERERERHxf4TU2TnJVoOyUUSy5kYnpenVJSnLLYLUNbCIkOQ4gCEAbED+30XkL51PoozgILTe0vvLbBZzJE+R3NWPlRJY+EREMpJbAPwAYDWADEDSAAPsmNMA3lYm1sMEZ28k2yQv6Cp0GmRApuMv6fP7tTpmQ/2PVoDwviKWSKYkn/GVkIQSXkRSknsB7AfQAdACVlSoTwC8FdwHGLvfDOAigOGQyg1FUJX1CoDNIrLgIlUSMNafBLBGnZ44h1PDVYUF6wA8bt+1q3papf4HAHbou3bNq5mpIpISDH5IF6m6CRjqjwH4yqx8nRngek/BeUOsM4EbAEZE5B9nAiF8wLB2ntZdWwDYCOAJAK8A2FNACal+cwbA8wCk0TohUOSZIHleQ126TCh0IfklPwzKfVb43DUx9T1DAM4C2NqHCamG5NMAXtC29/fqq9If0PsIyVua8GTeyqf67hrJTaYwqrf81HS4lfOSLu3t1SaZdGMZybbeT/TIPt3zrtrSYDvpQVSansISHf9pkrdN6ktTAxyzygqaCbpQaJ43ABgHMApgkwmN/WL6YwAe0ed5AJc1lU4ALAH4UTPMSyLSsam353/OAxgzeUILwDcAdmpfWdAq0GqU5G6SX5K8XmNR8zPJKVXyXVs2ZnBcv1vQ+2WS65UhSV2V3zjJ77s4niVTiva7FpS6HW3X6dLOt+urJF81JuCc4VH9/6L2OVaL3RvhXzN25yaeFShR+z13Q2rsmiRnvWjwrskHXu9n95VpT3LS23QoWp9TlTelE7chq4giThpHPKXvPql75Z81dE0LCu+E/Jfkc6bvNw2T8rJoUe+fah8zJP8g+XCvsFnJ26uWHyX5d870s9cWVccJT3KVofChEkpwTJgmeYzkRPBkx8T5hOR3Fba7XJv91nY90zpYgQlH/H5D2/17ntaLwLX5sJdzMuMcKDiO9UPvBHV+xu73BRD+827ZXA8lzHirO3glmETjKZI3exQbeWl/juTqfsIbc3NKmG2MCS57IjlE8qeSTi81GdnGvM7JZm6NKcGsQtk9/kwVMGc8c6vMoWZFJewu7BiN8G+UtPvMtNlZdhU8JXxb0ifcLjQHQ71tJOdVkKJ27yZ5uKozUjNM1H+cMguSFTDBRbMf0M4z2BqSv5a0e7fyHy/n8Us44yGSnxVMwfMrwdDtC9MoK3A54U8bJxpqzzExfx81wttzv17zcknVTT21vtcfGeEnK9bsvymDgtfgnk/YroouimskR61SxRxwjAP4WndPEnO8lffQ4SqAvSLyi79TFLooM7tBE3o+sAPAk8vsJqcAHgTwJ4AX9ZxQxDvgaBmBmHPLzH03LyKL7sSl5r3Be37yQnJtnzm79xmAVQDmROS/uiY2yK3xpGrKKyEPNwbyI6QAhzNNzjMiIiIiIiIiIiIiYmXgDtu939Y2aKLcAAAAAElFTkSuQmCC"><link rel="apple-touch-icon" href="data:image/png;base64,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"></head><body>
 
 <!-- LOGO: wspólny kontur znaku. Warianty kolorystyczne dziedziczą kolor miejsca użycia. -->
 
@@ -240,7 +252,7 @@ footer{background:var(--surface);border-top:1px solid var(--line);border-bottom:
 
 <a class="identity" href="#home" aria-label="RWIN"><svg aria-hidden="true"><use href="#rwin-mark"/></svg><b>RWIN</b></a>
 
-<nav id="nav"><a href="#home"></a><a href="#calendar"></a><a href="#entries" hidden></a><a href="#strategy" hidden></a><a href="#przewodnik"></a><div class="aboutgroup"><a href="#about"></a><button id="subToggle" aria-controls="submenu" aria-expanded="false"><svg viewBox="0 0 12 12" aria-hidden="true"><path d="M2 4.5 6 8.5 10 4.5" fill="none" stroke="currentColor" stroke-width="1.8"/></svg></button><div id="submenu" class="sub" hidden><a href="#drivers"></a></div></div></nav>
+<nav id="nav"><a href="#home"></a><a href="#calendar"></a><a href="#entries" hidden></a><a href="#strategy" hidden></a><div class="aboutgroup"><a href="#about"></a><button id="subToggle" aria-controls="submenu" aria-expanded="false"><svg viewBox="0 0 12 12" aria-hidden="true"><path d="M2 4.5 6 8.5 10 4.5" fill="none" stroke="currentColor" stroke-width="1.8"/></svg></button><div id="submenu" class="sub" hidden><a href="#drivers"></a></div></div></nav>
 
 <div id="account"><button class="login" id="login"><svg aria-hidden="true"><use href="#discord"/></svg><span></span></button><div id="accountPanel" hidden><strong id="accountName"></strong><button id="logout" type="button"></button></div></div><button id="hamb" aria-controls="nav" aria-expanded="false">☰</button></div></header>
 
@@ -452,7 +464,7 @@ function sessionTime(iso){
 
 }
 
-const navLabels=()=>({home:t('Strona główna','Home'),calendar:t('Kalendarz','Calendar'),entries:t('Moje zapisy','My entries'),strategy:t('Strategia','Strategy'),about:'About us',drivers:t('Kierowcy','Drivers'),przewodnik:t('Przewodnik','Guide')});
+const navLabels=()=>({home:t('Strona główna','Home'),calendar:t('Kalendarz','Calendar'),entries:t('Moje zapisy','My entries'),strategy:t('Strategia','Strategy'),about:'About us',drivers:t('Kierowcy','Drivers')});
 
 const categories=()=>({all:t('Wszystkie','All'),special:'Special Events',weekly:'Weekly Races',championship:'Championship',training:t('Treningi zespołu','Team practice')});
 
@@ -705,7 +717,6 @@ function secondary(p){
 
  if(p==='entries') return entriesPage();
 
- if(p==='przewodnik') return guidePage();
 
  if(protectedPage(p)) return driverView(p);
 
@@ -801,7 +812,7 @@ function showDetails(id){
 
 }
 
-const loginText=()=>t('Zaloguj przez Discord','Sign in with Discord');
+const loginText=()=>t('Zaloguj','Sign in');
 
 function render(){
 
@@ -832,8 +843,6 @@ function render(){
  applyLogos();
 
  if(authNotice)$('#toast').textContent=t(...notices[authNotice]);
-
- if(p==='przewodnik')updateFov();
 
  if($('#signup').open&&signupDraft)paintSignup();
 
@@ -970,7 +979,7 @@ function paintAccount() {
     closeAccount();
     button.removeAttribute('aria-expanded');
     button.removeAttribute('aria-controls');
-    button.setAttribute('aria-label',loginText());
+    button.setAttribute('aria-label',t('Zaloguj przez Discord','Sign in with Discord'));
     button.innerHTML = icon('discord') + '<span></span>';
     button.lastElementChild.textContent = loginText();
     return;
@@ -1022,15 +1031,7 @@ function channelButton(){
  return url?`<a class="btn outline" target="_blank" rel="noopener" href="${url}">${t('Otwórz kanał przedstawień','Open introductions channel')} ↗</a>`:
  `<p class="note">${t('Kanał przedstawień jest chwilowo niedostępny.','The introductions channel is currently unavailable.')}</p>`;
 }
-function paintGuide(){
- const headings=[t('Poznajmy się','Welcome to RWIN'),t('Instrukcje korzystania ze strony','Using the team site'),t('Przedstaw się na Discordzie','Introduce yourself on Discord')];
- const body=[t('Twoje konto na stronie jest powiązane z Discordem i członkostwem na serwerze RWIN.','Your site account is linked to Discord and your RWIN server membership.'),
- t('W Kalendarzu kliknij wyścig, aby otworzyć szczegóły. Skład znajdziesz w About us → Kierowcy. Kierowcy mają też dostęp do zapisów i strategii.','Select a race in Calendar for details. Find the roster under About us → Drivers. Drivers can also access entries and strategy.'),
- t('Napisz kilka słów o sobie na kanale przedstawień. Możesz podać nick, ulubioną klasę lub tor. Jeśli już się przedstawiłeś, przejdź dalej.','Post a few words about yourself in the introductions channel. Share your nickname, favourite class or track. If you already introduced yourself, continue below.')];
- $('#guideContent').innerHTML=`<span class="kicker">RWIN Racing · 0${step+1} / 03</span><progress max="3" value="${step+1}" aria-label="${t('Postęp','Progress')}"></progress><h2 id="guideTitle">${headings[step]}</h2><p>${body[step]}</p><div class="actions">${step?'<button class="btn outline" data-guide="back">'+t('Wstecz','Back')+'</button>':''}${step===2?channelButton()+'<button class="login" data-guide="oauth">'+t('Kontynuuj przez Discord','Continue with Discord')+'</button>':'<button class="btn" data-guide="next">'+t('Dalej','Next')+'</button>'}</div>`;
- $('#guideClose').ariaLabel=t('Zamknij','Close');
-}
-function openGuide(){step=0;paintGuide();$('#guide').showModal()}
+
 function statusPanel(){
  const box=$('#verification');
  const k=deniedUser?'not_member':access;
@@ -1347,87 +1348,91 @@ function strategyPage(){
  <div class="soon" aria-label="Soon">SOON</div><p class="intro">${t('Planer strategii (stinty, paliwo, zmiany kierowców) pojawi się razem z programem RWIN.','The strategy planner (stints, fuel, driver swaps) is coming with the RWIN app.')}</p></section>`;
 }
 
-// ---------- Przewodnik ----------
-const GUIDE_KEY='rwin.guide.v1';
-function guideState(){try{const s=JSON.parse(localStorage.getItem(GUIDE_KEY)||'{}');return {step:Number.isInteger(s.step)?s.step:0,done:Array.isArray(s.done)?s.done:[],seen:!!s.seen}}catch{return {step:0,done:[],seen:false}}}
+// ---------- Przewodnik (okno po kliknięciu „Zaloguj”) ----------
+// Sektory jak na pomiarze czasu: przejechany = fioletowy. Na końcu światła startowe i logowanie.
+const GUIDE_KEY='rwin.guide.v2';
+let guideStep=0;
+function guideState(){try{const s=JSON.parse(localStorage.getItem(GUIDE_KEY)||'{}');return {max:Number.isInteger(s.max)?s.max:0,finished:!!s.finished}}catch{return {max:0,finished:false}}}
 function saveGuide(s){try{localStorage.setItem(GUIDE_KEY,JSON.stringify(s))}catch{}}
-function loginOrGuide(){
- if(guideState().seen)return startDiscordLogin();
- if(page()==='przewodnik'){const s=guideState();s.step=GUIDE().length-1;saveGuide(s);$('#main').innerHTML=guidePage();$('#main').focus({preventScroll:true})}
- else location.hash='#przewodnik';
-}
-const gi={
- users:'<svg viewBox="0 0 24 24" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="9" cy="8" r="3.2"/><path d="M3 20c0-3.3 2.7-6 6-6s6 2.7 6 6"/><circle cx="17" cy="9" r="2.4"/><path d="M15.5 14.2c3 .3 5.5 2.7 5.5 5.8"/></g></svg>',
- flag:'<svg viewBox="0 0 24 24" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-width="1.8"><path d="M5 21V4"/><path d="M5 4h12l-2 4 2 4H5"/></g></svg>',
- shield:'<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3 4.5 6v6c0 4.4 3.2 7.8 7.5 9 4.3-1.2 7.5-4.6 7.5-9V6z" fill="none" stroke="currentColor" stroke-width="1.8"/></svg>',
- search:'<svg viewBox="0 0 24 24" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m15.5 15.5 5 5"/></g></svg>',
- wheel:'<svg viewBox="0 0 24 24" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="2.5"/><path d="M3.5 10.5h6M14.5 10.5h6M12 14.5V21"/></g></svg>',
- check:'<svg viewBox="0 0 24 24" aria-hidden="true"><path d="m5 12.5 4.5 4.5L19 7.5" fill="none" stroke="currentColor" stroke-width="2.4"/></svg>'
-};
-const guideList=items=>`<div class="guide-list">${items.map(([a,b])=>`<div><span>${a}</span><small>${b}</small></div>`).join('')}</div>`;
-const guideCards=items=>`<div class="guide-cards">${items.map(([ic,h,p])=>`<div class="guide-card"><span class="guide-card-h">${gi[ic]||''}${h}</span><p>${p}</p></div>`).join('')}</div>`;
+const gChecks=items=>`<ul class="gd-checks">${items.map(([a,b])=>`<li><b>${a}</b>${b?`<span>${b}</span>`:''}</li>`).join('')}</ul>`;
 function GUIDE(){
  const intro=introLink();
  return [
- {sec:0,title:t('Poznajmy się','Let’s meet'),lead:t('Cześć! Witamy każdego: zarówno tych, którzy dopiero zaczynają, jak i tych, którzy już jeżdżą szybko. Zobacz, kim jesteśmy i co zyskasz, ścigając się z nami.','Hi! Everyone is welcome, whether you are just starting out or already fast. See who we are and what you get by racing with us.'),
-  body:()=>guideCards([['users',t('Kim jesteśmy','Who we are'),t('RWIN Racing to międzynarodowy zespół simracingowy założony w Polsce, jeżdżący w Le Mans Ultimate.','RWIN Racing is an international sim racing team founded in Poland, racing in Le Mans Ultimate.')],
-   ['flag',t('Co robimy','What we do'),t('Wyścigi długodystansowe: Special Events, Weekly Races, championshipy i wspólne treningi w klasach Hypercar, LMP2 i LMGT3.','Endurance racing: Special Events, Weekly Races, championships and team practice in Hypercar, LMP2 and LMGT3.')],
-   ['shield',t('Nasz kodeks','Our code'),t('Czysta jazda, szacunek na torze i na Discordzie, punktualność i pomoc innym.','Clean racing, respect on track and on Discord, punctuality and helping others.')],
-   ['search',t('Kogo szukamy','Who we look for'),t('Kierowców na każdym poziomie, którzy chcą się rozwijać i jeździć w zespole.','Drivers of every level who want to improve and race as a team.')]])
-   +`<div class="guide-table"><h3>${t('Co zyskujesz, dołączając','What you get')}</h3>${guideList([[t('Wspólne starty','Team races'),t('Special Events, Weekly i championshipy','Special Events, Weekly and championships')],[t('Treningi zespołu','Team practice'),t('przygotowanie przed ważnymi wyścigami','preparation before big races')],[t('Zapisy i lineupy','Entries and line-ups'),t('prosto ze strony RWIN','right from the RWIN site')],[t('Strategia','Strategy'),t('planer stintów i paliwa (wkrótce)','stint and fuel planner (soon)')],[t('Społeczność','Community'),t('Discord i wspólne kanały głosowe','Discord and voice channels')]])}</div>`},
- {sec:0,title:t('Dołącz do Discorda','Join our Discord'),lead:t('Cały zespół żyje na naszym serwerze Discord: ogłoszenia, zapisy, rozmowy i wspólne wyścigi. Konto na tej stronie też jest powiązane z Discordem.','The whole team lives on our Discord server: announcements, entries, chat and races together. Your account on this site is linked to Discord too.'),
-  body:()=>`<div class="actions"><a class="btn" href="${invite}" target="_blank" rel="noopener">${icon('discord')}${t('Dołącz do serwera RWIN','Join the RWIN server')} ↗</a></div>`+guideList([[t('Ustaw nick','Set your nickname'),t('taki sam jak w Le Mans Ultimate','the same as in Le Mans Ultimate')],[t('Włącz powiadomienia','Turn on notifications'),t('dla kanału ogłoszeń, żeby nie przegapić eventu','for announcements so you never miss an event')],[t('Przeczytaj regulamin','Read the rules'),t('na kanale z zasadami serwera','in the server rules channel')]])},
- {sec:0,title:t('Przedstaw się na Discordzie','Introduce yourself'),lead:t('Napisz kilka słów na kanale przedstawień. To nie tylko miły gest: dopiero po przedstawieniu się Twoje konto na stronie zostanie odblokowane.','Write a few words in the introductions channel. It is not just polite: your site account unlocks only after you introduce yourself.'),
-  body:()=>guideList([[t('Nick w grze','In-game name'),t('żebyśmy wiedzieli, kogo szukać na torze','so we can find you on track')],[t('Skąd jesteś','Where you are from'),t('kraj albo miasto','country or city')],[t('Doświadczenie','Experience'),t('od kiedy jeździsz i w czym','how long and what you race')],[t('Ulubiona klasa i tor','Favourite class and track'),t('np. LMGT3 i Spa','e.g. LMGT3 and Spa')],[t('Sprzęt','Gear'),t('kierownica, pedały, monitor/VR','wheel, pedals, monitor/VR')]])
-   +`<div class="actions">${intro?`<a class="btn outline" href="${intro}" target="_blank" rel="noopener">${t('Otwórz kanał przedstawień','Open introductions channel')} ↗</a>`:''}</div>`},
- {sec:0,title:t('Kultura na Discordzie','Discord etiquette'),lead:t('Kilka prostych zasad, dzięki którym na serwerze jest miło dla wszystkich.','A few simple rules that keep the server pleasant for everyone.'),
-  body:()=>guideList([[t('Szacunek','Respect'),t('dla każdego, bez względu na tempo i doświadczenie','for everyone, whatever their pace or experience')],[t('Bez spamu i reklam','No spam or ads'),t('także w wiadomościach prywatnych','in DMs too')],[t('Właściwe kanały','Right channels'),t('pisz tam, gdzie pasuje temat','post where the topic belongs')],[t('Problemy zgłaszaj','Report issues'),t('administracji przez panel zgłoszeń na Discordzie','to the admins via the Discord ticket panel')],[t('Czytelny nick','Clear nickname'),t('taki sam jak w grze','the same as in game')]])},
- {sec:0,title:t('Kultura na kanałach głosowych','Voice channel etiquette'),lead:t('Podczas wyścigów endurance komunikacja to połowa sukcesu. Krótko, jasno i bez hałasu w tle.','In endurance races communication is half the job. Keep it short, clear and quiet.'),
-  body:()=>guideList([[t('Push-to-talk','Push-to-talk'),t('albo dobra redukcja szumów w Discordzie','or good noise suppression in Discord')],[t('W trakcie wyścigu','During the race'),t('tylko komunikaty dotyczące jazdy','only racing-related calls')],[t('Krótko i konkretnie','Short and clear'),t('kto, gdzie, co: „GT3 za tobą, T1”','who, where, what: “GT3 behind you, T1”')],[t('Bez muzyki','No music'),t('i bez głośnego tła z mikrofonu','and no loud background noise')]])},
- {sec:1,title:t('Ustaw prawidłowe FOV','Set the correct FOV'),lead:t('Prawidłowe pole widzenia (FOV) pozwala dobrze ocenić prędkość i punkty hamowania. Le Mans Ultimate używa pionowego FOV: policz je poniżej i wpisz w ustawieniach widoku z kokpitu.','A correct field of view helps you judge speed and braking points. Le Mans Ultimate uses vertical FOV: calculate it below and enter it in the cockpit view settings.'),
-  body:()=>`<div class="fov"><label>${t('Przekątna ekranu (cale)','Screen diagonal (inches)')}<input type="number" id="fovDiag" min="10" max="100" step="0.5" value="27"></label>
-   <label>${t('Proporcje','Aspect ratio')}<select id="fovRatio"><option value="16:9">16:9</option><option value="21:9">21:9</option><option value="32:9">32:9</option><option value="16:10">16:10</option></select></label>
-   <label>${t('Odległość oczu od ekranu (cm)','Eye-to-screen distance (cm)')}<input type="number" id="fovDist" min="20" max="300" step="1" value="70"></label>
-   <output id="fovOut" class="fov-out"></output></div><p class="race-note">${t('Mierz od oczu do środka ekranu. Przy trzech monitorach wpisz wymiary jednego. VR ustawia FOV automatycznie.','Measure from your eyes to the centre of the screen. With triple screens use one screen. VR sets FOV automatically.')}</p>`},
- {sec:1,title:t('Przypisz przyciski na kierownicy','Map your wheel buttons'),lead:t('Ustaw najważniejsze funkcje przed pierwszym treningiem zespołu, żeby w wyścigu nie szukać ich w menu.','Set up the key functions before your first team practice so you never hunt for them mid-race.'),
-  body:()=>guideList([[t('Ogranicznik w pitlane','Pit limiter'),t('obowiązkowo','a must')],[t('Światła','Headlights'),t('wyścigi nocne','night racing')],[t('Wycieraczki','Wipers'),t('na deszcz','for rain')],[t('Balans hamulców +/−','Brake bias +/−'),t('zmiany w trakcie stintu','adjust during a stint')],[t('Kontrola trakcji (TC) +/−','Traction control +/−'),t('zużycie opon i deszcz','tyre wear and rain')],[t('ABS +/−','ABS +/−'),t('w LMGT3','in LMGT3')],[t('Menu pitstopu (MFD)','Pit menu (MFD)'),t('góra / dół / zmiana wartości','up / down / change value')],[t('Push-to-talk','Push-to-talk'),t('Discord, rozmowy z zespołem','Discord, team comms')]])},
- {sec:1,title:t('Zaloguj się','Sign in'),lead:t('Gotowe! Zaloguj się przez Discord. Bot sprawdzi, czy jesteś na serwerze RWIN, czy się przedstawiłeś i czy masz rolę kierowcy. Kierowcy mogą zapisywać się na wyścigi prosto z kalendarza.','All set! Sign in with Discord. The bot checks that you are on the RWIN server, introduced yourself and have the driver role. Drivers can sign up for races straight from the calendar.'),
-  body:()=>accountUser?`<p class="guide-done">${gi.check}${t('Jesteś zalogowany.','You are signed in.')}</p>`:`<div class="actions"><button class="login" data-guide-login>${icon('discord')}${loginText()}</button></div>`}
+ {tag:t('Witaj','Welcome'),title:t('Witaj w RWIN','Welcome to RWIN'),
+  lead:t('Międzynarodowy zespół simracingowy założony w Polsce. Ścigamy się razem w wyścigach długodystansowych w Le Mans Ultimate i chętnie przyjmujemy kierowców na każdym poziomie.','An international sim racing team founded in Poland. We race endurance events together in Le Mans Ultimate and welcome drivers of every level.'),
+  body:()=>`<div class="gd-stats"><div><b>LMU</b><span>Le Mans Ultimate</span></div><div><b>3</b><span>${t('klasy: Hypercar, LMP2, LMGT3','classes: Hypercar, LMP2, LMGT3')}</span></div><div><b>4</b><span>${t('kategorie: Special, Weekly, Championship, Treningi','categories: Special, Weekly, Championship, Practice')}</span></div></div>`
+   +gChecks([[t('Wspólne starty','Team races'),t('Special Events, Weekly Races i championshipy','Special Events, Weekly Races and championships')],[t('Treningi zespołu','Team practice'),t('przed ważnymi wyścigami','before big races')],[t('Zapisy i lineupy','Entries and line-ups'),t('prosto ze strony','right from the site')]])},
+ {tag:'Discord',title:t('Wskakuj na Discorda','Hop on Discord'),
+  lead:t('Na serwerze dzieje się wszystko: ogłoszenia, zapisy i rozmowy w trakcie wyścigów. Twoje konto na stronie też działa przez Discorda.','Everything happens on the server: announcements, entries and race comms. Your site account works through Discord too.'),
+  body:()=>`<div class="actions"><a class="btn" href="${invite}" target="_blank" rel="noopener">${icon('discord')}${t('Dołącz do serwera RWIN','Join the RWIN server')} ↗</a></div>`
+   +gChecks([[t('Nick jak w grze','In-game nickname'),t('żeby łatwo Cię znaleźć na torze','so we can find you on track')],[t('Powiadomienia z ogłoszeń','Announcement notifications'),t('nie przegapisz żadnego eventu','never miss an event')]])},
+ {tag:t('Przedstawienie','Intro'),title:t('Przedstaw się','Introduce yourself'),
+  lead:t('Kilka słów na kanale przedstawień to warunek: dopiero wtedy bot odblokuje Twoje konto na stronie.','A few words in the introductions channel are required: only then does the bot unlock your site account.'),
+  body:()=>`<div class="gd-template"><span>${t('Przykład','Example')}</span><p>${t('Cześć! Jestem <b>Kuba</b> (w grze: K. Nowak), jeżdżę od 2 lat, najbardziej lubię <b>LMGT3</b> i <b>Spa</b>. Sprzęt: Fanatec CSL DD.','Hi! I’m <b>Jake</b> (in game: J. Smith), racing for 2 years, love <b>LMGT3</b> and <b>Spa</b>. Gear: Fanatec CSL DD.')}</p></div>`
+   +(intro?`<div class="actions"><a class="btn outline" href="${intro}" target="_blank" rel="noopener">${t('Otwórz kanał przedstawień','Open introductions channel')} ↗</a></div>`:'')},
+ {tag:t('Zasady','Rules'),title:t('Zasady w boksie','Rules of the pit box'),
+  lead:t('Proste zasady, dzięki którym na serwerze i w trakcie wyścigów jest dobrze dla wszystkich.','Simple rules that keep the server and races good for everyone.'),
+  body:()=>`<div class="gd-split"><div><h3>${t('Na Discordzie','On Discord')}</h3>${gChecks([[t('Szacunek dla każdego','Respect everyone')],[t('Bez spamu i reklam','No spam or ads')],[t('Pisz na właściwych kanałach','Use the right channels')],[t('Problemy zgłaszaj przez panel zgłoszeń','Report issues via the ticket panel')]])}</div>
+   <div><h3>${t('Na kanałach głosowych','On voice')}</h3>${gChecks([[t('Push-to-talk lub redukcja szumów','Push-to-talk or noise suppression')],[t('W wyścigu tylko komunikaty z toru','Race calls only during races')],[t('Krótko: kto, gdzie, co','Short: who, where, what')],[t('Bez muzyki w tle','No background music')]])}</div></div>`},
+ {tag:t('Sprzęt','Setup'),title:t('Przygotuj kokpit','Set up your cockpit'),
+  lead:t('Dobre FOV pomaga ocenić prędkość i punkty hamowania. LMU używa pionowego FOV: policz swoje i wpisz w ustawieniach widoku z kokpitu.','Correct FOV helps judge speed and braking points. LMU uses vertical FOV: calculate yours and enter it in the cockpit view settings.'),
+  body:()=>`<div class="fov"><label>${t('Przekątna (cale)','Diagonal (in)')}<input type="number" id="fovDiag" min="10" max="100" step="0.5" value="27"></label>
+   <label>${t('Proporcje','Aspect')}<select id="fovRatio"><option value="16:9">16:9</option><option value="21:9">21:9</option><option value="32:9">32:9</option><option value="16:10">16:10</option></select></label>
+   <label>${t('Odległość oczu (cm)','Eye distance (cm)')}<input type="number" id="fovDist" min="20" max="300" step="1" value="70"></label><output id="fovOut" class="fov-out"></output></div>
+   <h3 class="gd-h3">${t('Przypisz na kierownicy','Map on your wheel')}</h3><div class="gd-keys">${[t('Ogranicznik pit','Pit limiter'),t('Światła','Lights'),t('Wycieraczki','Wipers'),t('Balans hamulców ±','Brake bias ±'),'TC ±',t('ABS ± (LMGT3)','ABS ± (LMGT3)'),t('Menu pitstopu','Pit menu'),'Push-to-talk'].map(k=>`<kbd>${k}</kbd>`).join('')}</div>`},
+ {tag:t('Start','Start'),title:t('Na start!','Lights out!'),
+  lead:t('Zaloguj się przez Discord. Bot sprawdzi, czy jesteś na serwerze, czy się przedstawiłeś i czy masz rolę kierowcy. Kierowcy zapisują się na wyścigi prosto z kalendarza.','Sign in with Discord. The bot checks you are on the server, introduced yourself and have the driver role. Drivers sign up for races straight from the calendar.'),
+  body:()=>`<div class="gd-lights" aria-hidden="true">${'<i></i>'.repeat(5)}</div>`+(accountUser?`<p class="gd-done">✓ ${t('Jesteś zalogowany.','You are signed in.')}</p>`:`<div class="actions"><button class="login gd-go" data-guide-login>${icon('discord')}${t('Zaloguj','Sign in')}</button></div>`)}
  ];
 }
-function guidePage(){
- const steps=GUIDE(), s=guideState(), step=Math.min(Math.max(s.step,0),steps.length-1), cur=steps[step];
- const sections=[[t('Nowy w RWIN','New to RWIN'),'users'],[t('Nowy kierowca','New driver'),'wheel']];
- const done=new Set(s.done.filter(n=>n<steps.length)), pct=Math.round(done.size/steps.length*100);
- const nav=sections.map(([name,ic],si)=>{const idx=steps.map((x,i)=>[x,i]).filter(([x])=>x.sec===si);
-   return `<div class="guide-sec"><div class="guide-sec-h">${gi[ic]}<b>${name}</b><span>${idx.filter(([,i])=>done.has(i)).length} / ${idx.length}</span></div>
-   ${idx.map(([x,i],n)=>`<button class="guide-item" data-guide-step="${i}" ${i===step?'aria-current="step"':''}><span class="guide-num">${done.has(i)?gi.check:n+1}</span>${x.title}</button>`).join('')}</div>`}).join('');
- const inSec=steps.filter(x=>x.sec===cur.sec), pos=inSec.indexOf(cur)+1;
- return `<section class="page guide-page"><div class="guide-top"><div><div class="kicker">RWIN Racing · ${t('Przewodnik','Guide')}</div><h1>${t('Przewodnik','Guide')}</h1>
- <p class="intro">${t('Krok po kroku od dołączenia do zespołu do pierwszego wyścigu. Jeden krok na raz: wróć w dowolnym momencie, postęp zapisuje się w tej przeglądarce.','Step by step from joining the team to your first race. One step at a time: come back any time, progress is saved in this browser.')}</p></div>
- <div class="guide-score"><strong>${pct}%</strong><span>${done.size} ${t('z','of')} ${steps.length} ${t('kroków','steps')}</span><button class="smalllink" data-guide-reset>↺ ${t('Zacznij od nowa','Start over')}</button>${accountUser?'':`<button class="smalllink" data-guide-skip>${t('Pomiń i zaloguj','Skip and sign in')} →</button>`}</div></div>
- <div class="guide-bars" aria-hidden="true">${steps.map((_,i)=>`<i class="${done.has(i)?'on':''}${i===step?' cur':''}"></i>`).join('')}</div>
- <div class="guide-layout"><aside class="guide-nav" aria-label="${t('Kroki przewodnika','Guide steps')}">${nav}</aside>
- <article class="guide-step" aria-labelledby="guideStepTitle"><div class="guide-step-top"><span>${String(step+1).padStart(2,'0')} · ${sections[cur.sec][0]}</span><span>${t('Krok','Step')} ${pos} / ${inSec.length}</span></div>
- <h2 id="guideStepTitle" tabindex="-1">${cur.title}</h2><p class="guide-lead">${cur.lead}</p>${cur.body()}
- <div class="guide-foot">${step?`<button class="btn outline" data-guide-go="${step-1}">← ${t('Wstecz','Back')}</button>`:'<span></span>'}${step<steps.length-1?`<button class="btn" data-guide-go="${step+1}" data-guide-complete="${step}">${t('Dalej','Next')} →</button>`:''}</div></article></div></section>`;
+function paintGuide(){
+ const steps=GUIDE(), s=guideState(), i=Math.min(Math.max(guideStep,0),steps.length-1), cur=steps[i], last=i===steps.length-1;
+ const num=String(i+1).padStart(2,'0');
+ $('#guideContent').innerHTML=`<div class="gd">
+ <div class="gd-main">
+  <div class="gd-sectors" role="list" aria-label="${t('Postęp','Progress')}">${steps.map((x,n)=>`<button role="listitem" class="gd-sector${n<i||n<=s.max&&n!==i?' done':''}${n===i?' cur':''}" data-guide-step="${n}" ${n>s.max+1?'disabled':''} aria-label="${t('Sektor','Sector')} ${n+1}: ${x.title}"><i></i><span>S${n+1}</span></button>`).join('')}</div>
+  <div class="gd-kicker"><span>${t('Sektor','Sector')} ${i+1} / ${steps.length}</span><span>${cur.tag}</span></div>
+  <h2 id="guideTitle" tabindex="-1">${cur.title}</h2>
+  <p class="gd-lead">${cur.lead}</p>
+  <div class="gd-body">${cur.body()}</div>
+  <div class="gd-foot">${i?`<button class="btn outline" data-guide-step="${i-1}">← ${t('Wstecz','Back')}</button>`:'<span></span>'}
+   ${last?'':`<div class="gd-foot-r">${s.finished||accountUser?'':`<button class="smalllink" data-guide-step="${steps.length-1}">${t('Pomiń','Skip')}</button>`}<button class="btn" data-guide-step="${i+1}">${t('Dalej','Next')} →</button></div>`}</div>
+ </div>
+ <div class="gd-poster" aria-hidden="true"><span class="crop"></span><div class="gd-poster-top"><span>RWIN RACING</span><span>${t('PRZEWODNIK','GUIDE')}</span></div>
+  <div class="gd-num">${num}</div><svg class="gd-mark"><use href="#rwin-mark"/></svg>
+  <div class="gd-poster-bottom"><span class="serial"></span><span>${cur.tag.toUpperCase()}</span><span class="ticks"></span></div></div>
+ </div>`;
+ $('#guideClose').setAttribute('aria-label',t('Zamknij','Close'));
+ updateFov();
 }
-function guideGo(next,complete){
- const s=guideState(), n=GUIDE().length;
- if(Number.isInteger(complete)&&!s.done.includes(complete))s.done.push(complete);
- s.step=Math.min(Math.max(next,0),n-1);
- if(s.step===n-1){s.seen=true;if(!s.done.includes(n-1))s.done.push(n-1)}
- saveGuide(s);$('#main').innerHTML=guidePage();updateFov();
- $('#guideStepTitle')?.focus({preventScroll:true});
- const top=$('.guide-layout');if(top&&top.getBoundingClientRect().top<0)top.scrollIntoView({behavior:'smooth'});
+function guideGo(n){
+ const steps=GUIDE().length, s=guideState();
+ guideStep=Math.min(Math.max(n,0),steps-1);
+ if(guideStep>s.max)s.max=guideStep;
+ if(guideStep===steps-1)s.finished=true;
+ saveGuide(s);paintGuide();
+ const g=$('#guide');g.scrollTop=0;$('#guideTitle')?.focus({preventScroll:true});
 }
+function openGuide(){
+ const s=guideState();
+ guideStep=s.finished?GUIDE().length-1:Math.min(s.max,GUIDE().length-1);
+ paintGuide();if(!$('#guide').open)$('#guide').showModal();
+ $('#guideTitle')?.focus({preventScroll:true});
+}
+const loginOrGuide=()=>openGuide();
 function updateFov(){
  const out=$('#fovOut');if(!out)return;
  const diag=Number($('#fovDiag').value), dist=Number($('#fovDist').value), [w,h]=$('#fovRatio').value.split(':').map(Number);
  if(!(diag>0&&dist>0)){out.textContent='—';return}
  const height=diag*2.54*h/Math.hypot(w,h), fov=2*Math.atan(height/2/dist)*180/Math.PI;
- out.innerHTML=`<span>${t('Twoje pionowe FOV','Your vertical FOV')}</span><b>${fov.toFixed(1)}°</b>`;
+ out.innerHTML=`<span>${t('Pionowe FOV','Vertical FOV')}</span><b>${fov.toFixed(1)}°</b>`;
 }
+$('#guide').addEventListener('keydown',e=>{
+ if(e.target.matches('input,select,textarea'))return;
+ if(e.key==='ArrowRight'&&guideStep<GUIDE().length-1&&guideStep<=guideState().max)guideGo(guideStep+1);
+ else if(e.key==='ArrowLeft'&&guideStep>0)guideGo(guideStep-1);
+});
+
 document.addEventListener('input',e=>{
  if(['fovDiag','fovDist','fovRatio'].includes(e.target.id))updateFov();
  if(e.target.id==='signupNotes'&&signupDraft){signupDraft.notes=e.target.value;$('#notesCount').textContent=e.target.value.length+' / 500'}
@@ -1435,11 +1440,8 @@ document.addEventListener('input',e=>{
 document.addEventListener('change',e=>{if(e.target.id==='fovRatio')updateFov()});
 document.addEventListener('click',e=>{
  const b=e.target.closest('button');if(!b)return;
- if(b.dataset.guideGo!==undefined)guideGo(Number(b.dataset.guideGo),b.dataset.guideComplete!==undefined?Number(b.dataset.guideComplete):undefined);
- else if(b.dataset.guideStep!==undefined)guideGo(Number(b.dataset.guideStep));
- else if(b.hasAttribute('data-guide-reset')){saveGuide({step:0,done:[],seen:false});guideGo(0)}
- else if(b.hasAttribute('data-guide-skip')){const s=guideState();s.seen=true;saveGuide(s);startDiscordLogin()}
- else if(b.hasAttribute('data-guide-login'))startDiscordLogin();
+ if(b.dataset.guideStep!==undefined)guideGo(Number(b.dataset.guideStep));
+ else if(b.hasAttribute('data-guide-login')){$('#guide').close();startDiscordLogin()}
  else if(b.dataset.signup)openSignup(b.dataset.signup);
  else if(b.dataset.slot&&signupDraft){const s=signupDraft.slots;s.has(b.dataset.slot)?s.delete(b.dataset.slot):s.add(b.dataset.slot);signupDraft.msg='';paintSignup(`[data-slot="${CSS.escape(b.dataset.slot)}"]`)}
  else if(b.dataset.slotDay&&signupDraft){const e2=EVENTS.find(x=>x.id===signupDraft.id), day=(e2.sessions||[]).filter(s=>dateKey(new Date(s))===b.dataset.slotDay), all=day.every(s=>signupDraft.slots.has(s));
