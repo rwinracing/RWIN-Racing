@@ -167,6 +167,53 @@ footer{background:var(--surface);border-top:1px solid var(--line);border-bottom:
 @media(max-width:620px){.driver-card{min-height:0;gap:16px}}
 @media(max-width:520px){.profile-head{flex-direction:column;align-items:flex-start;padding:24px 20px}.profile-body{padding:20px}}
 .countdown{color:var(--white);font-weight:700;font-variant-numeric:tabular-nums;letter-spacing:.08em;margin-left:2px}
+.signups{display:flex;align-items:center;gap:14px;flex-wrap:wrap;margin-top:28px;padding-top:18px;border-top:1px solid var(--line)}
+.signups-label{font:700 10.5px/1 var(--font-ui);letter-spacing:.14em;text-transform:uppercase;color:var(--purple)}
+.signups-faces{display:flex;padding-left:8px}.signups-faces>*{display:grid;place-items:center;width:36px;height:36px;margin-left:-8px;border-radius:50%;object-fit:cover;border:2px solid var(--surface);background:var(--surface-alt);color:var(--purple);font:italic 800 16px var(--font-display);box-shadow:0 0 0 1px var(--purple-dark)}
+.signups-faces .signups-more{color:var(--white);font:700 11px var(--font-ui);background:#2a1e30}
+.soon-page{text-align:left}.soon{font:italic 800 clamp(110px,22vw,300px)/.85 var(--font-display);letter-spacing:-.04em;margin:30px 0 18px;background:linear-gradient(100deg,var(--purple) 0%,#f3d7f8 45%,var(--purple) 70%);-webkit-background-clip:text;background-clip:text;color:transparent;background-size:200% 100%;animation:soonShine 5s linear infinite}
+@keyframes soonShine{to{background-position:-200% 0}}@media(prefers-reduced-motion:reduce){.soon{animation:none}}
+#signup{width:min(760px,96vw);max-height:92dvh;padding:0;overflow:auto;background:#141018}#signup::backdrop{background:#08070ce8}
+#signup .close{position:absolute;right:16px;top:18px;width:40px;height:40px;float:none;background:var(--surface-alt)}
+#signupTitle{font:italic 800 clamp(30px,5vw,46px)/1 var(--font-display);text-transform:uppercase;margin:8px 0 0}.signup-sub{margin:8px 0 0;color:var(--muted);font-size:14px}
+#signup h3{font:700 13px var(--font-ui);letter-spacing:.1em;text-transform:uppercase;color:#d8c8dc;margin:6px 0 10px}
+.pick-row{display:flex;flex-wrap:wrap;gap:8px}.pick{min-width:64px;min-height:40px;padding:8px 14px;border:1px solid var(--line);border-radius:3px;background:var(--surface-alt);font-weight:600;font-size:14px;font-variant-numeric:tabular-nums}
+.pick:hover{border-color:var(--purple-dark);color:var(--white)}.pick[aria-pressed=true]{background:var(--purple);border-color:var(--purple);color:var(--background)}
+.slot-grid{display:grid;gap:10px;margin-top:12px}.slot-row{display:grid;grid-template-columns:190px 1fr;gap:12px;align-items:center;padding:12px;border:1px solid #453347;background:#17131b}
+.slot-day{display:flex;flex-direction:column;align-items:flex-start;gap:6px}.slot-day b{font-weight:600}.slot-day b::first-letter{text-transform:uppercase}.slot-all{font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--purple)}.slot-all[aria-pressed=true]{color:var(--muted)}
+.signup-notes{display:grid;gap:6px;margin-top:20px}.signup-notes span{font:700 13px var(--font-ui);letter-spacing:.1em;text-transform:uppercase;color:#d8c8dc}
+.signup-notes textarea{font:inherit;color:var(--white);background:var(--surface-alt);border:1px solid var(--line);border-radius:3px;padding:10px 12px;resize:vertical}.signup-notes textarea:focus{outline:none;border-color:var(--purple)}.signup-notes small{color:var(--dimmed);justify-self:end}
+.signup-msg{margin:14px 0 0;padding:10px 12px;border:1px solid #7a3340;background:#2a1519;color:#ffb3bb}
+.signup-actions{display:flex;flex-wrap:wrap;gap:10px;margin-top:20px;padding-top:16px;border-top:1px solid var(--line)}.btn.danger{border-color:#7a3340;color:#ff9aa4}.btn.danger:hover{background:#2a1519;color:#ffb3bb}
+.btn[disabled]{opacity:.6;cursor:wait}
+.entry-card .entry-pick{margin-top:8px;font-size:14px;color:#cdc7d0;line-height:1.7}.entry-card .entry-pick b{color:var(--white);font-weight:600}.entry-actions{display:flex;flex-direction:column;align-items:flex-end;gap:8px}
+.race-content>.signups{margin:0 0 16px;padding:14px 0 0}
+.guide-page{padding-top:40px}.guide-top{display:flex;justify-content:space-between;align-items:flex-end;gap:30px;flex-wrap:wrap}.guide-top h1{margin:12px 0 10px}.guide-top .intro{margin:0;max-width:60ch}
+.guide-score{display:flex;align-items:baseline;flex-wrap:wrap;gap:6px 14px}.guide-score strong{font:italic 800 46px/1 var(--font-display);color:var(--purple)}.guide-score span{color:var(--muted)}
+.guide-bars{display:grid;grid-template-columns:repeat(8,1fr);gap:6px;margin:24px 0 26px}.guide-bars i{height:5px;background:var(--line-soft);border-radius:2px;transition:background .3s}.guide-bars i.on{background:var(--purple)}.guide-bars i.cur:not(.on){background:var(--purple-dark)}
+.guide-layout{display:grid;grid-template-columns:300px minmax(0,1fr);gap:20px;align-items:start}
+.guide-nav{position:sticky;top:16px;background:var(--surface);border:1px solid var(--line);border-radius:4px;padding:8px}
+.guide-sec+.guide-sec{border-top:1px solid var(--line);margin-top:8px;padding-top:8px}
+.guide-sec-h{display:flex;align-items:center;gap:10px;padding:10px 10px 8px}.guide-sec-h svg{width:18px;height:18px;color:var(--purple)}.guide-sec-h b{flex:1;font-size:14px}.guide-sec-h span{font-size:12px;color:var(--muted);font-variant-numeric:tabular-nums}
+.guide-item{display:flex;align-items:center;gap:12px;width:100%;padding:9px 10px;border-radius:3px;text-align:left;font-size:13.5px;color:var(--muted)}.guide-item:hover{background:var(--surface-hover);color:var(--white)}
+.guide-item[aria-current]{background:var(--surface-hover);color:var(--white);box-shadow:inset 3px 0 var(--purple)}
+.guide-num{display:grid;place-items:center;flex:none;width:22px;height:22px;border:1px solid var(--line);border-radius:50%;font-size:11px;font-weight:700}.guide-num svg{width:13px;height:13px}
+.guide-item[aria-current] .guide-num{border-color:var(--purple);color:var(--purple)}.guide-item:has(.guide-num svg) .guide-num{background:var(--purple);border-color:var(--purple);color:var(--background)}
+.guide-step{background:radial-gradient(ellipse at 100% 0,#c980d81c,transparent 55%),var(--surface);border:1px solid var(--line);border-left:3px solid var(--purple);border-radius:4px;padding:clamp(20px,3vw,34px)}
+.guide-step-top{display:flex;justify-content:space-between;gap:10px;font:700 11px/1.4 var(--font-ui);letter-spacing:.14em;text-transform:uppercase;color:var(--purple)}.guide-step-top span+span{color:var(--muted)}
+.guide-step h2{font:italic 800 clamp(34px,4vw,52px)/1 var(--font-display);margin:12px 0 10px;outline:none}.guide-lead{color:#cdc7d0;max-width:70ch;margin:0 0 22px}
+.guide-cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px;margin-bottom:18px}.guide-card{padding:16px;border:1px solid #453347;background:var(--surface-alt);border-radius:3px}
+.guide-card-h{display:flex;align-items:center;gap:8px;font:700 11px/1.4 var(--font-ui);letter-spacing:.14em;text-transform:uppercase;color:var(--purple)}.guide-card-h svg{width:16px;height:16px}.guide-card p{margin:10px 0 0;font-size:14.5px;color:#e4dde7}
+.guide-table{border:1px solid var(--line);border-radius:3px;overflow:hidden}.guide-table h3{margin:0;padding:14px 16px;font-size:15px;border-bottom:1px solid var(--line);background:var(--surface-alt);text-transform:none;font-family:var(--font-ui)}
+.guide-list{display:grid;border:1px solid var(--line);border-radius:3px;overflow:hidden;margin:4px 0 16px}.guide-table .guide-list{border:0;margin:0;border-radius:0}
+.guide-list div{display:flex;justify-content:space-between;align-items:center;gap:16px;padding:13px 16px}.guide-list div+div{border-top:1px solid var(--line-soft)}.guide-list span{font-weight:600;display:flex;align-items:center;gap:10px}.guide-list span:before{content:"";width:6px;height:6px;flex:none;background:var(--purple);border-radius:1px}.guide-list small{color:var(--muted);font-size:13px;text-align:right}
+.guide-foot{display:flex;justify-content:space-between;gap:10px;margin-top:26px;padding-top:18px;border-top:1px solid var(--line)}
+.guide-done{display:flex;align-items:center;gap:10px;color:var(--purple);font-weight:700}.guide-done svg{width:22px;height:22px}
+.fov{display:grid;grid-template-columns:repeat(3,minmax(0,1fr)) minmax(160px,1fr);gap:12px;align-items:end;padding:16px;border:1px solid #453347;background:var(--surface-alt);border-radius:3px}
+.fov label{display:grid;gap:6px;font-size:12px;color:var(--muted)}.fov input,.fov select{font:inherit;font-size:15px;color:var(--white);background:var(--surface);border:1px solid var(--line);border-radius:3px;height:42px;padding:0 10px}.fov input:focus,.fov select:focus{outline:none;border-color:var(--purple)}
+.fov-out{display:grid;gap:2px;justify-items:end}.fov-out span{font-size:12px;color:var(--muted)}.fov-out b{font:italic 800 44px/1 var(--font-display);color:var(--purple)}
+@media(max-width:900px){.guide-layout{grid-template-columns:1fr}.guide-nav{position:static;order:2}.fov{grid-template-columns:1fr 1fr}.fov-out{justify-items:start}}
+@media(max-width:620px){.slot-row{grid-template-columns:1fr}.slot-day{flex-direction:row;justify-content:space-between;align-items:center}.entry-actions{flex-direction:row;width:100%;justify-content:flex-start}.guide-list div{flex-direction:column;align-items:flex-start;gap:4px}.guide-list small{text-align:left;padding-left:16px}.guide-score strong{font-size:36px}}
 #guide progress{width:100%;height:5px;accent-color:var(--purple);margin:20px 0 10px}#guide .close{position:relative;z-index:1}#verification{margin:16px auto 0}#verification h2{font-size:28px}#verification .actions{margin-top:12px}</style><link rel="icon" type="image/png" sizes="64x64" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAYAAACqaXHeAAAEpElEQVR42u1aXYhVVRT+1rk3o5EGlcSXMiEbyocY0IEZxCCICAIV9M2oh14sFGOgQnwYIcgIneZhIOhBop+3XooeAjFBJFIf7KmCfqRCQTBJmaFx5p7z+bK2LLb33jk/+9wz0v7gcOacOftnrf2tv70vEBERERERERERERHxf4TU2TnJVoOyUUSy5kYnpenVJSnLLYLUNbCIkOQ4gCEAbED+30XkL51PoozgILTe0vvLbBZzJE+R3NWPlRJY+EREMpJbAPwAYDWADEDSAAPsmNMA3lYm1sMEZ28k2yQv6Cp0GmRApuMv6fP7tTpmQ/2PVoDwviKWSKYkn/GVkIQSXkRSknsB7AfQAdACVlSoTwC8FdwHGLvfDOAigOGQyg1FUJX1CoDNIrLgIlUSMNafBLBGnZ44h1PDVYUF6wA8bt+1q3papf4HAHbou3bNq5mpIpISDH5IF6m6CRjqjwH4yqx8nRngek/BeUOsM4EbAEZE5B9nAiF8wLB2ntZdWwDYCOAJAK8A2FNACal+cwbA8wCk0TohUOSZIHleQ126TCh0IfklPwzKfVb43DUx9T1DAM4C2NqHCamG5NMAXtC29/fqq9If0PsIyVua8GTeyqf67hrJTaYwqrf81HS4lfOSLu3t1SaZdGMZybbeT/TIPt3zrtrSYDvpQVSansISHf9pkrdN6ktTAxyzygqaCbpQaJ43ABgHMApgkwmN/WL6YwAe0ed5AJc1lU4ALAH4UTPMSyLSsam353/OAxgzeUILwDcAdmpfWdAq0GqU5G6SX5K8XmNR8zPJKVXyXVs2ZnBcv1vQ+2WS65UhSV2V3zjJ77s4niVTiva7FpS6HW3X6dLOt+urJF81JuCc4VH9/6L2OVaL3RvhXzN25yaeFShR+z13Q2rsmiRnvWjwrskHXu9n95VpT3LS23QoWp9TlTelE7chq4giThpHPKXvPql75Z81dE0LCu+E/Jfkc6bvNw2T8rJoUe+fah8zJP8g+XCvsFnJ26uWHyX5d870s9cWVccJT3KVofChEkpwTJgmeYzkRPBkx8T5hOR3Fba7XJv91nY90zpYgQlH/H5D2/17ntaLwLX5sJdzMuMcKDiO9UPvBHV+xu73BRD+827ZXA8lzHirO3glmETjKZI3exQbeWl/juTqfsIbc3NKmG2MCS57IjlE8qeSTi81GdnGvM7JZm6NKcGsQtk9/kwVMGc8c6vMoWZFJewu7BiN8G+UtPvMtNlZdhU8JXxb0ifcLjQHQ71tJOdVkKJ27yZ5uKozUjNM1H+cMguSFTDBRbMf0M4z2BqSv5a0e7fyHy/n8Us44yGSnxVMwfMrwdDtC9MoK3A54U8bJxpqzzExfx81wttzv17zcknVTT21vtcfGeEnK9bsvymDgtfgnk/YroouimskR61SxRxwjAP4WndPEnO8lffQ4SqAvSLyi79TFLooM7tBE3o+sAPAk8vsJqcAHgTwJ4AX9ZxQxDvgaBmBmHPLzH03LyKL7sSl5r3Be37yQnJtnzm79xmAVQDmROS/uiY2yK3xpGrKKyEPNwbyI6QAhzNNzjMiIiIiIiIiIiIiYmXgDtu939Y2aKLcAAAAAElFTkSuQmCC"><link rel="apple-touch-icon" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAALQAAAC0CAYAAAA9zQYyAAAPsElEQVR42u2dfbBdZXWHn7XPvQEFEYxAUqhgrZ9DEIPKR2faFFu1M4gVAWFGkU5MAgV0oOBMawFb6Uz/ARVEiOJosR20044jiFGCkrQjOmgVEIQE+bC2UqsSCOqQ3HPO6h97veH19FzuOfeej73P+T0zZ24SQmafd//22utd7/oAIYQQQgghhBBCCCGEEEIIIYQQQgghhBBCCCGEEEIIIYQQQgghhBBCCCGEEEIIIYQQQgghhBBCCCGEEEIIIYQQQgghhJhqTEsA7t7QWgxveYE2gJm5lmP4Yi60CqNb6zAestDDWmAza7v7G4Hjw5JI4IMhreUPgc+XBtp250bEzNoS9ODFfDLwWeC50uDQuDd+Xgc8YGZfi3tgQGFmLQl6aWI2M/OwFP8BHAXsAhrS3sDp3J84sAm4Erg9jEpjUKK2Kd4E7gVcDbw7W3gxPPcjibkI3bWALwEbzWyTu88AraVuHG0KxTxrZnPu/gHg8lhYiXm0tEJ7BdAEzjSzG8MFWVI0ZGYK/eY5d18F/FksrDaB43FDyIzJZ9x9FvhXM/tVcglloXsLz70yXnWHK6pRmTh10uI3gVOAnwLtxYh6mm5mEWGitSHmOYmZKh3uNYHjgFNig1jIQs9vnWfMrOnu64FrptHdqomlblFGmzYANy4mVm1TFG9eDtwKrJarUWlRG/ArYBXwaL+bxGLS483xcznwBYm5Fu5HC3gOcG4IuZCFzsRMGW/eBKxRiK5Wm8THgBOA7XFs3p52C52+24nA70vMtbLSbeC3gLX9RjpsUk8Czazl7kcA34pXmClFtHZW+mdhjLb36ksXE+pqpDyNC4F9lFlYW1/6QODUEHJjWl2OApgFPolOA+suagNe4+7PB9rZvmg6XI4sRHcccIf85olxP15tZt9P93cqLHQ8vebuq4F/lGWeGH6dZetNj8thZh5HptcDv6NN4ES5kLumStDu3nD3Ze5+MfAqWWcmKY96b+C8qRF0+FUt4MXA31MepEjMk3UU/qpe93zFhPjNBwEfz0rm5WpMFk9PjYUO63wD5TGpyTpP9KkvE1uxkvo7uPtb0NH2pDPXcYI4WXHoLN68EvgBsG/mb4nu9zkVp9ZtnXYBbzCzb/QSh56pcUrogZRV2/tLr4tK/skrsKl4pOPnk+xyWFjnQ4D/BC6Vq7FgTsQhwDszMe/Db1ZgV1XYaZPfUMWK6HyzvSKEsQs4CfhDyvZnL+iowK4KzTC41wAXRNFsa2IFHa6HLHOPr+1uvqe7H01Zv3dq5rpVpaKnFRb6YjP7SKoLlYUW83VZtWTx3P3VwNnAmZQ9/sbthqSzhG3AMWa2U3dQ9Nretsh+f4S7f8Wfoe3joRk/z8lDtEL0I+yZ+PX+7r7B3R8PUbVGLOZWPEj3uPtBcW3yJMTS3BJ3f4O77xiDpU4P0LlqSC8Gstl292WZqB8LF6A9QjFvd/cDFmOdpX7RLa98t7svi8bkn49oUmsEMWcHHgdONrMdmssiBm2pG+5+oLt/OaxnawTW+Rq5GmLYaQb7uvu2IYq6FW7NdfEQNbQRFMPOarxwSFGP5Jv/wt1f2NH1CrXTFYOmHa//GykPOop+ilZ77Di6g7LlxI7IqJPfLEZipS/K3INBMBc/z9IBihj1BtHcfbm7Pzig2HRyXba6+wvdfUZ+c73F0fVT8cp6c/cLOqzrUk4Db3f3FyzVb2ZahwZ1me3tY8h68x7bABe9JusPYyLrfDFqd38IeIoyp3ox1S+eFRd82Mwe7zWTTvnQ88QzRyWAea5n+TyV6ekm7wC8n43RqL5jVvp2B+U8lH5zqHMxXwR8OM/6k4V+dgvXiEGO3fKA/5iyiqM5ooe6AHYDb4xPs4sFbsf9uANouvtW4JfPcn1O2ZTyETPbMo/Ii0EMs+zCN4FjF7F27fhcbGZXZj1VNOt7nhv4G097/NlRcfPPBw4LMa0BljE5vd/+Pb7PNmBjTPz6bree2QOy0KuAu/pst5YKB+4Djqas5PZBP2w2aUJ2972BFcBZlB13Tg5Bz3Qp8RmVH219xP49uyZf4N+c73tBmYPxAPBp4OdmtisNi1/sDMBM0K/LHiLrozbwIcrqmPtCzO1hLnQtfeO0KNFC92XAOWGJV3SIot0hKpugdlntLg+MZbNKHgauAG7KHvxFWezYUBfAx4D1We0fPdQHnmBmtw9yWP2ktDGwTMhHUXbqfxtlf45OC9yY8OH089VWJsGsjM/vAVvd/Srgy2b2dCT19xslsRgvvbMPV2MG+BRwZxpSP6zFmKlhuK0dr73XUhZ4vpOyQyXZZss0WHOPyHMX5g/is8XdN5rZ53JXYpH/PgsUukI5TWFDHv6bekFng4Bm3f3jwGnAfh29JTQddv7RDrnbtQZY4+4vBT5rZo+6+6yZzS1isM+zibkBfCfEbMPYBNYuOSlOp2ZDzG8HtgLvCTE3M2uhY9Pe7ncRYmsDfwvc6u4vDzdiUPV7Kdb8a+BDIWIbRdJRUYMedh6LfSrwTzwT0HdZ5CW5IwVl6OylwE3u/t5kFAYg6hZlC9zTzeymYW4CayPoWIR2VP6eT9kyd6/sVVY3i9waw1H7QsyGpX4Z8FHgY8maLkHUaRO4xcxuHqWYK+tDZ/7yCuCLwOuzzU2jhmMViuy6qzZrPOU3t4Cz3R3gz0PU/W7gko9+G/DutImvZCPpUfrMXcQ8V8MhQK3Ml3wauAV4YsAJ8oOe7diMDkrXRtSjH0udJyqdZ2Y/G8UmsNKCTidZ7n4YcFOIuRmLXTf3IrlFfwGspjwhOy6sV5FtaKvETFzXhgjr9SPq9AC/H3gkuYxMea5w6t7zN5E3u8vrR8oTvi2SoDoLTvd3980DyCkexXfYGFGmIrv+dI+uyP5u+vsfHHfFdlG1QxN3Px14XzzxdUsgSke8twFvN7PNkRhfRC5xw8yeAE4BNmcWsaqWej1wXXInOiy1ZZZ5BngEuGHc7QeKKm0CgSMjmvH8GhbwJjFvDjE/GYnre1JYY29QmNmTNRP1xsxHto5TwCTmt5jZw+PONy8qtAmcCf9rNhbLahbJSGI+1cx2hnCb3RLv47/tDL+6DqJel4na3X2WsmKlTVmQcKKZ3Se/OXyyaGRyY0cr1bqQmq981d3369WHTH/H3feL/7cOPvWnIvVgtbvvjD+7WhXbz9zU2Y4Nxu4airnt7g/3I+Yuon5eDUSd7s1F7v7ybNNYqU5HxZiPteciWfwd2eaibmN7Dbgi3Iy+XrmZ+/FUuB+3Vtj9SA0b1wEHUSaHvTf2Pu2qNIexMReuHk15eLKyhvPzWvG50MyuWcoRb1YJ8jzgn4E395g4P66H+IeUyfo/HmTFdq0tdFiyc0PMczUT81xYrCtCzLNLyVfosNSnAV+pqKVOY+J+F/iGu68ys2aV/OdiTPHmWXe/jDI5v1Wzk8B0vduAz8T3aQ3iAe8Q9VcrKur0fX+bMktvVUSpGlPncqTXk7u/KaxQu2bx5uQGbI+46/ZFVnv04n7sG+7Hn1R0jnm6pkdjLe6tgvtRjDje3Iyko0srmKBDj7HmbZRx1+3DiLtmlvqXsVm+uaIJTclSHw58KXM/ZibeQmfl84cC/wK8tmbWOVVW3085LuHBYef5Zim0r6As+7eKVuonS/0j4CQzu2fUOdDjsNDpC14ZYp6rmauR5k2vDzHPDPuGZX7pQ8B5XQpeq2apDwNuznzqmYkUdDytzUg6OqGi4aiF/OYGZR+Ku0bpJ8ZD0zKza4mk+4qL+kXALe5+ZBXcj2Gmg741SwVt1+gkMB3DX5W3wh3jOm7oOKGs6nr9KMYtMzGiznoeL6tB/u+z3ZyP5v2RK2Ac1oeY6yDqI0ctahtmd6NwLf4BOL2ioaeF6gAfB44A/ifv1jROUcerfANwLf8/pbNqG8X/iojQ3aNy1YohNzf5dA3FnOoAn4yw2f9WQczhUzdDGBvJmrdU2Kc+NDaKR43qRNGG2BT7eODrYaXr0hwxheeeAN5hZl8b9MHJgC31e4BP1MBS/xg4Cbh72MbBhpR0dCjwLeDgmlVrpxtwopndUrXEm3lEvW6eipIquh+vB346zKqWYkhJR+upXwZdCs9tAr5eZTF3uB+fjPWmBu7HutBHUfmJV9mUpA/WsPIkRV82RfWM1WXEWBb9WBtJ+HMVjxr9ZeXDeVnlyftqHJ7bFPnItRucnon6goqvf1rrv8rK76xSLkckHc25+0pg7TwTnqruM28GTjOzp6q4CexxfHGDMjvvvgpXvaTOp3/n7h8Il66ojKC7dDpaVaNu+bmveXWIeaaOVctxzW5m/w2cCNwbom5VsEAgifryEHVrkIdWxYCSjtZSr6SjfF7eOVmXzCY1JUs7fTQTdaOiVS+5qP86NDTeQtvUEcjdz3D3J2u2CWzG5+xJK8HPBs0f5u7fr7BP3c40c8mg0gtsibm6qyPePFujEF3K9rubsnni7ipVLQ84l/rwzBWcq2Cpm2epuZeY2eXZHB0ficsRT1A7IhsX16zTURLz/ZStuHaNo+XrKNJOQ9TJ/bgna27uFXU/PuTul4zc/YjXwnNq2OmoFT9/4O4vqWN4bgnux4vd/Vp3f7qiKby5+3HpgMZi9NXpZ00Nxdxy9+9lYp6K1lX5Q+vuZ8U9a1fw3uXXdFmkHTeG5kOnEcTAMZRjd1fWKOko+Y9nmNnnFjHCbBJE3YjzgjMpsyCLbByeVSyU2gZWmdn9/dYnFotw4DdSnsvXJeko9dH4SPSRaEyTmFNIL8Q8Y2Y3AGdQjsdLUwbaFfKpk6ivd/cVQ+n5kflil0UpVbNmx9pXIjrv5V7ufr2778jWqlWx/c6d7n7wQF3ELE/g/TWrCdwzVqEKJVRVTCSLXx/v7g92GIEqlHel+/ft6OXSk6itx2T9FcC/AS+pyQTavITqj4C7gGJcvSKqWvOZ1sTdDwDOpDzxXdXhrhVj7AeSwqx3An9qZo8t5FPbAl8YII1Xe11NmsOka3wCeJuZbalpwtEo2xq349fLKUvm3kXZEengjnVtZ+OVRy3qbwNvDVHPO2bZFhDzPpQDcI7JOm7WoV3XDsoOR1vG2cWnZtZ6Ty5L/P4IyrrFM0InB3QZsDlKUS8LS30y8JPY7Hqvgk6uxvnAVTW7P7+gHNqztepVJxUVtuUlUu7+ovjP64BDgFcCx47xMm81szfN99ZdyIc+Ftib+hS4FsBPzOwBWebBHMh0isbd9wdeM6bcHQd2mtl3K9XBf5R+oRiI1d7TmqLqRsJ6PB2s1T2QmEfSSVb3VwghhBBCCCGEEEIIIYQQQgghhBBCCCGEEEIIIYQQQgghhBBCCCGEEEIIIYQQQgghhBBCCCGEEEIIIYQQQgghhBBCCCGqx/8BcbtRGDz/J/4AAAAASUVORK5CYII="></head><body>
 
 <!-- LOGO: wspólny kontur znaku. Warianty kolorystyczne dziedziczą kolor miejsca użycia. -->
@@ -193,7 +240,7 @@ footer{background:var(--surface);border-top:1px solid var(--line);border-bottom:
 
 <a class="identity" href="#home" aria-label="RWIN"><svg aria-hidden="true"><use href="#rwin-mark"/></svg><b>RWIN</b></a>
 
-<nav id="nav"><a href="#home"></a><a href="#calendar"></a><a href="#entries" hidden></a><a href="#strategy" hidden></a><div class="aboutgroup"><a href="#about"></a><button id="subToggle" aria-controls="submenu" aria-expanded="false"><svg viewBox="0 0 12 12" aria-hidden="true"><path d="M2 4.5 6 8.5 10 4.5" fill="none" stroke="currentColor" stroke-width="1.8"/></svg></button><div id="submenu" class="sub" hidden><a href="#drivers"></a></div></div></nav>
+<nav id="nav"><a href="#home"></a><a href="#calendar"></a><a href="#entries" hidden></a><a href="#strategy" hidden></a><a href="#przewodnik"></a><div class="aboutgroup"><a href="#about"></a><button id="subToggle" aria-controls="submenu" aria-expanded="false"><svg viewBox="0 0 12 12" aria-hidden="true"><path d="M2 4.5 6 8.5 10 4.5" fill="none" stroke="currentColor" stroke-width="1.8"/></svg></button><div id="submenu" class="sub" hidden><a href="#drivers"></a></div></div></nav>
 
 <div id="account"><button class="login" id="login"><svg aria-hidden="true"><use href="#discord"/></svg><span></span></button><div id="accountPanel" hidden><strong id="accountName"></strong><button id="logout" type="button"></button></div></div><button id="hamb" aria-controls="nav" aria-expanded="false">☰</button></div></header>
 
@@ -207,7 +254,7 @@ footer{background:var(--surface);border-top:1px solid var(--line);border-bottom:
 
 </div></div></footer>
 
-<dialog id="guide" aria-labelledby="guideTitle"><button id="guideClose" class="close" type="button">×</button><div id="guideContent"></div></dialog><dialog id="profile" aria-labelledby="profileName"><button class="close" type="button">×</button><div id="profileBody"></div></dialog><dialog id="detail" aria-labelledby="dialogTitle"><button class="close" autofocus>×</button><div id="detailBody"></div></dialog><div id="toast" class="toast" role="status" hidden></div>
+<dialog id="guide" aria-labelledby="guideTitle"><button id="guideClose" class="close" type="button">×</button><div id="guideContent"></div></dialog><dialog id="profile" aria-labelledby="profileName"><button class="close" type="button">×</button><div id="profileBody"></div></dialog><dialog id="signup" aria-labelledby="signupTitle"><button class="close" type="button">×</button><div id="signupBody"></div></dialog><dialog id="detail" aria-labelledby="dialogTitle"><button class="close" autofocus>×</button><div id="detailBody"></div></dialog><div id="toast" class="toast" role="status" hidden></div>
 
 <script>
 
@@ -405,7 +452,7 @@ function sessionTime(iso){
 
 }
 
-const navLabels=()=>({home:t('Strona główna','Home'),calendar:t('Kalendarz','Calendar'),entries:t('Moje zapisy','My entries'),strategy:t('Strategia','Strategy'),about:'About us',drivers:t('Kierowcy','Drivers')});
+const navLabels=()=>({home:t('Strona główna','Home'),calendar:t('Kalendarz','Calendar'),entries:t('Moje zapisy','My entries'),strategy:t('Strategia','Strategy'),about:'About us',drivers:t('Kierowcy','Drivers'),przewodnik:t('Przewodnik','Guide')});
 
 const categories=()=>({all:t('Wszystkie','All'),special:'Special Events',weekly:'Weekly Races',championship:'Championship',training:t('Treningi zespołu','Team practice')});
 
@@ -473,6 +520,17 @@ function home(){
 
 let nextTimer;
 
+// Zapisani na event (lewy dolny róg banera). Pokaże się, gdy event będzie miał listę signups: [{name, avatar}].
+function signupsStrip(e){
+ const list=Array.isArray(e.signups)?e.signups.filter(p=>p&&p.name):[];
+ if(!list.length)return '';
+ const shown=list.slice(0,8);
+ return `<div class="signups"><span class="signups-label">${t('Zapisani','Signed up')} · ${list.length}</span><div class="signups-faces">${shown.map(p=>{
+   const name=String(p.name);
+   return p.avatar?`<img src="${escapeHTML(p.avatar)}" alt="" title="${escapeHTML(name)}" loading="lazy">`:`<span title="${escapeHTML(name)}">${escapeHTML(Array.from(name.trim())[0]?.toLocaleUpperCase()||'?')}</span>`;
+ }).join('')}${list.length>shown.length?`<span class="signups-more">+${list.length-shown.length}</span>`:''}</div></div>`;
+}
+
 function countdownText(at){
  const left=Math.max(0,Math.floor((at-Date.now())/1000)), d=Math.floor(left/86400), z=n=>String(n).padStart(2,'0');
  const clock=z(Math.floor(left%86400/3600))+':'+z(Math.floor(left%3600/60))+':'+z(left%60);
@@ -501,7 +559,7 @@ function renderNext(){
 
  ${next?`<div class="meta">${name} · ${categories()[next.event.category]}</div><time class="session-date" datetime="${escapeHTML(next.session)}">${full(dateKey(new Date(next.at)))}</time>
 
- <button class="btn" data-event="${escapeHTML(next.event.id)}">${t('Szczegóły','Details')} ↗</button> <a class="smalllink" href="#calendar">${t('Kalendarz','Calendar')} →</a>`:
+ <button class="btn" data-event="${escapeHTML(next.event.id)}">${t('Szczegóły','Details')} ↗</button> <a class="smalllink" href="#calendar">${t('Kalendarz','Calendar')} →</a>${signupsStrip(next.event)}`:
 
  `<a class="btn" href="#calendar">${icon('cal')}${t('Otwórz kalendarz','Open calendar')}</a>`}</div>
 
@@ -643,6 +701,12 @@ document.addEventListener('click',e=>{
 });
 
 function secondary(p){
+ if(p==='strategy') return strategyPage();
+
+ if(p==='entries') return entriesPage();
+
+ if(p==='przewodnik') return guidePage();
+
  if(protectedPage(p)) return driverView(p);
 
  const names=navLabels();
@@ -721,7 +785,7 @@ function showDetails(id){
 
  <section class="race-box"><h3>03 / ${t('Pogoda i warunki','Weather and conditions')}</h3><p class="race-note">${label(e.weather)||t('Brak aktualnych danych o pogodzie','No current weather data')}</p></section></div></div>
 
- <div class="race-footer">${isDriver()?'<a class="btn" href="#entries">'+navLabels().entries+' ↗</a>':''}<p class="race-note">${t('Sprawdzono','Verified')} ${full(e.checked)} · <a href="${escapeHTML(e.source)}" target="_blank" rel="noopener noreferrer">${escapeHTML(e.publisher)} ↗</a></p></div></div>`;
+ ${signupsStrip(e)}<div class="race-footer">${signupAction(e)}<p class="race-note">${t('Sprawdzono','Verified')} ${full(e.checked)} · <a href="${escapeHTML(e.source)}" target="_blank" rel="noopener noreferrer">${escapeHTML(e.publisher)} ↗</a></p></div></div>`;
 
  if(e.trackId && e.trackId!=='tba'){
 
@@ -769,6 +833,10 @@ function render(){
 
  if(authNotice)$('#toast').textContent=t(...notices[authNotice]);
 
+ if(p==='przewodnik')updateFov();
+
+ if($('#signup').open&&signupDraft)paintSignup();
+
  if($('#detail').open)showDetails(activeEvent);
 
  if($('#profile').open&&activeDriver!==null)showProfile(activeDriver);
@@ -791,7 +859,7 @@ document.addEventListener('click',event=>{
 
  else if(b.dataset.event)showDetails(b.dataset.event);
 
- else if(b.hasAttribute('data-login'))openGuide();
+ else if(b.hasAttribute('data-login'))loginOrGuide();
 
 });
 
@@ -819,9 +887,11 @@ $('#detail').addEventListener('close',()=>activeEvent=null);
 
 $('#profile .close').onclick=()=>$('#profile').close();
 
+$('#signup .close').onclick=()=>$('#signup').close();
+
 $('#profile').addEventListener('close',()=>activeDriver=null);
 
-window.addEventListener('hashchange',()=>{if($('#detail').open)$('#detail').close();if($('#profile').open)$('#profile').close();setNav(false);render();$('#main').focus({preventScroll:true});window.scrollTo(0,0)});
+window.addEventListener('hashchange',()=>{if($('#signup').open)$('#signup').close();if($('#detail').open)$('#detail').close();if($('#profile').open)$('#profile').close();setNav(false);render();$('#main').focus({preventScroll:true});window.scrollTo(0,0)});
 
 let previousDay=today();
 
@@ -977,7 +1047,7 @@ function statusPanel(){
 }
 function protectState(){
  clearTimeout(leaseTimer);leaseUntil=0;access=accountUser?'checking':'guest';
- privateRows=[];privateKind='';privateState='loading';itemTicket++;closeAccount();
+ privateRows=[];privateKind='';privateState='loading';itemTicket++;closeAccount();mySignups=null;mySignupsState='idle';signupDraft=null;if($('#signup').open)$('#signup').close();
 }
 function applyUser(user){
  if((accountUser?.id||null)===(user?.id||null)){accountUser=user;paintAccount();return}
@@ -1131,9 +1201,260 @@ async function initializeAuth() {
     paintAccount();
   }
 }
+let mySignups=null, mySignupsState='idle';
+
+// ===== Wersja 4: zapisy, Moje zapisy, Strategia SOON, przewodnik =====
+
+const clockFmt=()=>new Intl.DateTimeFormat(locale(),{timeZone:zone,hour:'2-digit',minute:'2-digit',hourCycle:'h23'});
+
+function showToast(text){
+ const box=$('#toast');box.textContent=text;box.hidden=false;
+ clearTimeout(toastTimer);toastTimer=setTimeout(()=>{box.hidden=true},5000);
+}
+
+function groupSlots(slots){
+ const clock=clockFmt(), groups=new Map();
+ for(const s of [...slots].sort((a,b)=>Date.parse(a)-Date.parse(b))){const k=dateKey(new Date(s));if(!groups.has(k))groups.set(k,[]);groups.get(k).push({iso:s,time:clock.format(new Date(s))})}
+ return groups;
+}
+
+function eventDays(e){
+ const out=[];
+ for(let d=asDate(e.start);d<=asDate(e.end);d.setUTCDate(d.getUTCDate()+1))out.push(d.toISOString().slice(0,10));
+ return out;
+}
+
+const eventClasses=e=>Array.isArray(e.classes)&&e.classes.length?e.classes:['hypercar','lmp2','lmgt3'];
+
+function signupSummary(e,r){
+ if(e.category==='training')return `${t('Klasa','Class')}: <b>${escapeHTML(CLASS_NAMES[r.class]||r.class||'—')}</b>`;
+ const parts=[];
+ if(r.slots?.length)parts.push([...groupSlots(r.slots)].map(([k,v])=>`<b>${fmt(k,{weekday:'short',day:'numeric',month:'short'})}</b> ${v.map(x=>x.time).join(' · ')}`).join('<br>'));
+ else if(r.days?.length)parts.push(`${t('Dni','Days')}: `+r.days.map(k=>`<b>${fmt(k,{weekday:'short',day:'numeric',month:'short'})}</b>`).join(', '));
+ return parts.join('');
+}
+
+const signupErrors=()=>({NOT_DRIVER:t('Zapisy są tylko dla kierowców RWIN (rola kierowcy + przedstawienie).','Sign-ups are for RWIN drivers only.'),
+ EVENT_CLOSED:t('Ten event już się zakończył.','This event has already finished.'),
+ EVENT_NOT_FOUND:t('Tego eventu nie ma już w kalendarzu.','This event is no longer in the calendar.'),
+ INVALID_SIGNUP:t('Sprawdź swój wybór i spróbuj ponownie.','Check your selection and try again.')});
+
+async function loadMySignups(){
+ if(!isDriver()||mySignupsState==='loading')return;
+ mySignupsState='loading';const owner=generation;
+ try{const rows=await rpc('my_signups');if(owner!==generation)return;mySignups=new Map((rows||[]).map(r=>[r.event,r]));mySignupsState='ready'}
+ catch{if(owner!==generation)return;mySignupsState='error'}
+ if(page()==='entries')$('#main').innerHTML=entriesPage();
+ if($('#detail').open&&activeEvent)showDetails(activeEvent);
+}
+
+function signupAction(e){
+ if(e.end<today())return `<span class="race-note">${t('Zapisy zamknięte','Sign-ups closed')}</span>`;
+ if(isDriver()){
+   if(mySignupsState==='idle')queueMicrotask(loadMySignups);
+   const mine=mySignups?.has(e.id);
+   return `<button class="btn" data-signup="${escapeHTML(e.id)}">${mine?'✓ '+t('Edytuj zapis','Edit sign-up'):t('Zapisz się','Sign up')} ↗</button>`;
+ }
+ if(!accountUser)return `<button class="btn outline" data-login>${t('Zaloguj się, aby się zapisać','Sign in to sign up')}</button>`;
+ return allowed()?`<span class="race-note">${t('Zapisy są dostępne dla kierowców RWIN.','Sign-ups are open to RWIN drivers.')}</span>`:'';
+}
+
+let signupDraft=null;
+
+async function openSignup(id){
+ if(!isDriver())return;
+ if(mySignupsState!=='ready')await loadMySignups();
+ const e=EVENTS.find(x=>x.id===id);if(!e)return;
+ const mine=mySignups?.get(id);
+ signupDraft={id,slots:new Set(mine?.slots||[]),days:new Set(mine?.days||[]),cls:mine?.class||null,notes:mine?.notes||'',mine:!!mine,busy:false,msg:'',armed:false};
+ paintSignup();
+ if(!$('#signup').open)$('#signup').showModal();
+}
+
+function paintSignup(focusSel){
+ const d=signupDraft, e=d&&EVENTS.find(x=>x.id===d.id);
+ if(!e){if($('#signup').open)$('#signup').close();return}
+ const training=e.category==='training', sessions=e.sessions||[];
+ let pick;
+ if(training){
+   pick=`<h3>${t('Wybierz klasę','Choose your class')}</h3><div class="pick-row">${eventClasses(e).map(c=>`<button class="pick" data-pick-class="${c}" aria-pressed="${d.cls===c}">${CLASS_NAMES[c]||c}</button>`).join('')}</div>`;
+ }else if(sessions.length){
+   pick=`<h3>${t('Kiedy możesz jechać?','When can you race?')}</h3><p class="race-note">${t('Zaznacz godziny startów, w które możesz. „Cały dzień” zaznacza wszystkie starty danego dnia.','Select the start times you can make. “All day” selects every start that day.')}</p>
+   <div class="slot-grid">${[...groupSlots(sessions)].map(([k,v])=>{const all=v.every(x=>d.slots.has(x.iso));
+     return `<div class="slot-row"><div class="slot-day"><b>${fmt(k,{weekday:'long',day:'numeric',month:'short'})}</b><button class="slot-all" data-slot-day="${k}" aria-pressed="${all}">${all?t('Odznacz dzień','Clear day'):t('Cały dzień','All day')}</button></div>
+     <div class="pick-row">${v.map(x=>`<button class="pick" data-slot="${escapeHTML(x.iso)}" aria-pressed="${d.slots.has(x.iso)}">${x.time}</button>`).join('')}</div></div>`}).join('')}</div>`;
+ }else{
+   pick=`<h3>${t('W które dni możesz?','Which days can you make?')}</h3><p class="race-note">${t('Godziny startów zostaną ogłoszone. Zaznacz dni, w które możesz jechać.','Start times will be announced. Select the days you can race.')}</p>
+   <div class="pick-row">${eventDays(e).map(k=>`<button class="pick" data-pick-day="${k}" aria-pressed="${d.days.has(k)}">${fmt(k,{weekday:'short',day:'numeric',month:'short'})}</button>`).join('')}</div>`;
+ }
+ const notes=training?'':`<label class="signup-notes"><span>${t('Uwagi (opcjonalnie)','Notes (optional)')}</span><textarea id="signupNotes" maxlength="500" rows="3" placeholder="${t('np. mogę max 2 stinty, wolę jechać nocą','e.g. max 2 stints, prefer night')}">${escapeHTML(d.notes)}</textarea><small id="notesCount">${d.notes.length} / 500</small></label>`;
+ $('#signupBody').innerHTML=`<div class="race-head"><small>RWIN Racing / ${t('Zapis na event','Event sign-up')}</small><h2 id="signupTitle">${label(e.name)}</h2>
+ <p class="signup-sub">${label(eventTrack(e).name)} · ${range(e)}${classList(e).length&&!training?' · '+escapeHTML(classList(e).join(' / ')):''}</p></div>
+ <div class="race-content">${pick}${notes}
+ ${d.msg?`<p class="signup-msg" role="alert">${escapeHTML(d.msg)}</p>`:''}
+ <div class="signup-actions"><button class="btn" data-signup-save ${d.busy?'disabled':''}>${d.busy?t('Zapisuję…','Saving…'):d.mine?t('Zapisz zmiany','Save changes'):t('Zapisz się','Sign up')}</button>
+ ${d.mine?`<button class="btn outline danger" data-signup-leave ${d.busy?'disabled':''}>${d.armed?t('Na pewno wypisać?','Really leave?'):t('Wypisz się','Leave')}</button>`:''}</div></div>`;
+ $('#signup .close').setAttribute('aria-label',t('Zamknij','Close'));
+ if(focusSel)$('#signup').querySelector(focusSel)?.focus();
+}
+
+async function saveSignup(){
+ const d=signupDraft, e=EVENTS.find(x=>x.id===d.id);if(!e||d.busy)return;
+ const training=e.category==='training';
+ if(training&&!d.cls){d.msg=t('Wybierz klasę.','Choose a class.');return paintSignup()}
+ const slots=[...d.slots].filter(s=>(e.sessions||[]).includes(s));
+ const days=(e.sessions||[]).length?[...new Set(slots.map(s=>dateKey(new Date(s))))]:[...d.days];
+ if(!training&&!slots.length&&!days.length){d.msg=t('Zaznacz przynajmniej jeden termin.','Select at least one option.');return paintSignup()}
+ d.busy=true;d.msg='';paintSignup();
+ try{
+   await rpc('signup',{p_event:d.id,p_slots:training?[]:slots,p_days:training?[]:days,p_class:training?d.cls:null,p_notes:training?'':d.notes});
+   mySignupsState='idle';await loadMySignups();syncPublic();
+   if($('#signup').open)$('#signup').close();
+   showToast(d.mine?t('Zapisano zmiany.','Changes saved.'):t('Jesteś zapisany! 🏁','You are signed up! 🏁'));
+ }catch(err){d.msg=signupErrors()[err?.message]||t('Nie udało się zapisać. Spróbuj ponownie.','Could not save. Please try again.')}
+ finally{d.busy=false;if($('#signup').open)paintSignup()}
+}
+
+async function leaveSignup(id,fromDialog){
+ try{
+   await rpc('unsignup',{p_event:id});
+   mySignupsState='idle';await loadMySignups();syncPublic();
+   if(fromDialog&&$('#signup').open)$('#signup').close();
+   showToast(t('Wypisano z eventu.','You left the event.'));
+ }catch{showToast(t('Nie udało się wypisać. Spróbuj ponownie.','Could not leave. Please try again.'))}
+}
+
+function entriesPage(){
+ const title=navLabels().entries;
+ const head=`<section class="page"><div class="kicker">RWIN Racing</div><h1>${title}</h1>`;
+ if(!isDriver())return head+`<p class="panel">${accountUser?t('Zapisy są dostępne dla zweryfikowanych kierowców RWIN.','Entries are available to verified RWIN drivers.'):t('Zaloguj się, aby zobaczyć swoje zapisy.','Sign in to see your entries.')}</p></section>`;
+ if(mySignupsState==='idle')queueMicrotask(loadMySignups);
+ if(mySignupsState==='error')return head+`<div class="panel"><p>${t('Nie udało się wczytać zapisów.','Could not load your entries.')}</p><button class="btn outline" data-reload-signups>${t('Ponów','Retry')}</button></div></section>`;
+ if(!mySignups)return head+`<p class="panel">${t('Wczytywanie…','Loading…')}</p></section>`;
+ const rows=[...mySignups.values()].map(r=>({r,e:EVENTS.find(x=>x.id===r.event)})).filter(x=>x.e);
+ if(!rows.length)return head+`<div class="panel"><h2>${t('Nie masz jeszcze zapisów','No entries yet')}</h2><p>${t('Otwórz Kalendarz, kliknij wyścig i wybierz „Zapisz się”.','Open the Calendar, pick a race and choose “Sign up”.')}</p><a class="btn" href="#calendar">${icon('cal')}${t('Otwórz kalendarz','Open calendar')}</a></div></section>`;
+ return head+rows.map(({r,e})=>{
+   const sameMonth=e.start.slice(0,7)===e.end.slice(0,7), days=e.start.slice(-2)+(sameMonth&&e.start!==e.end?'–'+e.end.slice(-2):'');
+   return `<article class="racecard entry-card"><div class="date">${days}<small>${fmt(e.start,{month:'short',year:'numeric'}).toUpperCase()}</small></div>
+   <div class="raceinfo"><span class="tag">${categories()[e.category]||''}</span><h3>${label(e.name)}</h3><div class="meta">${label(eventTrack(e).name)} · ${escapeHTML(e.duration||'')}</div>
+   <div class="entry-pick">${signupSummary(e,r)}</div>${r.notes?`<div class="note">${t('Uwagi','Notes')}: ${escapeHTML(r.notes)}</div>`:''}</div>
+   <div class="entry-actions">${e.end>=today()?`<button class="btn outline" data-signup="${escapeHTML(e.id)}">${t('Edytuj','Edit')}</button><button class="smalllink" data-unsign="${escapeHTML(e.id)}">${t('Wypisz się','Leave')}</button>`:`<span class="race-note">${t('Zakończony','Finished')}</span>`}</div></article>`;
+ }).join('')+'</section>';
+}
+
+function strategyPage(){
+ return `<section class="page soon-page"><div class="kicker">RWIN Racing</div><h1>${navLabels().strategy}</h1>
+ <div class="soon" aria-label="Soon">SOON</div><p class="intro">${t('Planer strategii (stinty, paliwo, zmiany kierowców) pojawi się razem z programem RWIN.','The strategy planner (stints, fuel, driver swaps) is coming with the RWIN app.')}</p></section>`;
+}
+
+// ---------- Przewodnik ----------
+const GUIDE_KEY='rwin.guide.v1';
+function guideState(){try{const s=JSON.parse(localStorage.getItem(GUIDE_KEY)||'{}');return {step:Number.isInteger(s.step)?s.step:0,done:Array.isArray(s.done)?s.done:[],seen:!!s.seen}}catch{return {step:0,done:[],seen:false}}}
+function saveGuide(s){try{localStorage.setItem(GUIDE_KEY,JSON.stringify(s))}catch{}}
+function loginOrGuide(){
+ if(guideState().seen)return startDiscordLogin();
+ if(page()==='przewodnik'){const s=guideState();s.step=GUIDE().length-1;saveGuide(s);$('#main').innerHTML=guidePage();$('#main').focus({preventScroll:true})}
+ else location.hash='#przewodnik';
+}
+const gi={
+ users:'<svg viewBox="0 0 24 24" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="9" cy="8" r="3.2"/><path d="M3 20c0-3.3 2.7-6 6-6s6 2.7 6 6"/><circle cx="17" cy="9" r="2.4"/><path d="M15.5 14.2c3 .3 5.5 2.7 5.5 5.8"/></g></svg>',
+ flag:'<svg viewBox="0 0 24 24" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-width="1.8"><path d="M5 21V4"/><path d="M5 4h12l-2 4 2 4H5"/></g></svg>',
+ shield:'<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3 4.5 6v6c0 4.4 3.2 7.8 7.5 9 4.3-1.2 7.5-4.6 7.5-9V6z" fill="none" stroke="currentColor" stroke-width="1.8"/></svg>',
+ search:'<svg viewBox="0 0 24 24" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m15.5 15.5 5 5"/></g></svg>',
+ wheel:'<svg viewBox="0 0 24 24" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="2.5"/><path d="M3.5 10.5h6M14.5 10.5h6M12 14.5V21"/></g></svg>',
+ check:'<svg viewBox="0 0 24 24" aria-hidden="true"><path d="m5 12.5 4.5 4.5L19 7.5" fill="none" stroke="currentColor" stroke-width="2.4"/></svg>'
+};
+const guideList=items=>`<div class="guide-list">${items.map(([a,b])=>`<div><span>${a}</span><small>${b}</small></div>`).join('')}</div>`;
+const guideCards=items=>`<div class="guide-cards">${items.map(([ic,h,p])=>`<div class="guide-card"><span class="guide-card-h">${gi[ic]||''}${h}</span><p>${p}</p></div>`).join('')}</div>`;
+function GUIDE(){
+ const intro=introLink();
+ return [
+ {sec:0,title:t('Poznajmy się','Let’s meet'),lead:t('Cześć! Witamy każdego: zarówno tych, którzy dopiero zaczynają, jak i tych, którzy już jeżdżą szybko. Zobacz, kim jesteśmy i co zyskasz, ścigając się z nami.','Hi! Everyone is welcome, whether you are just starting out or already fast. See who we are and what you get by racing with us.'),
+  body:()=>guideCards([['users',t('Kim jesteśmy','Who we are'),t('RWIN Racing to międzynarodowy zespół simracingowy założony w Polsce, jeżdżący w Le Mans Ultimate.','RWIN Racing is an international sim racing team founded in Poland, racing in Le Mans Ultimate.')],
+   ['flag',t('Co robimy','What we do'),t('Wyścigi długodystansowe: Special Events, Weekly Races, championshipy i wspólne treningi w klasach Hypercar, LMP2 i LMGT3.','Endurance racing: Special Events, Weekly Races, championships and team practice in Hypercar, LMP2 and LMGT3.')],
+   ['shield',t('Nasz kodeks','Our code'),t('Czysta jazda, szacunek na torze i na Discordzie, punktualność i pomoc innym.','Clean racing, respect on track and on Discord, punctuality and helping others.')],
+   ['search',t('Kogo szukamy','Who we look for'),t('Kierowców na każdym poziomie, którzy chcą się rozwijać i jeździć w zespole.','Drivers of every level who want to improve and race as a team.')]])
+   +`<div class="guide-table"><h3>${t('Co zyskujesz, dołączając','What you get')}</h3>${guideList([[t('Wspólne starty','Team races'),t('Special Events, Weekly i championshipy','Special Events, Weekly and championships')],[t('Treningi zespołu','Team practice'),t('przygotowanie przed ważnymi wyścigami','preparation before big races')],[t('Zapisy i lineupy','Entries and line-ups'),t('prosto ze strony RWIN','right from the RWIN site')],[t('Strategia','Strategy'),t('planer stintów i paliwa (wkrótce)','stint and fuel planner (soon)')],[t('Społeczność','Community'),t('Discord i wspólne kanały głosowe','Discord and voice channels')]])}</div>`},
+ {sec:0,title:t('Dołącz do Discorda','Join our Discord'),lead:t('Cały zespół żyje na naszym serwerze Discord: ogłoszenia, zapisy, rozmowy i wspólne wyścigi. Konto na tej stronie też jest powiązane z Discordem.','The whole team lives on our Discord server: announcements, entries, chat and races together. Your account on this site is linked to Discord too.'),
+  body:()=>`<div class="actions"><a class="btn" href="${invite}" target="_blank" rel="noopener">${icon('discord')}${t('Dołącz do serwera RWIN','Join the RWIN server')} ↗</a></div>`+guideList([[t('Ustaw nick','Set your nickname'),t('taki sam jak w Le Mans Ultimate','the same as in Le Mans Ultimate')],[t('Włącz powiadomienia','Turn on notifications'),t('dla kanału ogłoszeń, żeby nie przegapić eventu','for announcements so you never miss an event')],[t('Przeczytaj regulamin','Read the rules'),t('na kanale z zasadami serwera','in the server rules channel')]])},
+ {sec:0,title:t('Przedstaw się na Discordzie','Introduce yourself'),lead:t('Napisz kilka słów na kanale przedstawień. To nie tylko miły gest: dopiero po przedstawieniu się Twoje konto na stronie zostanie odblokowane.','Write a few words in the introductions channel. It is not just polite: your site account unlocks only after you introduce yourself.'),
+  body:()=>guideList([[t('Nick w grze','In-game name'),t('żebyśmy wiedzieli, kogo szukać na torze','so we can find you on track')],[t('Skąd jesteś','Where you are from'),t('kraj albo miasto','country or city')],[t('Doświadczenie','Experience'),t('od kiedy jeździsz i w czym','how long and what you race')],[t('Ulubiona klasa i tor','Favourite class and track'),t('np. LMGT3 i Spa','e.g. LMGT3 and Spa')],[t('Sprzęt','Gear'),t('kierownica, pedały, monitor/VR','wheel, pedals, monitor/VR')]])
+   +`<div class="actions">${intro?`<a class="btn outline" href="${intro}" target="_blank" rel="noopener">${t('Otwórz kanał przedstawień','Open introductions channel')} ↗</a>`:''}</div>`},
+ {sec:0,title:t('Kultura na Discordzie','Discord etiquette'),lead:t('Kilka prostych zasad, dzięki którym na serwerze jest miło dla wszystkich.','A few simple rules that keep the server pleasant for everyone.'),
+  body:()=>guideList([[t('Szacunek','Respect'),t('dla każdego, bez względu na tempo i doświadczenie','for everyone, whatever their pace or experience')],[t('Bez spamu i reklam','No spam or ads'),t('także w wiadomościach prywatnych','in DMs too')],[t('Właściwe kanały','Right channels'),t('pisz tam, gdzie pasuje temat','post where the topic belongs')],[t('Problemy zgłaszaj','Report issues'),t('administracji przez panel zgłoszeń na Discordzie','to the admins via the Discord ticket panel')],[t('Czytelny nick','Clear nickname'),t('taki sam jak w grze','the same as in game')]])},
+ {sec:0,title:t('Kultura na kanałach głosowych','Voice channel etiquette'),lead:t('Podczas wyścigów endurance komunikacja to połowa sukcesu. Krótko, jasno i bez hałasu w tle.','In endurance races communication is half the job. Keep it short, clear and quiet.'),
+  body:()=>guideList([[t('Push-to-talk','Push-to-talk'),t('albo dobra redukcja szumów w Discordzie','or good noise suppression in Discord')],[t('W trakcie wyścigu','During the race'),t('tylko komunikaty dotyczące jazdy','only racing-related calls')],[t('Krótko i konkretnie','Short and clear'),t('kto, gdzie, co: „GT3 za tobą, T1”','who, where, what: “GT3 behind you, T1”')],[t('Bez muzyki','No music'),t('i bez głośnego tła z mikrofonu','and no loud background noise')]])},
+ {sec:1,title:t('Ustaw prawidłowe FOV','Set the correct FOV'),lead:t('Prawidłowe pole widzenia (FOV) pozwala dobrze ocenić prędkość i punkty hamowania. Le Mans Ultimate używa pionowego FOV: policz je poniżej i wpisz w ustawieniach widoku z kokpitu.','A correct field of view helps you judge speed and braking points. Le Mans Ultimate uses vertical FOV: calculate it below and enter it in the cockpit view settings.'),
+  body:()=>`<div class="fov"><label>${t('Przekątna ekranu (cale)','Screen diagonal (inches)')}<input type="number" id="fovDiag" min="10" max="100" step="0.5" value="27"></label>
+   <label>${t('Proporcje','Aspect ratio')}<select id="fovRatio"><option value="16:9">16:9</option><option value="21:9">21:9</option><option value="32:9">32:9</option><option value="16:10">16:10</option></select></label>
+   <label>${t('Odległość oczu od ekranu (cm)','Eye-to-screen distance (cm)')}<input type="number" id="fovDist" min="20" max="300" step="1" value="70"></label>
+   <output id="fovOut" class="fov-out"></output></div><p class="race-note">${t('Mierz od oczu do środka ekranu. Przy trzech monitorach wpisz wymiary jednego. VR ustawia FOV automatycznie.','Measure from your eyes to the centre of the screen. With triple screens use one screen. VR sets FOV automatically.')}</p>`},
+ {sec:1,title:t('Przypisz przyciski na kierownicy','Map your wheel buttons'),lead:t('Ustaw najważniejsze funkcje przed pierwszym treningiem zespołu, żeby w wyścigu nie szukać ich w menu.','Set up the key functions before your first team practice so you never hunt for them mid-race.'),
+  body:()=>guideList([[t('Ogranicznik w pitlane','Pit limiter'),t('obowiązkowo','a must')],[t('Światła','Headlights'),t('wyścigi nocne','night racing')],[t('Wycieraczki','Wipers'),t('na deszcz','for rain')],[t('Balans hamulców +/−','Brake bias +/−'),t('zmiany w trakcie stintu','adjust during a stint')],[t('Kontrola trakcji (TC) +/−','Traction control +/−'),t('zużycie opon i deszcz','tyre wear and rain')],[t('ABS +/−','ABS +/−'),t('w LMGT3','in LMGT3')],[t('Menu pitstopu (MFD)','Pit menu (MFD)'),t('góra / dół / zmiana wartości','up / down / change value')],[t('Push-to-talk','Push-to-talk'),t('Discord, rozmowy z zespołem','Discord, team comms')]])},
+ {sec:1,title:t('Zaloguj się','Sign in'),lead:t('Gotowe! Zaloguj się przez Discord. Bot sprawdzi, czy jesteś na serwerze RWIN, czy się przedstawiłeś i czy masz rolę kierowcy. Kierowcy mogą zapisywać się na wyścigi prosto z kalendarza.','All set! Sign in with Discord. The bot checks that you are on the RWIN server, introduced yourself and have the driver role. Drivers can sign up for races straight from the calendar.'),
+  body:()=>accountUser?`<p class="guide-done">${gi.check}${t('Jesteś zalogowany.','You are signed in.')}</p>`:`<div class="actions"><button class="login" data-guide-login>${icon('discord')}${loginText()}</button></div>`}
+ ];
+}
+function guidePage(){
+ const steps=GUIDE(), s=guideState(), step=Math.min(Math.max(s.step,0),steps.length-1), cur=steps[step];
+ const sections=[[t('Nowy w RWIN','New to RWIN'),'users'],[t('Nowy kierowca','New driver'),'wheel']];
+ const done=new Set(s.done.filter(n=>n<steps.length)), pct=Math.round(done.size/steps.length*100);
+ const nav=sections.map(([name,ic],si)=>{const idx=steps.map((x,i)=>[x,i]).filter(([x])=>x.sec===si);
+   return `<div class="guide-sec"><div class="guide-sec-h">${gi[ic]}<b>${name}</b><span>${idx.filter(([,i])=>done.has(i)).length} / ${idx.length}</span></div>
+   ${idx.map(([x,i],n)=>`<button class="guide-item" data-guide-step="${i}" ${i===step?'aria-current="step"':''}><span class="guide-num">${done.has(i)?gi.check:n+1}</span>${x.title}</button>`).join('')}</div>`}).join('');
+ const inSec=steps.filter(x=>x.sec===cur.sec), pos=inSec.indexOf(cur)+1;
+ return `<section class="page guide-page"><div class="guide-top"><div><div class="kicker">RWIN Racing · ${t('Przewodnik','Guide')}</div><h1>${t('Przewodnik','Guide')}</h1>
+ <p class="intro">${t('Krok po kroku od dołączenia do zespołu do pierwszego wyścigu. Jeden krok na raz: wróć w dowolnym momencie, postęp zapisuje się w tej przeglądarce.','Step by step from joining the team to your first race. One step at a time: come back any time, progress is saved in this browser.')}</p></div>
+ <div class="guide-score"><strong>${pct}%</strong><span>${done.size} ${t('z','of')} ${steps.length} ${t('kroków','steps')}</span><button class="smalllink" data-guide-reset>↺ ${t('Zacznij od nowa','Start over')}</button>${accountUser?'':`<button class="smalllink" data-guide-skip>${t('Pomiń i zaloguj','Skip and sign in')} →</button>`}</div></div>
+ <div class="guide-bars" aria-hidden="true">${steps.map((_,i)=>`<i class="${done.has(i)?'on':''}${i===step?' cur':''}"></i>`).join('')}</div>
+ <div class="guide-layout"><aside class="guide-nav" aria-label="${t('Kroki przewodnika','Guide steps')}">${nav}</aside>
+ <article class="guide-step" aria-labelledby="guideStepTitle"><div class="guide-step-top"><span>${String(step+1).padStart(2,'0')} · ${sections[cur.sec][0]}</span><span>${t('Krok','Step')} ${pos} / ${inSec.length}</span></div>
+ <h2 id="guideStepTitle" tabindex="-1">${cur.title}</h2><p class="guide-lead">${cur.lead}</p>${cur.body()}
+ <div class="guide-foot">${step?`<button class="btn outline" data-guide-go="${step-1}">← ${t('Wstecz','Back')}</button>`:'<span></span>'}${step<steps.length-1?`<button class="btn" data-guide-go="${step+1}" data-guide-complete="${step}">${t('Dalej','Next')} →</button>`:''}</div></article></div></section>`;
+}
+function guideGo(next,complete){
+ const s=guideState(), n=GUIDE().length;
+ if(Number.isInteger(complete)&&!s.done.includes(complete))s.done.push(complete);
+ s.step=Math.min(Math.max(next,0),n-1);
+ if(s.step===n-1){s.seen=true;if(!s.done.includes(n-1))s.done.push(n-1)}
+ saveGuide(s);$('#main').innerHTML=guidePage();updateFov();
+ $('#guideStepTitle')?.focus({preventScroll:true});
+ const top=$('.guide-layout');if(top&&top.getBoundingClientRect().top<0)top.scrollIntoView({behavior:'smooth'});
+}
+function updateFov(){
+ const out=$('#fovOut');if(!out)return;
+ const diag=Number($('#fovDiag').value), dist=Number($('#fovDist').value), [w,h]=$('#fovRatio').value.split(':').map(Number);
+ if(!(diag>0&&dist>0)){out.textContent='—';return}
+ const height=diag*2.54*h/Math.hypot(w,h), fov=2*Math.atan(height/2/dist)*180/Math.PI;
+ out.innerHTML=`<span>${t('Twoje pionowe FOV','Your vertical FOV')}</span><b>${fov.toFixed(1)}°</b>`;
+}
+document.addEventListener('input',e=>{
+ if(['fovDiag','fovDist','fovRatio'].includes(e.target.id))updateFov();
+ if(e.target.id==='signupNotes'&&signupDraft){signupDraft.notes=e.target.value;$('#notesCount').textContent=e.target.value.length+' / 500'}
+});
+document.addEventListener('change',e=>{if(e.target.id==='fovRatio')updateFov()});
+document.addEventListener('click',e=>{
+ const b=e.target.closest('button');if(!b)return;
+ if(b.dataset.guideGo!==undefined)guideGo(Number(b.dataset.guideGo),b.dataset.guideComplete!==undefined?Number(b.dataset.guideComplete):undefined);
+ else if(b.dataset.guideStep!==undefined)guideGo(Number(b.dataset.guideStep));
+ else if(b.hasAttribute('data-guide-reset')){saveGuide({step:0,done:[],seen:false});guideGo(0)}
+ else if(b.hasAttribute('data-guide-skip')){const s=guideState();s.seen=true;saveGuide(s);startDiscordLogin()}
+ else if(b.hasAttribute('data-guide-login'))startDiscordLogin();
+ else if(b.dataset.signup)openSignup(b.dataset.signup);
+ else if(b.dataset.slot&&signupDraft){const s=signupDraft.slots;s.has(b.dataset.slot)?s.delete(b.dataset.slot):s.add(b.dataset.slot);signupDraft.msg='';paintSignup(`[data-slot="${CSS.escape(b.dataset.slot)}"]`)}
+ else if(b.dataset.slotDay&&signupDraft){const e2=EVENTS.find(x=>x.id===signupDraft.id), day=(e2.sessions||[]).filter(s=>dateKey(new Date(s))===b.dataset.slotDay), all=day.every(s=>signupDraft.slots.has(s));
+   day.forEach(s=>all?signupDraft.slots.delete(s):signupDraft.slots.add(s));signupDraft.msg='';paintSignup(`[data-slot-day="${b.dataset.slotDay}"]`)}
+ else if(b.dataset.pickDay&&signupDraft){const s=signupDraft.days;s.has(b.dataset.pickDay)?s.delete(b.dataset.pickDay):s.add(b.dataset.pickDay);signupDraft.msg='';paintSignup(`[data-pick-day="${b.dataset.pickDay}"]`)}
+ else if(b.dataset.pickClass&&signupDraft){signupDraft.cls=b.dataset.pickClass;signupDraft.msg='';paintSignup(`[data-pick-class="${b.dataset.pickClass}"]`)}
+ else if(b.hasAttribute('data-signup-save'))saveSignup();
+ else if(b.hasAttribute('data-signup-leave')&&signupDraft){if(!signupDraft.armed){signupDraft.armed=true;paintSignup('[data-signup-leave]');setTimeout(()=>{if(signupDraft?.armed){signupDraft.armed=false;if($('#signup').open)paintSignup()}},4000)}else leaveSignup(signupDraft.id,true)}
+ else if(b.dataset.unsign){if(b.dataset.armed){leaveSignup(b.dataset.unsign)}else{b.dataset.armed='1';b.textContent=t('Na pewno?','Sure?');setTimeout(()=>{if(b.isConnected){delete b.dataset.armed;b.textContent=t('Wypisz się','Leave')}},4000)}}
+ else if(b.hasAttribute('data-reload-signups')){mySignupsState='idle';loadMySignups()}
+});
+
 $('#logout').onclick = logout;
 $('#login').onclick = () => {
-  if (!accountUser) return openGuide();
+  if (!accountUser) return loginOrGuide();
   if (!allowed()) return checkAccess();
   const opening = $('#accountPanel').hidden;
   $('#accountPanel').hidden = !opening;
